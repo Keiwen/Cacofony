@@ -1,0 +1,12 @@
+
+parameters:
+    keiwen_cacofony.entity_registry.class: Keiwen\Cacofony\EntitiesManagement\EntityRegistry
+
+services:
+
+
+    keiwen_cacofony.entity_registry:
+        class: '%keiwen_cacofony.entity_registry.class%'
+        arguments: ['@?doctrine']
+
+

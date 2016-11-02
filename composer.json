@@ -1,0 +1,36 @@
+{
+  "name": "keiwen/cacofony",
+  "type": "symfony-bundle",
+  "description": "Custom Application Code Overlay for symfony",
+  "version": "0.2",
+
+  "autoload": {
+    "psr-4": {
+      "Keiwen\\Cacofony\\": ""
+    }
+  },
+
+  "require": {
+    "php": ">=7.0",
+    "symfony/symfony": ">=3.0",
+    "symfony/monolog-bundle": ">=2.0",
+    "symfony/serializer": ">=3.0",
+    "sensio/framework-extra-bundle": ">=3.0",
+    "doctrine/doctrine-bundle": "~1.4",
+
+    "keiwen/utils": "~1.0"
+  },
+
+  "suggest": {
+    "nelmio/api-doc-bundle":  "Generate API doc from annotations, ~2.0",
+    "symfony/assetic-bundle":  "Combine js/css ressources, ~2.0",
+    "twbs/bootstrap":  "Include bootstrap, ~3.0",
+    "braincrafted/bootstrap-bundle":  "Manage bootstrap, ~2.0",
+    "components/jquery":  "Include jQuery, ~1.11",
+    "components/font-awesome":  "Include font-awesome, ~4.0",
+    "oyejorge/less.php":  "Include less compiler, ~1.0",
+    "egeloen/ckeditor-bundle": "Rich text editor, ~4.0",
+    "liip/imagine-bundle": "Image manipulation, ~1.0",
+    "knplabs/knp-snappy-bundle": "Convert HTML to PDF/images, ~1.0"
+  }
+}

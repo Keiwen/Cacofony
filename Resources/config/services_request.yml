@@ -1,0 +1,10 @@
+
+
+services:
+
+    keiwen_cacofony.request:
+        class: Symfony\Component\HttpFoundation\RequestStack
+        factory:
+            - '@request_stack'
+            - 'getCurrentRequest'
+
