@@ -9,9 +9,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class AppController extends DefaultController
 {
 
-    //for flash messages without session
-    use MessageManagerTrait;
-
     protected $templateParams = array();
 
     /** @var  Response $response */
@@ -98,67 +95,7 @@ class AppController extends DefaultController
      */
     public function redirect($url, $status = 302)
     {
-        //store flash messages
-        $this->storeMessages();
         return $this->getResponse()->generateRedirect($url, $status);
-    }
-
-
-
-    public function getMessageTypes() : array
-    {
-        return array(
-            static::FMSG_INFO,
-            static::FMSG_SUCCESS,
-            static::FMSG_WARNING,
-            static::FMSG_ERROR,
-        );
-    }
-
-    public function getMessageDefaultType() : string
-    {
-        return static::FMSG_WARNING;
-    }
-
-
-    /**
-     * @return array
-     */
-    protected function fetchFlashMessages()
-    {
-        if(!$this->hasRetrievedMessages()) $this->retrieveMessages();
-        $messages = $this->getMessages();
-        $this->emptyMessages();
-        return $messages;
-    }
-
-
-    /**
-     *
-     */
-    protected function storeMessages()
-    {
-        if(!$this->hasRetrievedMessages()) $this->retrieveMessages();
-        $messages = $this->getMessages();
-        $config = $this->getConfiguration();
-        if(!empty($messages)) $this->getResponse()->setCookie($config['cookie_flash_messages'], json_encode($messages));
-    }
-
-    /**
-     *
-     */
-    protected function retrieveMessages()
-    {
-        $this->retrievedMessages = true;
-        $config = $this->getConfiguration();
-        $messages = $this->getRequest()->getCookie($config['cookie_flash_messages'], StringSanitizer::FILTER_JSON_ARRAY, array());
-        foreach($messages as $fMsg) {
-            if(!empty($fMsg['message'])) {
-                $type = empty($fMsg['type']) ? $this->getMessageDefaultType() : $fMsg['type'];
-                $this->addMessage($fMsg['message'], $type);
-            }
-        }
-        $this->getResponse()->removeCookie($config['cookie_flash_messages']);
     }
 
 
