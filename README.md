@@ -2,7 +2,6 @@
 Custom Application Code Overlay for Symfony framework
 ##Controller
 * Parent controller adds cache management methods
-* AppController adds flash messages by cookies instead of session
 * AppController can redirect with cookies already defined
 * AppController can automatically dump template parameters on dev
 (for action with @template annotation)
