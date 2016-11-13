@@ -26,6 +26,8 @@ class TwigRequest extends \Twig_Extension
         return array(
             'requestCookie' => new \Twig_SimpleFunction('getRequestCookie', array($this->request, 'getCookie')),
             'selfUrl' => new \Twig_SimpleFunction('getSelfUrl', array($this->request, 'getUrl')),
+            'getCookieDisclaimer' => new \Twig_SimpleFunction('getCookieDisclaimer', array($this->request, 'getCookieDisclaimer')),
+            'getCookieDisclaimerName' => new \Twig_SimpleFunction('getCookieDisclaimerName', array($this->request, 'getCookieDisclaimerName')),
         );
     }
 

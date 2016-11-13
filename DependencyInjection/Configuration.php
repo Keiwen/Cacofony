@@ -36,7 +36,6 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('getparam_disable_cache')->defaultValue('noCache')->end()
                         ->booleanNode('autodump')->defaultValue(true)->end()
                         ->scalarNode('autodump_parameter')->defaultValue('_templateParameters')->cannotBeEmpty()->end()
-                        ->scalarNode('cookie_disclaimer')->defaultValue('cacoCookieDisclaimer')->cannotBeEmpty()->end()
                         ->booleanNode('api_format_response')->defaultValue(true)->end()
                     ->end()
                 ->end()

@@ -12,6 +12,7 @@ class Request extends \Symfony\Component\HttpFoundation\Request
 
     protected $retrievedParameters = array();
 
+    const COOKIE_DISCLAIMER = 'cookie_disclaimer';
 
     /**
      * @param RequestStack $requestStack
@@ -81,6 +82,23 @@ class Request extends \Symfony\Component\HttpFoundation\Request
         $cookie = $this->cookies->get($name, $default);
         return StringSanitizer::get($cookie, $type);
     }
+
+    /**
+     * @return bool
+     */
+    public function getCookieDisclaimer()
+    {
+        return $this->getCookie($this->getCookieDisclaimerName(), StringSanitizer::FILTER_BOOLEAN, false);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCookieDisclaimerName()
+    {
+        return static::COOKIE_DISCLAIMER;
+    }
+
 
 
     /**

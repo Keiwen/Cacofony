@@ -99,33 +99,4 @@ class AppController extends DefaultController
     }
 
 
-    /**
-     * @return bool
-     */
-    public function getCookieDisclaimer()
-    {
-        return $this->getRequest()->getCookie($this->getCookieDisclaimerName(), StringSanitizer::FILTER_BOOLEAN, false);
-    }
-
-    /**
-     * @return string
-     */
-    public function getCookieDisclaimerName()
-    {
-        $config = $this->getConfiguration();
-        return $config['cookie_disclaimer'];
-    }
-
-
-    /**
-     * @param bool
-     */
-    public function setCookieDisclaimer(bool $accepted)
-    {
-        $this->getResponse()->setCookie($this->getCookieDisclaimerName(), $accepted);
-    }
-
-
-
-
 }
