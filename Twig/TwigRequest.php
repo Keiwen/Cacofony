@@ -23,9 +23,9 @@ class TwigRequest extends \Twig_Extension
      */
     public function getFunctions()
     {
-		//TODO no more used
         return array(
-//            'getCookieDisclaimer' => new \Twig_SimpleFunction('getCookieDisclaimer', array($this->request, 'getCookieDisclaimer')),
+            'requestCookie' => new \Twig_SimpleFunction('getRequestCookie', array($this->request, 'getCookie')),
+            'selfUrl' => new \Twig_SimpleFunction('getSelfUrl', array($this->request, 'getUrl')),
         );
     }
 
