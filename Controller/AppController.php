@@ -104,8 +104,16 @@ class AppController extends DefaultController
      */
     public function getCookieDisclaimer()
     {
+        return $this->getRequest()->getCookie($this->getCookieDisclaimerName(), StringSanitizer::FILTER_BOOLEAN, false);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCookieDisclaimerName()
+    {
         $config = $this->getConfiguration();
-        return $this->getRequest()->getCookie($config['cookie_disclaimer'], StringSanitizer::FILTER_BOOLEAN, false);
+        return $config['cookie_disclaimer'];
     }
 
 
@@ -114,8 +122,7 @@ class AppController extends DefaultController
      */
     public function setCookieDisclaimer(bool $accepted)
     {
-        $config = $this->getConfiguration();
-        $this->getResponse()->setCookie($config['cookie_disclaimer'], $accepted);
+        $this->getResponse()->setCookie($this->getCookieDisclaimerName(), $accepted);
     }
 
 
