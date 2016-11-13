@@ -7,6 +7,7 @@ use Keiwen\Cacofony\EntitiesManagement\EntityRegistry;
 use Keiwen\Cacofony\FormProcessor\DefaultFormProcessor;
 use Keiwen\Cacofony\Http\Request;
 use Doctrine\Common\Cache\Cache;
+use Keiwen\Utils\Object\CacheHandlerTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -14,6 +15,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DefaultController extends Controller
 {
+    use CacheHandlerTrait;
+
+
     protected $configuration;
 
 
@@ -32,7 +36,26 @@ class DefaultController extends Controller
     /**
      * @return bool
      */
-    public function isCacheUsed()
+    protected function prepareCache()
+    {
+        if($this->cache == null && !$this->cacheDisabled) {
+            //load default cache if nothing set
+            $config = $this->getConfiguration();
+            try {
+                /** @var Cache $service */
+                $service = $this->get($config['default_cache_service_id']);
+                $this->loadCache($service);
+            } catch (ServiceNotFoundException $e) {
+            }
+        }
+        return !$this->isCacheBypassed();
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isCacheBypassed()
     {
         $config = $this->getConfiguration();
         if(!empty($config['getparam_disable_cache'])) {
@@ -41,84 +64,11 @@ class DefaultController extends Controller
                 $forcedUncache = $request->query->get($config['getparam_disable_cache']);
                 if(!empty($forcedUncache)) {
                     $this->getLogger($config['log_channel'])->warning('Force cache bypass');
-                    return false;
+                    return true;
                 }
             }
         }
         return !empty($config['default_cache_service_id']);
-    }
-
-
-    /**
-     * @param string $serviceName
-     * @return Cache
-     */
-    public function getCache(string $serviceName = '') {
-        $config = $this->getConfiguration();
-        $serviceName = empty($serviceName) ? $config['default_cache_service_id'] : $serviceName;
-        try {
-            /** @var Cache $service */
-            $service = $this->get($serviceName);
-            return $service;
-        } catch (ServiceNotFoundException $e) {
-            return null;
-        }
-    }
-
-
-    /**
-     * @param string $key
-     * @param string $serviceName
-     * @return mixed|null
-     */
-    public function readInCache(string $key, string $serviceName = '')
-    {
-        if(!$this->isCacheUsed()) return null;
-        $cache = $this->getCache($serviceName);
-        if(!$cache) return null;
-        try {
-            if($cache->contains($key)) {
-                return $cache->fetch($key);
-            }
-        } catch (\Exception $e) {
-        }
-        return null;
-    }
-
-    /**
-     * @param string $key
-     * @param string $serviceName
-     * @return bool
-     */
-    public function isInCache(string $key, string $serviceName = '')
-    {
-        if(!$this->isCacheUsed()) return false;
-        $cache = $this->getCache($serviceName);
-        if(!$cache) return false;
-        try {
-            return $cache->contains($key);
-        } catch (\Exception $e) {
-        }
-        return false;
-    }
-
-
-    /**
-     * @param string $key
-     * @param mixed $data
-     * @param int $cacheLifetime
-     * @param string $serviceName
-     * @return bool
-     */
-    public function storeInCache(string $key, $data, int $cacheLifetime = 0, string $serviceName = '')
-    {
-        $cache = $this->getCache($serviceName);
-        if(!$cache) return false;
-        try {
-            return $cache->save($key, $data, $cacheLifetime);
-        } catch (\Exception $e) {
-        }
-        return false;
     }
 
 
