@@ -6,7 +6,6 @@ use Keiwen\Cacofony\DependencyInjection\KeiwenCacofonyExtension;
 use Keiwen\Cacofony\EntitiesManagement\EntityRegistry;
 use Keiwen\Cacofony\FormProcessor\DefaultFormProcessor;
 use Keiwen\Cacofony\Http\Request;
-use Doctrine\Common\Cache\Cache;
 use Keiwen\Utils\Object\CacheHandlerTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -42,7 +41,6 @@ class DefaultController extends Controller
             //load default cache if nothing set
             $config = $this->getConfiguration();
             try {
-                /** @var Cache $service */
                 $service = $this->get($config['default_cache_service_id']);
                 $this->loadCache($service);
             } catch (ServiceNotFoundException $e) {
