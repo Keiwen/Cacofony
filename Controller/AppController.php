@@ -41,6 +41,15 @@ class AppController extends DefaultController
         return function_exists('dump') ;
     }
 
+    /**
+     * @param string $suffix
+     * @return string
+     */
+    protected function getAutodumpParameterName(string $suffix = '')
+    {
+        $config = $this->getConfiguration();
+        return $config['autodump_parameter'] . $suffix;
+    }
 
     /**
      * use this method with template annotations to render a view
@@ -54,7 +63,8 @@ class AppController extends DefaultController
         $config = $this->getConfiguration();
         //dump everything on dev if asked
         if(static::canDump() && $config['autodump']) {
-            dump(array($config['autodump_parameter'] => $templateParams));
+            $paramName = $this->getAutodumpParameterName();
+            dump(array($paramName => $templateParams));
         }
         return $templateParams;
     }
