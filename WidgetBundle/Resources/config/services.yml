@@ -1,0 +1,19 @@
+
+parameters:
+    keiwen_cacofony_widget.bundlename: 'KeiwenCacofonyWidgetBundle'
+
+services:
+
+    keiwen_cacofony_widget.controller:
+        class: Keiwen\Cacofony\WidgetBundle\Controller\WidgetController
+        arguments:
+            - '@service_container'
+
+    keiwen_cacofony_widget.twig:
+        class: Keiwen\Cacofony\WidgetBundle\Twig\TwigWidget
+        arguments:
+            - '@keiwen_cacofony_widget.controller'
+            - '%keiwen_cacofony_widget.bundlename%'
+        tags:
+            - { name: twig.extension }
+
