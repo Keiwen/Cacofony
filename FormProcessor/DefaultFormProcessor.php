@@ -3,7 +3,7 @@
 namespace Keiwen\Cacofony\FormProcessor;
 
 
-use Keiwen\Cacofony\Controller\DefaultController;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Keiwen\Cacofony\Exception\FormNotFoundException;
 
@@ -18,15 +18,13 @@ abstract class DefaultFormProcessor
 {
 
 
-    /** @var DefaultController */
-    protected $controller;
-
     protected $data = array();
     protected $defaultData = array();
     protected $formOptions = array();
-    protected $parameters = array();
 	protected $toAssert = array();
 
+    /** @var FormFactoryInterface $formFactory */
+    protected $formFactory;
     /** @var \Symfony\Component\Form\Form */
     protected $form;
 
@@ -49,9 +47,11 @@ abstract class DefaultFormProcessor
 	
 
 
-    public function __construct(DefaultController $controller)
+    public function __construct(FormFactoryInterface $formfactory, array $defautData = array(), array $formOptions = array())
     {
-        $this->controller = $controller;
+        $this->formFactory = $formfactory;
+        $this->setDefaultData($defautData);
+        $this->setFormOptions($formOptions);
     }
 
 	
@@ -62,31 +62,19 @@ abstract class DefaultFormProcessor
      * @param array $parameters
      * @return bool validated
      */
-    public function process(Request $request = null, array $parameters = array())
+    public function process(Request $request = null)
 	{
-		$this->parameters = $parameters;
         $this->prepareForm();
         $this->getForm();
         return $this->handleRequest($request);
     }
 
-    /**
-     * @param string $name
-     * @param mixed $default
-     * @return mixed|null
-     */
-	public function getParameter(string $name, $default = null)
-	{
-		return isset($this->parameters[$name]) ? $this->parameters[$name] : $default;
-	}
-	
 
     /**
      * Set default data and options of your form
 	 * You can use processor's parameters
 	 * @see setDefaultData()
 	 * @see setFormOptions()
-	 * @see getParameter()
      */
     protected abstract function prepareForm();
 
@@ -102,13 +90,13 @@ abstract class DefaultFormProcessor
         return $this->form;
     }
 
-	
+
     /**
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormInterface
      */
     protected function buildForm()
     {
-        $form = $this->controller->createFormFromProcessor($this);
+        $form = $this->formFactory->create($this->getFormClass(), $this->getDefaultData(), $this->getFormOptions());
         return $form;
     }
 
