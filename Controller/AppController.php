@@ -2,6 +2,7 @@
 
 namespace Keiwen\Cacofony\Controller;
 
+use Keiwen\Cacofony\FormProcessor\DefaultFormProcessor;
 use Keiwen\Cacofony\Http\Response;
 use Keiwen\Utils\Sanitize\StringSanitizer;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -106,6 +107,54 @@ class AppController extends DefaultController
     public function redirect($url, $status = 302)
     {
         return $this->getResponse()->generateRedirect($url, $status);
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function getCookieDisclaimer()
+    {
+        $config = $this->getConfiguration();
+        return $this->getRequest()->getCookie($config['cookie_disclaimer'], StringSanitizer::FILTER_BOOLEAN, false);
+    }
+
+
+    /**
+     * @param bool
+     */
+    public function setCookieDisclaimer(bool $accepted)
+    {
+        $config = $this->getConfiguration();
+        $this->getResponse()->setCookie($config['cookie_disclaimer'], $accepted);
+    }
+
+
+
+    /**
+     * @param string $processorClass (must extends DefaultFormProcessor)
+     * @param array  $defautData
+     * @param array  $formOptions
+     * @return DefaultFormProcessor
+     */
+    public function createFormProcessor(string $processorClass, array $defautData = array(), array $formOptions = array())
+    {
+        if(!is_subclass_of($processorClass, DefaultFormProcessor::class)) {
+            return null;
+        }
+        return new $processorClass($this->container->get('form.factory'), $defautData, $formOptions);
+    }
+
+
+    /**
+     * @param string $formClass
+     * @param        $entity
+     * @param array  $options
+     * @return \Symfony\Component\Form\Form
+     */
+    public function createEntityForm(string $formClass, $entity, array $options = array())
+    {
+        return $this->createForm($formClass, $entity, $options);
     }
 
 
