@@ -4,7 +4,6 @@ namespace Keiwen\Cacofony\Controller;
 
 use Keiwen\Cacofony\DependencyInjection\KeiwenCacofonyExtension;
 use Keiwen\Cacofony\EntitiesManagement\EntityRegistry;
-use Keiwen\Cacofony\FormProcessor\DefaultFormProcessor;
 use Keiwen\Cacofony\Http\Request;
 use Keiwen\Utils\Object\CacheHandlerTrait;
 use Psr\Log\LoggerInterface;
@@ -46,15 +45,16 @@ class DefaultController extends Controller
             } catch (ServiceNotFoundException $e) {
             }
         }
-        return !$this->isCacheBypassed();
+        return true;
     }
 
 
     /**
      * @return bool
      */
-    public function isCacheBypassed()
+    public function hasCacheReadBypass()
     {
+        if($this->cacheReadBypass == true) return true;
         $config = $this->getConfiguration();
         if(!empty($config['getparam_disable_cache'])) {
             $request = $this->getRequest();
@@ -62,11 +62,12 @@ class DefaultController extends Controller
                 $forcedUncache = $request->query->get($config['getparam_disable_cache']);
                 if(!empty($forcedUncache)) {
                     $this->getLogger($config['log_channel'])->warning('Force cache bypass');
+                    $this->bypassCacheRead();
                     return true;
                 }
             }
         }
-        return !empty($config['default_cache_service_id']);
+        return false;
     }
 
 
@@ -83,20 +84,20 @@ class DefaultController extends Controller
 
 
     /**
-	 * @return string
-	 */
+     * @return string
+     */
     public function retrieveEnvironment()
     {
         /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
         $kernel = $this->get('kernel');
         return $kernel->getEnvironment();
-	}
+    }
 
 
     /**
      * @return EntityRegistry
      */
-	protected function getEntityRegistry()
+    protected function getEntityRegistry()
     {
         $config = $this->getConfiguration();
         $serviceName = $config['default_entity_registry_service_id'];
@@ -130,22 +131,6 @@ class DefaultController extends Controller
     protected function redirecToSelf(int $status = 302)
     {
         return $this->redirect($this->getRequest()->getUrl(true, true), $status);
-    }
-
-
-    /**
-     * @param DefaultFormProcessor $processor
-     * @return \Symfony\Component\Form\Form
-     */
-    public function createFormFromProcessor(DefaultFormProcessor $processor)
-    {
-        return $this->container->get('form.factory')->create($processor->getFormClass(), $processor->getDefaultData(), $processor->getFormOptions());
-    }
-
-
-    public function createEntityForm(string $formClass, $entity, array $options = array())
-    {
-        return $this->createForm($formClass, $entity, $options);
     }
 
 
