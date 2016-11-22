@@ -111,27 +111,6 @@ class AppController extends DefaultController
 
 
     /**
-     * @return bool
-     */
-    public function getCookieDisclaimer()
-    {
-        $config = $this->getConfiguration();
-        return $this->getRequest()->getCookie($config['cookie_disclaimer'], StringSanitizer::FILTER_BOOLEAN, false);
-    }
-
-
-    /**
-     * @param bool
-     */
-    public function setCookieDisclaimer(bool $accepted)
-    {
-        $config = $this->getConfiguration();
-        $this->getResponse()->setCookie($config['cookie_disclaimer'], $accepted);
-    }
-
-
-
-    /**
      * @param string $processorClass (must extends DefaultFormProcessor)
      * @param array  $defautData
      * @param array  $formOptions
