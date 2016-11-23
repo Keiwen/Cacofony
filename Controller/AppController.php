@@ -4,7 +4,7 @@ namespace Keiwen\Cacofony\Controller;
 
 use Keiwen\Cacofony\FormProcessor\DefaultFormProcessor;
 use Keiwen\Cacofony\Http\Response;
-use Keiwen\Utils\Sanitize\StringSanitizer;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class AppController extends DefaultController
@@ -108,6 +108,20 @@ class AppController extends DefaultController
     {
         return $this->getResponse()->generateRedirect($url, $status);
     }
+
+    
+    /**
+     * @param Request|null $request
+     * @param int          $status
+     * @return RedirectResponse
+     */
+    public function redirectToReferer(Request $request = null, $status = 303)
+    {
+        if(empty($request)) $request = $this->getRequest();
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer, $status);
+    }
+
 
 
     /**
