@@ -35,6 +35,7 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
         $loader->load('services_paramFetcher.yml');
         $loader->load('services_request.yml');
         $loader->load('services_form.yml');
+        $loader->load('services_twig.yml');
     }
 
 
