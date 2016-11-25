@@ -1,0 +1,9 @@
+
+services:
+
+    keiwen_cacofony.form_extension.hidden_redirection:
+        class: Keiwen\Cacofony\FormType\HiddenSourceUrlTypeExtension
+        arguments: ['@keiwen_cacofony.request']
+        tags:
+            - { name: form.type_extension, extended_type: Keiwen\Cacofony\FormType\HiddenSourceUrlType }
+
