@@ -1,0 +1,7 @@
+
+services:
+    keiwen_cacofony.twig.string:
+        class: Keiwen\Cacofony\Twig\TwigString
+        tags:
+            - { name: twig.extension }
+
