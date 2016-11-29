@@ -14,6 +14,8 @@ class TwigWidget extends \Twig_Extension
 
     const DEFAULT_TEMPLATE_EXTENSION = '.html.twig';
     const WIDGET_FUNCTION = 'widget';
+    const ASYNC_WIDGET_FUNCTION = 'widgetAsync';
+    const ASYNC_ROUTE_WIDGET_FUNCTION = 'widgetAsyncRoute';
 
     /** @var WidgetController */
     protected $controller;
@@ -48,6 +50,16 @@ class TwigWidget extends \Twig_Extension
                 array($this, 'callWidget'),
                 array('is_safe' => array('html'))
             ),
+            static::ASYNC_WIDGET_FUNCTION => new \Twig_SimpleFunction(
+                static::ASYNC_WIDGET_FUNCTION,
+                array($this, 'callAsyncWidget'),
+                array('is_safe' => array('html'))
+            ),
+            static::ASYNC_ROUTE_WIDGET_FUNCTION => new \Twig_SimpleFunction(
+                static::ASYNC_ROUTE_WIDGET_FUNCTION,
+                array($this, 'callAsyncRouteWidget'),
+                array('is_safe' => array('html'))
+            ),
 		);
 	}
 
@@ -68,12 +80,50 @@ class TwigWidget extends \Twig_Extension
             }
         }
         $this->controller->setAutodumpParamWidgetSuffix($widget);
-        
-    	$this->controller->setWidgetParameters($parameters);
+
+        $this->controller->setWidgetParameters($parameters);
         $widgetReturn = $this->controller->$method();
         $this->controller->resetWidgetParameters();
 
-    	return $this->renderWidget($widgetReturn, $method);
+        return $this->renderWidget($widgetReturn, $method);
+    }
+
+
+    /**
+     * @param string $url
+     * @param string $method
+     * @param array  $parameters
+     * @param string $loaderVersion
+     * @param string $loadErrorVersion
+     * @return string
+     */
+    public function callAsyncWidget(string $url,
+                                    array $parameters = array(),
+                                    string $method = 'GET',
+                                    string $loaderVersion = '',
+                                    string $loadErrorVersion = '')
+    {
+        $this->controller->setAutodumpParamWidgetSuffix('asyncLoader');
+        $widgetReturn = $this->controller->asyncLoaderWidget($url, $parameters, $method, $loaderVersion, $loadErrorVersion);
+        return $this->renderWidget($widgetReturn, 'asyncLoaderWidget');
+    }
+
+    /**
+     * @param string $url
+     * @param string $method
+     * @param array  $parameters
+     * @param string $loaderVersion
+     * @param string $loadErrorVersion
+     * @return string
+     */
+    public function callAsyncRouteWidget(string $routeName,
+                                         array $parameters = array(),
+                                         string $method = 'GET',
+                                         string $loaderVersion = '',
+                                         string $loadErrorVersion = '')
+    {
+        $url = $this->controller->generateWidgetRouteUrl($routeName, $parameters);
+        return $this->callAsyncWidget($url, $parameters, $method, $loaderVersion, $loadErrorVersion);
     }
 
 
