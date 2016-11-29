@@ -56,7 +56,7 @@ class TwigWidget extends \Twig_Extension
      * @param string $widget
      * @return string
      */
-    public function callWidget(string $widget)
+    public function callWidget(string $widget, array $parameters = array())
     {
         $method = $widget . 'Widget';
         if(!method_exists($this->controller, $method)) {
@@ -68,8 +68,12 @@ class TwigWidget extends \Twig_Extension
             }
         }
         $this->controller->setAutodumpParamWidgetSuffix($widget);
+        
+    	$this->controller->setWidgetParameters($parameters);
         $widgetReturn = $this->controller->$method();
-        return $this->renderWidget($widgetReturn, $method);
+        $this->controller->resetWidgetParameters();
+
+    	return $this->renderWidget($widgetReturn, $method);
     }
 
 
