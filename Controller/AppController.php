@@ -14,12 +14,7 @@ class AppController extends DefaultController
 
     /** @var  Response $response */
     protected $response;
-
-    const FMSG_ERROR = 'error';
-    const FMSG_INFO = 'info';
-    const FMSG_SUCCESS = 'success';
-    const FMSG_WARNING = 'warning';
-
+    
 
     public function __construct()
     {
