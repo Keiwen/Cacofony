@@ -4,6 +4,7 @@ namespace Keiwen\Cacofony\WidgetBundle\Controller;
 
 
 use Keiwen\Cacofony\Controller\AppController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -25,7 +26,6 @@ class WidgetController extends AppController
 
     protected $autodumpParamWidgetSuffix = '';
     protected $widgetParameters;
-
 
     public function __construct(ContainerInterface $container)
     {
@@ -67,7 +67,6 @@ class WidgetController extends AppController
         return $response->getContent();
     }
 
-    
     /**
      * @param array $widgetParameters
      */
@@ -92,5 +91,44 @@ class WidgetController extends AppController
         $this->widgetParameters = array();
     }
 
+
+    /**
+     * @param string $url
+     * @param array  $parameters
+     * @param string $method
+     * @param string $loaderVersion
+     * @param string $loadErrorVersion
+     * @return array
+     * @Template("KeiwenCacofonyWidgetBundle:AsyncWidget:asyncLoaderWidget.html.twig")
+     */
+    public function asyncLoaderWidget(string $url,
+                                      array $parameters = array(),
+                                      string $method = 'GET',
+                                      string $loaderVersion = '',
+                                      string $loadErrorVersion = '')
+    {
+        $parameters = json_encode($parameters);
+        //generate unique id
+        $id = $method.urlencode($url).$parameters.rand(0, 999999);
+        return array(
+            'id' => md5($id),
+            'url' => $url,
+            'method' => $method,
+            'parameters' => $parameters,
+            'loaderVersion' => $loaderVersion,
+            'loadErrorVersion' => $loadErrorVersion,
+        );
+    }
+
+
+    /**
+     * @param string $route
+     * @param array  $parameters
+     * @return string
+     */
+    public function generateWidgetRouteUrl(string $routeName, $parameters = array())
+    {
+        return $this->generateUrl($routeName, $parameters);
+    }
 
 }
