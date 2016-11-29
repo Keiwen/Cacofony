@@ -17,17 +17,21 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * - Response object (it will render the content)
  * - array of template parameters if you used Template annotation (it will get the template and render it)
  * - string as html content (will display it as this)
+ *
+ * Widget could be called with parameters. Use getWidgetParameter method
  */
 class WidgetController extends AppController
 {
 
     protected $autodumpParamWidgetSuffix = '';
+    protected $widgetParameters;
 
 
     public function __construct(ContainerInterface $container)
     {
         parent::__construct();
         $this->setContainer($container);
+        $this->resetWidgetParameters();
     }
 
 
@@ -61,6 +65,31 @@ class WidgetController extends AppController
     {
         $response = $this->render($view, $parameters, $this->response);
         return $response->getContent();
+    }
+
+    
+    /**
+     * @param array $widgetParameters
+     */
+    public function setWidgetParameters(array $widgetParameters)
+    {
+        $this->widgetParameters = $widgetParameters;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWidgetParameter(string $name, $default = '')
+    {
+        return isset($this->widgetParameters[$name]) ? $this->widgetParameters[$name] : $default;
+    }
+
+    /**
+     *
+     */
+    public function resetWidgetParameters()
+    {
+        $this->widgetParameters = array();
     }
 
 
