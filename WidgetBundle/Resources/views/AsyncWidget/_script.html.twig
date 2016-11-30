@@ -1,19 +1,21 @@
 
 <script type="text/javascript">
 
-    $.ajax({
-        type: '{{ method }}',
-        url: '{{ url }}',
-        data: '{{ parameters }}',
-        dataType : 'html',
-        success: function(data, textStatus, jqXHR) {
-            $('#cawContainer_{{ id }}').parent().html(data);
-        },
-        error: function(jqXHR,textStatus, thrownError) {
-            $('#cawLoader_{{ id }}').addClass('hidden');
-            $('#cawError_{{ id }}').removeClass('hidden');
-        }
-    });
-
+    function cacoawCall_{{ id }}() {
+        console.log('calling');
+        $.ajax({
+            type: '{{ method }}',
+            url: '{{ url }}',
+            data: '{{ parameters }}',
+            dataType : 'html',
+            success: function(data, textStatus, jqXHR) {
+                $('#cacoawContainer_{{ id }}').parent().html(data);
+            },
+            error: function(jqXHR,textStatus, thrownError) {
+                $('#cacoawLoader_{{ id }}').addClass('hidden');
+                $('#cacoawError_{{ id }}').removeClass('hidden');
+            }
+        });
+    }
 
 </script>
