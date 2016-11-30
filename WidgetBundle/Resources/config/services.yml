@@ -17,3 +17,11 @@ services:
         tags:
             - { name: twig.extension }
 
+    keiwen_cacofony_widget.async_launcher:
+        class: Keiwen\Cacofony\WidgetBundle\EventListener\AsyncWidgetListener
+        arguments:
+            - '@keiwen_cacofony_widget.controller'
+            - '@twig'
+        tags:
+            - { name: kernel.event_subscriber }
+
