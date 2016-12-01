@@ -26,7 +26,7 @@ class WidgetController extends AppController
 
     protected $autodumpParamWidgetSuffix = '';
     protected $widgetParameters;
-    protected $asyncWidgetsCalled = array();
+    protected static $asyncWidgetsCalled = array();
 
     public function __construct(ContainerInterface $container)
     {
@@ -111,7 +111,7 @@ class WidgetController extends AppController
         $parameters = json_encode($parameters);
         //generate unique id
         $id = md5($method.urlencode($url).$parameters.rand(0, 999999));
-        $this->asyncWidgetsCalled[] = $id;
+        self::$asyncWidgetsCalled[] = $id;
         return array(
             'id' => $id,
             'url' => $url,
@@ -136,9 +136,9 @@ class WidgetController extends AppController
     /**
      * @return array
      */
-    public function retrieveAsyncWidgetsCalled()
+    public static function retrieveAsyncWidgetsCalled()
     {
-        return $this->asyncWidgetsCalled;
+        return self::$asyncWidgetsCalled;
     }
 
 }
