@@ -18,18 +18,15 @@ class AsyncWidgetListener implements EventSubscriberInterface
 {
 
     protected $twig;
-    protected $widgetController;
 
 
     /**
      * AsyncWidgetListener constructor.
      *
-     * @param WidgetController  $widgetController
      * @param \Twig_Environment $twig
      */
-    public function __construct(WidgetController $widgetController, \Twig_Environment $twig)
+    public function __construct(\Twig_Environment $twig)
     {
-        $this->widgetController = $widgetController;
         $this->twig = $twig;
     }
 
@@ -67,7 +64,7 @@ class AsyncWidgetListener implements EventSubscriberInterface
      */
     protected function injectCalls(Response $response)
     {
-        $calledWidgets = $this->widgetController->retrieveAsyncWidgetsCalled();
+        $calledWidgets = WidgetController::retrieveAsyncWidgetsCalled();
         //no injection if no widget called
         if(empty($calledWidgets)) return;
 
