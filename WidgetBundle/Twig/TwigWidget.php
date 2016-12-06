@@ -16,7 +16,6 @@ class TwigWidget extends \Twig_Extension
     const DEFAULT_TEMPLATE_EXTENSION = '.html.twig';
     const WIDGET_FUNCTION = 'widget';
     const ASYNC_WIDGET_FUNCTION = 'widgetAsync';
-    const ASYNC_ROUTE_WIDGET_FUNCTION = 'widgetAsyncRoute';
 
     /** @var WidgetController */
     protected $controller;
@@ -56,11 +55,6 @@ class TwigWidget extends \Twig_Extension
                 array($this, 'callAsyncWidget'),
                 array('is_safe' => array('html'))
             ),
-            static::ASYNC_ROUTE_WIDGET_FUNCTION => new \Twig_SimpleFunction(
-                static::ASYNC_ROUTE_WIDGET_FUNCTION,
-                array($this, 'callAsyncRouteWidget'),
-                array('is_safe' => array('html'))
-            ),
 		);
 	}
 
@@ -92,7 +86,7 @@ class TwigWidget extends \Twig_Extension
 
 
     /**
-     * @param string $url
+     * @param string $url or route name
      * @param string $method
      * @param array  $parameters
      * @param string $loaderVersion
@@ -106,29 +100,13 @@ class TwigWidget extends \Twig_Extension
                                     string $loadErrorVersion = '')
     {
         $this->controller = $this->loadController();
+        if(strpos('/', $url) === false) {
+            //consider that route name given
+            $url = $controller->generateWidgetRouteUrl($url, $parameters);
+        }
         $widgetReturn = $this->controller->asyncLoaderWidget($url, $parameters, $method, $loaderVersion, $loadErrorVersion);
         return $this->renderWidget($widgetReturn, 'asyncLoaderWidget');
     }
-
-    /**
-     * @param string $url
-     * @param string $method
-     * @param array  $parameters
-     * @param string $loaderVersion
-     * @param string $loadErrorVersion
-     * @return string
-     */
-    public function callAsyncRouteWidget(string $routeName,
-                                         array $parameters = array(),
-                                         string $method = 'GET',
-                                         string $loaderVersion = '',
-                                         string $loadErrorVersion = '')
-    {
-        $controller = $this->loadController();
-        $url = $controller->generateWidgetRouteUrl($routeName, $parameters);
-        return $this->callAsyncWidget($url, $parameters, $method, $loaderVersion, $loadErrorVersion);
-    }
-
 
 
     /**
