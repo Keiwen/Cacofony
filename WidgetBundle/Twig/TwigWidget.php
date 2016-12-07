@@ -100,9 +100,9 @@ class TwigWidget extends \Twig_Extension
                                     string $loadErrorVersion = '')
     {
         $this->controller = $this->loadController();
-        if(strpos('/', $url) === false) {
+        if(strpos($url, '/') === false) {
             //consider that route name given
-            $url = $controller->generateWidgetRouteUrl($url, $parameters);
+            $url = $this->controller->generateWidgetRouteUrl($url, $parameters);
         }
         $widgetReturn = $this->controller->asyncLoaderWidget($url, $parameters, $method, $loaderVersion, $loadErrorVersion);
         return $this->renderWidget($widgetReturn, 'asyncLoaderWidget');
