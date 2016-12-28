@@ -9,4 +9,10 @@ services:
         class: Keiwen\Cacofony\Twig\TwigIntl
         tags:
             - { name: twig.extension }
+            
+    keiwen_cacofony.twig.security:
+        class: Keiwen\Cacofony\Twig\TwigSecurity
+        arguments: ['@security.authorization_checker']
+        tags:
+            - { name: twig.extension }
 
