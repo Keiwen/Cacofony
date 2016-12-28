@@ -24,7 +24,7 @@ class TwigIntl extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('ountryName', array($this, 'countryNameFilter')),
+            new \Twig_SimpleFilter('countryName', array($this, 'countryNameFilter')),
             new \Twig_SimpleFilter('languageName', array($this, 'languageNameFilter')),
             new \Twig_SimpleFilter('intlScriptName', array($this, 'scriptNameFilter')),
             new \Twig_SimpleFilter('intlLocaleName', array($this, 'localeNameFilter')),
