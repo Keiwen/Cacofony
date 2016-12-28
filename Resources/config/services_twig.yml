@@ -4,4 +4,9 @@ services:
         class: Keiwen\Cacofony\Twig\TwigString
         tags:
             - { name: twig.extension }
+            
+    keiwen_cacofony.twig.intl:
+        class: Keiwen\Cacofony\Twig\TwigIntl
+        tags:
+            - { name: twig.extension }
 

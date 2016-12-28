@@ -149,7 +149,7 @@ class DefaultController extends Controller
                                  string $domain = null,
                                  string $locale = null)
     {
-        /** @var \Symfony\Component\Translation\Translator $translator */
+        /** @var \Symfony\Component\Translation\TranslatorInterface $translator */
         $translator = $this->get('translator');
         return $translator->trans($id, $parameters, $domain, $locale);
     }

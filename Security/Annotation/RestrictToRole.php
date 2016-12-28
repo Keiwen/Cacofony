@@ -28,7 +28,7 @@ class RestrictToRole extends Security
      * example: "USER, ROLE_ADMIN;anonymous"
      * @param string $roleList contains list of role
      */
-    public function setValue(string $roleList)
+    public function setValue($roleList)
     {
         $this->roleList = $this->explodeInput($roleList);
 
