@@ -71,6 +71,7 @@ class RestrictToRole extends Security
     {
         $prefixes = $this->explodeInput($prefixes);
         foreach($prefixes as $prefix) {
+            if(empty($prefix)) continue;
             //be sure to end with _
             $this->rolePrefix[] = rtrim($prefix, '_') . '_';
         }
