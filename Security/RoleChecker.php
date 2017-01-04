@@ -24,6 +24,7 @@ class RoleChecker
      * @see RestrictToRole
      * @param string|array $roleList contains list of roles
      * @param bool         $mustHaveAll
+     * @return bool
      */
     public function hasRole($roleList, $mustHaveAll = false)
     {
