@@ -12,7 +12,7 @@ services:
             
     keiwen_cacofony.twig.security:
         class: Keiwen\Cacofony\Twig\TwigSecurity
-        arguments: ['@security.authorization_checker']
+        arguments: ['@keiwen_cacofony.rolechecker']
         tags:
             - { name: twig.extension }
 
