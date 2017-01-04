@@ -49,6 +49,15 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('message')->defaultValue('message')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
+                ->arrayNode('rolechecker')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('role_prefixes')
+                            ->children()
+                                ->prototype('scalar')->end()
+                            ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;
