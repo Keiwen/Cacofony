@@ -3,4 +3,4 @@ services:
 
     keiwen_cacofony.rolechecker:
         class: Keiwen\Cacofony\Security\RoleChecker
-        arguments: ['@security.authorization_checker']
+        arguments: ['@security.authorization_checker', '%keiwen_cacofony.rolechecker.role_prefixes%']
