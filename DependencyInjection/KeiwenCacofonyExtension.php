@@ -15,7 +15,7 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
     const CONTROLLER_CONF = 'keiwen_cacofony.controller';
     const PARAM_FETCHER_LISTENER_PRIORITY_CONF = 'keiwen_cacofony.param_fetcher_listener.priority';
     const PARAM_FETCHER_CONTROLLER_PARAM_CONF = 'keiwen_cacofony.param_fetcher.controller_parameter';
-    const ROLE_PREFIXES_CONF = 'keiwen_cacofony.role_prefixes';
+    const ROLE_PREFIXES_CONF = 'keiwen_cacofony.rolechecker.role_prefixes';
 
     public function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {
