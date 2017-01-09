@@ -1,0 +1,11 @@
+
+
+services:
+
+    keiwen_cacofony.autodump:
+        class: Keiwen\Cacofony\EventListener\AutoDumpListener
+        arguments: ['%keiwen_cacofony.autodump.paramname%', '@?twig']
+        tags:
+            - { name: kernel.event_listener, event: kernel.view, method: onKernelView, priority: 16 }
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: 16 }
+
