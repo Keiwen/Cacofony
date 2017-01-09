@@ -4,6 +4,7 @@ namespace Keiwen\Cacofony\WidgetBundle\Controller;
 
 
 use Keiwen\Cacofony\Controller\AppController;
+use Keiwen\Cacofony\EventListener\AutoDumpListener;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -37,27 +38,6 @@ class WidgetController extends AppController
 
 
     /**
-     * @param string $autodumpParamWidgetSuffix
-     */
-    public function setAutodumpParamWidgetSuffix(string $autodumpParamWidgetSuffix)
-    {
-        $this->autodumpParamWidgetSuffix = '_' . ltrim($autodumpParamWidgetSuffix, '_');
-    }
-
-
-    /**
-     * @param string $suffix
-     * @return string
-     */
-    protected function getAutodumpParameterName(string $suffix = '')
-    {
-        $name = parent::getAutodumpParameterName('_widget');
-        $name .= $this->autodumpParamWidgetSuffix;
-        return $name . $suffix;
-    }
-
-
-    /**
      * @param string $view template name
      * @param array  $parameters
      * @return string
@@ -65,6 +45,8 @@ class WidgetController extends AppController
     public function renderWidgetContent(string $view, array $parameters = array())
     {
         $response = $this->render($view, $parameters, $this->response);
+        $autodump = $this->get('keiwen_cacofony.autodump');
+        $autodump->addParameterToDump($view, $parameters, AutoDumpListener::SUBPART_WIDGET);
         return $response->getContent();
     }
 
