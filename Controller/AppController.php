@@ -4,8 +4,8 @@ namespace Keiwen\Cacofony\Controller;
 
 use Keiwen\Cacofony\FormProcessor\DefaultFormProcessor;
 use Keiwen\Cacofony\Http\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class AppController extends DefaultController
 {
@@ -14,7 +14,7 @@ class AppController extends DefaultController
 
     /** @var  Response $response */
     protected $response;
-    
+
 
     public function __construct()
     {
@@ -29,24 +29,7 @@ class AppController extends DefaultController
         return $this->response;
     }
 
-    /**
-     * @return boolean
-     */
-    public static function canDump()
-    {
-        return function_exists('dump') ;
-    }
-
-    /**
-     * @param string $suffix
-     * @return string
-     */
-    protected function getAutodumpParameterName(string $suffix = '')
-    {
-        $config = $this->getConfiguration();
-        return $config['autodump_parameter'] . $suffix;
-    }
-
+    
     /**
      * use this method with template annotations to render a view
      * @see http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/view.html
@@ -55,13 +38,6 @@ class AppController extends DefaultController
     protected function renderTemplate()
     {
         $templateParams = $this->getTemplateParams();
-
-        $config = $this->getConfiguration();
-        //dump everything on dev if asked
-        if(static::canDump() && $config['autodump']) {
-            $paramName = $this->getAutodumpParameterName();
-            dump(array($paramName => $templateParams));
-        }
         return $templateParams;
     }
 
@@ -104,7 +80,7 @@ class AppController extends DefaultController
         return $this->getResponse()->generateRedirect($url, $status);
     }
 
-    
+
     /**
      * @param Request|null $request
      * @param int          $status
@@ -116,6 +92,7 @@ class AppController extends DefaultController
         $referer = $request->headers->get('referer');
         return $this->redirect($referer, $status);
     }
+
 
 
 
