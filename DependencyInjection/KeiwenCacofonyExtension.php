@@ -13,9 +13,11 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
 
     const API_PARAMETERS_CONF = 'keiwen_cacofony.api_parameters';
     const CONTROLLER_CONF = 'keiwen_cacofony.controller';
+    const AUTODUMP_PARAM = 'keiwen_cacofony.autodump.paramname';
     const PARAM_FETCHER_LISTENER_PRIORITY_CONF = 'keiwen_cacofony.param_fetcher_listener.priority';
     const PARAM_FETCHER_CONTROLLER_PARAM_CONF = 'keiwen_cacofony.param_fetcher.controller_parameter';
     const ROLE_PREFIXES_CONF = 'keiwen_cacofony.rolechecker.role_prefixes';
+
 
     public function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {
@@ -27,11 +29,13 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
 
         $container->setParameter(self::API_PARAMETERS_CONF, $mergedConfig['api_parameters']);
         $container->setParameter(self::CONTROLLER_CONF, $mergedConfig['controller']);
+        $container->setParameter(self::AUTODUMP_PARAM, $mergedConfig['autodump']['parameter_name']);
         if(!isset($mergedConfig['rolechecker']['role_prefixes'])) $mergedConfig['rolechecker']['role_prefixes'] = array();
         $container->setParameter(self::ROLE_PREFIXES_CONF, $mergedConfig['rolechecker']['role_prefixes']);
         $container->setParameter(self::PARAM_FETCHER_LISTENER_PRIORITY_CONF, $mergedConfig['param_fetcher']['listener_priority']);
         $container->setParameter(self::PARAM_FETCHER_CONTROLLER_PARAM_CONF, $mergedConfig['param_fetcher']['controller_parameter']);
 
+        $loader->load('services.yml');
         $loader->load('services_entityRegistry.yml');
         $loader->load('services_paramFetcher.yml');
         $loader->load('services_security.yml');
