@@ -37,6 +37,7 @@ class TwigIntl extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('countryNames', array($this, 'countryNames')),
+            new \Twig_SimpleFunction('currencyNames', array($this, 'currencyNames')),
         );
     }
 
@@ -51,14 +52,26 @@ class TwigIntl extends \Twig_Extension
     }
 
     /**
-     * @param $format
+     * @param string $format
      * @return string|string[]
      */
-    public function countryNames($format)
+    public function countryNames(string $format)
     {
         $countries = Intl::getRegionBundle()->getCountryNames();
         if($format == 'json') return json_encode($countries);
         return $countries;
+    }
+
+    
+    /**
+     * @param string $format
+     * @return string|string[]
+     */
+    public function currencyNames(string $format)
+    {
+        $currencies = Intl::getCurrencyBundle()->getCurrencyNames();
+        if($format == 'json') return json_encode($currencies);
+        return $currencies;
     }
 
 
