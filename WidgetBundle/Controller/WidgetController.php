@@ -25,7 +25,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class WidgetController extends AppController
 {
 
-    protected $autodumpParamWidgetSuffix = '';
     protected $widgetParameters;
     protected static $asyncWidgetsCalled = array();
 
