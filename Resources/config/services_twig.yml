@@ -1,9 +1,4 @@
 
-# Twig Configuration
-twig:
-    form_themes:
-        - 'KeiwenCacofonyBundle:formtheme:date.html.twig'
-
 
 services:
     keiwen_cacofony.twig.string:
