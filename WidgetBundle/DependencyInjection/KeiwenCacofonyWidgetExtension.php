@@ -2,6 +2,10 @@
 
 namespace Keiwen\Cacofony\WidgetBundle\DependencyInjection;
 
+use Keiwen\Cacofony\WidgetBundle\Controller\WidgetController;
+use Keiwen\Cacofony\WidgetBundle\Controller\WidgetDisplayController;
+use Keiwen\Cacofony\WidgetBundle\EventListener\AsyncWidgetListener;
+use Keiwen\Cacofony\WidgetBundle\Twig\TwigWidget;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -21,6 +25,12 @@ class KeiwenCacofonyWidgetExtension extends ConfigurableExtension
         );
 
         $loader->load('services.yml');
+
+        $this->addClassesToCompile(array(
+            AsyncWidgetListener::class,
+            TwigWidget::class,
+        ));
+
     }
 
 

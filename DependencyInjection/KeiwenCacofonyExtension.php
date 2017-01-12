@@ -2,6 +2,15 @@
 
 namespace Keiwen\Cacofony\DependencyInjection;
 
+use Keiwen\Cacofony\EntitiesManagement\EntityRegistry;
+use Keiwen\Cacofony\EventListener\AutoDumpListener;
+use Keiwen\Cacofony\EventListener\ParamFetcherListener;
+use Keiwen\Cacofony\FormProcessor\DefaultFormProcessor;
+use Keiwen\Cacofony\Http\Request;
+use Keiwen\Cacofony\Http\Response;
+use Keiwen\Cacofony\ParamFetcher\ParamFetcher;
+use Keiwen\Cacofony\Reader\TemplateAnnotationReader;
+use Keiwen\Cacofony\Twig\TwigRequest;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,6 +27,7 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
     const PARAM_FETCHER_CONTROLLER_PARAM_CONF = 'keiwen_cacofony.param_fetcher.controller_parameter';
     const ROLE_PREFIXES_CONF = 'keiwen_cacofony.rolechecker.role_prefixes';
 
+    const TWIG_FORMTHEME_DATE = 'KeiwenCacofonyBundle:formtheme:date.html.twig';
 
     public function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {
@@ -42,7 +52,34 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
         $loader->load('services_request.yml');
         $loader->load('services_form.yml');
         $loader->load('services_twig.yml');
+
+        $this->prependConfig($container);
+        $this->compileClasses();
+
     }
 
+
+    protected function prependConfig(ContainerBuilder $container)
+    {
+        $container->prependExtensionConfig('twig', array(
+            'form_themes' => array(static::TWIG_FORMTHEME_DATE)
+        ));
+    }
+
+
+    protected function compileClasses()
+    {
+        $this->addClassesToCompile(array(
+            EntityRegistry::class,
+            AutoDumpListener::class,
+            ParamFetcherListener::class,
+            DefaultFormProcessor::class,
+            Request::class,
+            Response::class,
+            ParamFetcher::class,
+            TemplateAnnotationReader::class,
+            TwigRequest::class,
+        ));
+    }
 
 }
