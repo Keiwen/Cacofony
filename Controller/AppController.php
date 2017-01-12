@@ -107,7 +107,7 @@ class AppController extends DefaultController
         if(!is_subclass_of($processorClass, DefaultFormProcessor::class)) {
             return null;
         }
-        return new $processorClass($this->container->get('form.factory'), $defautData, $formOptions);
+        return new $processorClass($this->get('form.factory'), $defautData, $formOptions);
     }
 
 
