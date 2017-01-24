@@ -28,6 +28,7 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
     const ROLE_PREFIXES_CONF = 'keiwen_cacofony.rolechecker.role_prefixes';
 
     const TWIG_FORMTHEME_DATE = 'KeiwenCacofonyBundle:formtheme:date.html.twig';
+    const TWIG_FORMTHEME_RADIOCHECK = 'KeiwenCacofonyBundle:formtheme:radio_checkbox.html.twig';
 
     public function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {
@@ -62,7 +63,10 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
     protected function prependConfig(ContainerBuilder $container)
     {
         $container->prependExtensionConfig('twig', array(
-            'form_themes' => array(static::TWIG_FORMTHEME_DATE)
+            'form_themes' => array(
+                static::TWIG_FORMTHEME_DATE,
+                static::TWIG_FORMTHEME_RADIOCHECK,
+            )
         ));
     }
 
