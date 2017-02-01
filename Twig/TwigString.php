@@ -25,8 +25,10 @@ class TwigString extends \Twig_Extension
             new \Twig_SimpleFilter('ucwords', 'ucwords'),
             new \Twig_SimpleFilter('str_repeat', 'str_repeat'),
             new \Twig_SimpleFilter('str_word_count', 'str_word_count'),
-            
+
             new \Twig_SimpleFilter('str_limit', array($this, 'strLimitFilter')),
+            new \Twig_SimpleFilter('escchar', array($this, 'escCharFilter')),
+            new \Twig_SimpleFilter('escquote', array($this, 'escQuoteFilter')),
         );
     }
 
@@ -45,6 +47,30 @@ class TwigString extends \Twig_Extension
         $limitLength -= $complementLength;
         $string = substr($string, 0, $limitLength);
         return $string . $complement;
+    }
+
+    /**
+     * escape given characters
+     * @param string $string
+     * @return string
+     */
+    public function escCharFilter(string $string, string $charList)
+    {
+        $charList = str_split($charList);
+        foreach($charList as $char) {
+            $string = str_replace($char, "\\$char", $string);
+        }
+        return $string;
+    }
+
+    /**
+     * escape quote characters
+     * @param string $string
+     * @return string
+     */
+    public function escQuoteFilter(string $string)
+    {
+        return $this->escCharFilter($string, "'");
     }
 
 }
