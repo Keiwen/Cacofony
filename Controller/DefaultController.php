@@ -5,6 +5,7 @@ namespace Keiwen\Cacofony\Controller;
 use Keiwen\Cacofony\DependencyInjection\KeiwenCacofonyExtension;
 use Keiwen\Cacofony\EntitiesManagement\EntityRegistry;
 use Keiwen\Cacofony\Http\Request;
+use Keiwen\Cacofony\Http\Response;
 use Keiwen\Utils\Object\CacheHandlerTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -128,7 +129,7 @@ class DefaultController extends Controller
      * @param int $status
      * @return RedirectResponse
      */
-    protected function redirecToSelf(int $status = 302)
+    protected function redirecToSelf(int $status = Response::HTTP_FOUND)
     {
         return $this->redirect($this->getRequest()->getUrl(true, true), $status);
     }
