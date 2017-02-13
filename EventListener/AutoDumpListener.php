@@ -60,6 +60,7 @@ class AutoDumpListener implements EventSubscriberInterface
         $request = $event->getRequest();
         /** @var Template $template */
         $template = $request->attributes->get('_template');
+        if(empty($template)) return;
 
         if($template instanceof Template) {
             $template = $template->getTemplate();
