@@ -75,9 +75,20 @@ class AppController extends DefaultController
      * @param int $status
      * @return RedirectResponse
      */
-    public function redirect($url, $status = 302)
+    public function redirect($url, $status = Response::HTTP_FOUND)
     {
         return $this->getResponse()->generateRedirect($url, $status);
+    }
+
+
+    /**
+     * Redirect after a post (prg = post redirect get, to avoid refresh to re-submit form)
+     * @param string $url
+     * @return RedirectResponse
+     */
+    public function redirectPrg($url)
+    {
+        return $this->redirect($url, Response::HTTP_SEE_OTHER);
     }
 
 
@@ -86,7 +97,7 @@ class AppController extends DefaultController
      * @param int          $status
      * @return RedirectResponse
      */
-    public function redirectToReferer(Request $request = null, $status = 303)
+    public function redirectToReferer(Request $request = null, $status = Response::HTTP_SEE_OTHER)
     {
         if(empty($request)) $request = $this->getRequest();
         $referer = $request->headers->get('referer');
