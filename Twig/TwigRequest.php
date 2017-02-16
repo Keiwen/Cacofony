@@ -14,6 +14,7 @@ class TwigRequest extends \Twig_Extension
 
     public function __construct(Request $request = null)
     {
+        if(!$request) $request = new Request();
         $this->request = $request;
     }
 
