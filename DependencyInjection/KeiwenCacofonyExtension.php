@@ -6,8 +6,6 @@ use Keiwen\Cacofony\EntitiesManagement\EntityRegistry;
 use Keiwen\Cacofony\EventListener\AutoDumpListener;
 use Keiwen\Cacofony\EventListener\ParamFetcherListener;
 use Keiwen\Cacofony\FormProcessor\DefaultFormProcessor;
-use Keiwen\Cacofony\Http\Request;
-use Keiwen\Cacofony\Http\Response;
 use Keiwen\Cacofony\ParamFetcher\ParamFetcher;
 use Keiwen\Cacofony\Reader\TemplateAnnotationReader;
 use Keiwen\Cacofony\Twig\TwigRequest;
@@ -78,8 +76,6 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
             AutoDumpListener::class,
             ParamFetcherListener::class,
             DefaultFormProcessor::class,
-            Request::class,
-            Response::class,
             ParamFetcher::class,
             TemplateAnnotationReader::class,
             TwigRequest::class,
