@@ -9,3 +9,9 @@ services:
             - { name: kernel.event_listener, event: kernel.view, method: onKernelView, priority: 16 }
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: 16 }
 
+    keiwen_cacofony.localeListener:
+        class: Keiwen\Cacofony\EventListener\LocaleListener
+        arguments: ['%kernel.default_locale%', '@?twig.extension.trans']
+        tags:
+            - { name: kernel.event_subscriber }
+

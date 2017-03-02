@@ -1,6 +1,12 @@
 
 
 services:
+    twig.extension.trans:
+        class: Keiwen\Cacofony\Twig\TwigTranslation
+        arguments: ['@translator']
+        tags:
+            - { name: twig.extension }
+
     keiwen_cacofony.twig.string:
         class: Keiwen\Cacofony\Twig\TwigString
         tags:
