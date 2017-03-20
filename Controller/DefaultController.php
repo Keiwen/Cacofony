@@ -17,35 +17,19 @@ class DefaultController extends Controller
     use CacheHandlerTrait;
 
 
-    protected $configuration;
-
-
-    //TODO rework this configuration handling
-    /**
-     * @return array
-     */
-    protected function getConfiguration()
-    {
-        if(empty($this->configuration)) {
-            $this->configuration = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
-        }
-        return $this->configuration;
-    }
-
-
     /**
      * @return bool
      */
     protected function prepareCache()
     {
-        //todo  we should have functions to simplify this
-        if($this->cache == null && !$this->cacheDisabled) {
+        if($this->hasCacheLoaded()) {
             //load default cache if nothing set
-            $config = $this->getConfiguration();
+            $config = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
             try {
-                $service = $this->get($config['default_cache_service_id']);
+                $service = $this->get($config['default_cache']);
                 $this->loadCache($service);
             } catch (ServiceNotFoundException $e) {
+                return false;
             }
         }
         return true;
@@ -58,7 +42,7 @@ class DefaultController extends Controller
     public function hasCacheReadBypass()
     {
         if($this->cacheReadBypass == true) return true;
-        $config = $this->getConfiguration();
+        $config = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
         if(!empty($config['getparam_disable_cache'])) {
             $request = $this->getRequest();
             if(!empty($request)) {
@@ -74,15 +58,14 @@ class DefaultController extends Controller
     }
 
 
-    //todo why no service to get request
     /**
      * @return Request
      */
     public function getRequest()
     {
-        $config = $this->getConfiguration();
+        $config = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
         /** @var Request $request */
-        $request = $this->get($config['default_request_service_id']);
+        $request = $this->get($config['default_request']);
         return $request;
     }
 
@@ -112,8 +95,8 @@ class DefaultController extends Controller
      */
     protected function getEntityRegistry()
     {
-        $config = $this->getConfiguration();
-        $serviceName = $config['default_entity_registry_service_id'];
+        $config = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
+        $serviceName = $config['default_entity_registry'];
         if(!empty($serviceName)) {
             try {
                 /** @var EntityRegistry $service */
@@ -168,7 +151,6 @@ class DefaultController extends Controller
     }
 
 
-    //todo not overcomplicated?
     /**
      * @param string $channel
      * @param string $service
@@ -176,8 +158,8 @@ class DefaultController extends Controller
      */
     protected function getLogger(string $channel = '', string $service = '')
     {
-        $config = $this->getConfiguration();
-        $logService = empty($service) ? $config['default_log_service_id'] : $service;
+        $config = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
+        $logService = empty($service) ? $config['default_log'] : $service;
         $toLog = '';
         /** @var LoggerInterface $logger */
         $logger = null;
@@ -200,7 +182,7 @@ class DefaultController extends Controller
         if(!empty($toLog)) {
             $logger->warning($toLog);
         }
-        //return default logger
+        //return logger
         return $logger;
     }
 
