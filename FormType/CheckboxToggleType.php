@@ -21,7 +21,6 @@ class CheckboxToggleType extends AbstractType
 {
 
 
-    //TODO adjust for keiwen lib
     public function getParent()
     {
         return CheckboxType::class;
@@ -35,7 +34,7 @@ class CheckboxToggleType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefined(array('label_on', 'label_off', 'style_on', 'style_off', 'width'));
+        $resolver->setDefined(array('label_on', 'label_off', 'style_on', 'style_off', 'style'));
         $resolver->setDefaults(array(
             'label_on' => 'On',
             'label_off' => 'Off',
@@ -52,7 +51,7 @@ class CheckboxToggleType extends AbstractType
         $view->vars['label_off'] = $options['label_off'];
         $view->vars['style_on'] = $options['style_on'];
         $view->vars['style_off'] = $options['style_off'];
-        if(isset($options['width'])) $view->vars['width'] = $options['width'];
+        if(isset($options['style'])) $view->vars['style'] = $options['style'];
     }
 
 

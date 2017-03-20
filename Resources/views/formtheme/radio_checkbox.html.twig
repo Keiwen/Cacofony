@@ -6,7 +6,7 @@
            data-on="{{ translation_domain is same as(false) ? label_on : label_on|trans({}, translation_domain) }}"
            data-off="{{ translation_domain is same as(false) ? label_off : label_off|trans({}, translation_domain) }}"
            data-onstyle="{{ style_on }}" data-offstyle="{{ style_off }}"
-            {% if width is defined %} data-width="{{ width }}"{% endif %}
+            {% if style is defined %} data-style="{{ style}}"{% endif %}
     />
 {% endblock %}
 
