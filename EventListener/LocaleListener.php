@@ -47,6 +47,7 @@ class LocaleListener implements EventSubscriberInterface
             $request->setLocale($locale);
         }
 
+        //TODO remove this, handle locale in extension directly
         if($this->twigTranslationExtension) {
             //set locale for twig translation extension
             $this->twigTranslationExtension->setLocale($locale);

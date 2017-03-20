@@ -28,6 +28,7 @@ class TwigTranslation extends TranslationExtension
         'fr' => array('«'),
     );
 
+    //todo get locale automatically
 
     /**
      * @return string

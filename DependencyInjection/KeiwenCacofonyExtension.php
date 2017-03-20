@@ -5,7 +5,6 @@ namespace Keiwen\Cacofony\DependencyInjection;
 use Keiwen\Cacofony\EntitiesManagement\EntityRegistry;
 use Keiwen\Cacofony\EventListener\AutoDumpListener;
 use Keiwen\Cacofony\EventListener\ParamFetcherListener;
-use Keiwen\Cacofony\FormProcessor\DefaultFormProcessor;
 use Keiwen\Cacofony\ParamFetcher\ParamFetcher;
 use Keiwen\Cacofony\Reader\TemplateAnnotationReader;
 use Keiwen\Cacofony\Twig\TwigRequest;
@@ -49,7 +48,6 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
         $loader->load('services_paramFetcher.yml');
         $loader->load('services_security.yml');
         $loader->load('services_request.yml');
-        $loader->load('services_form.yml');
         $loader->load('services_twig.yml');
 
         $this->prependConfig($container);
@@ -75,7 +73,6 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
             EntityRegistry::class,
             AutoDumpListener::class,
             ParamFetcherListener::class,
-            DefaultFormProcessor::class,
             ParamFetcher::class,
             TemplateAnnotationReader::class,
             TwigRequest::class,

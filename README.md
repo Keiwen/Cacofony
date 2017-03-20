@@ -54,6 +54,3 @@ Trait for entity, allowing:
 `{Namespace}\Entity\{Entity}` and form `{Namespace}\Form\{Entity}Form`)
 * Serialization to array or json when initialized
 
-##FormProcessor
-All form handling logic is expected to be removed from controller
-to a formProcessor class. 

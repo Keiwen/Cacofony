@@ -20,6 +20,7 @@ class DefaultController extends Controller
     protected $configuration;
 
 
+    //TODO rework this configuration handling
     /**
      * @return array
      */
@@ -37,6 +38,7 @@ class DefaultController extends Controller
      */
     protected function prepareCache()
     {
+        //todo  we should have functions to simplify this
         if($this->cache == null && !$this->cacheDisabled) {
             //load default cache if nothing set
             $config = $this->getConfiguration();
@@ -72,6 +74,7 @@ class DefaultController extends Controller
     }
 
 
+    //todo why no service to get request
     /**
      * @return Request
      */
@@ -82,6 +85,15 @@ class DefaultController extends Controller
         $request = $this->get($config['default_request_service_id']);
         return $request;
     }
+
+    /**
+     * @return Request
+     */
+    protected function getMasterRequest()
+    {
+        return $this->get('request_stack')->getMasterRequest();
+    }
+
 
 
     /**
@@ -156,6 +168,7 @@ class DefaultController extends Controller
     }
 
 
+    //todo not overcomplicated?
     /**
      * @param string $channel
      * @param string $service

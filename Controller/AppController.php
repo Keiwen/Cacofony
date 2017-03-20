@@ -2,7 +2,6 @@
 
 namespace Keiwen\Cacofony\Controller;
 
-use Keiwen\Cacofony\FormProcessor\DefaultFormProcessor;
 use Keiwen\Cacofony\Http\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -103,24 +102,6 @@ class AppController extends DefaultController
         $referer = $request->headers->get('referer');
         return $this->redirect($referer, $status);
     }
-
-
-
-
-    /**
-     * @param string $processorClass (must extends DefaultFormProcessor)
-     * @param array  $defautData
-     * @param array  $formOptions
-     * @return DefaultFormProcessor
-     */
-    public function createFormProcessor(string $processorClass, array $defautData = array(), array $formOptions = array())
-    {
-        if(!is_subclass_of($processorClass, DefaultFormProcessor::class)) {
-            return null;
-        }
-        return new $processorClass($this->get('form.factory'), $defautData, $formOptions);
-    }
-
 
     /**
      * @param string $formClass

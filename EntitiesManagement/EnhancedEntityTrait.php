@@ -97,7 +97,6 @@ trait EnhancedEntityTrait
                                array $options = array(),
 							   bool $handleRequest = false)
     {
-        //TODO detect formProcessor
 		$class = get_class($this);
 		$searchFormPattern = str_replace('\\Entity\\', '\\{placeholder}\\', $class);
 		$found = false;
