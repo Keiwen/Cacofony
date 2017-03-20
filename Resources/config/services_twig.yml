@@ -3,7 +3,7 @@
 services:
     twig.extension.trans:
         class: Keiwen\Cacofony\Twig\TwigTranslation
-        arguments: ['@translator']
+        arguments: ['@translator', '@session']
         tags:
             - { name: twig.extension }
 
