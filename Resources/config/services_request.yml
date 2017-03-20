@@ -8,11 +8,3 @@ services:
             - '@request_stack'
             - 'getCurrentRequest'
 
-
-
-    keiwen_cacofony.twig_request:
-        class: Keiwen\Cacofony\Twig\TwigRequest
-        public: false
-        arguments: ['@keiwen_cacofony.request']
-        tags:
-            - { name: twig.extension }

@@ -18,8 +18,6 @@ class TwigRequest extends \Twig_Extension
         $this->request = $request;
     }
 
-    //TODO check uses
-
     /**
      * @return array
      */
