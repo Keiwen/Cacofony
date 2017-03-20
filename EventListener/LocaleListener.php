@@ -12,20 +12,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class LocaleListener implements EventSubscriberInterface
 {
     private $defaultLocale;
-    /** @var TwigTranslation */
-    private $twigTranslationExtension;
 
     /**
      * @param string          $defaultLocale
      * @param TwigTranslation $twigTranslationExtension
      */
-    public function __construct(string $defaultLocale, TranslationExtension $twigTranslationExtension = null)
+    public function __construct(string $defaultLocale)
     {
         $this->defaultLocale = $defaultLocale;
-        if($twigTranslationExtension instanceof TwigTranslation) {
-            //ignore if default SF service not overridden
-            $this->twigTranslationExtension = $twigTranslationExtension;
-        }
     }
 
     /**
@@ -47,11 +41,6 @@ class LocaleListener implements EventSubscriberInterface
             $request->setLocale($locale);
         }
 
-        //TODO remove this, handle locale in extension directly
-        if($this->twigTranslationExtension) {
-            //set locale for twig translation extension
-            $this->twigTranslationExtension->setLocale($locale);
-        }
     }
 
     /**

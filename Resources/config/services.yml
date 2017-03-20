@@ -16,7 +16,7 @@ services:
 
     keiwen_cacofony.localeListener:
         class: Keiwen\Cacofony\EventListener\LocaleListener
-        arguments: ['%kernel.default_locale%', '@?twig.extension.trans']
+        arguments: ['%kernel.default_locale%']
         tags:
             - { name: kernel.event_subscriber }
 
