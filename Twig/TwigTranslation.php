@@ -4,6 +4,8 @@ namespace Keiwen\Cacofony\Twig;
 
 
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Class TwigTranslation
@@ -15,7 +17,7 @@ use Symfony\Bridge\Twig\Extension\TranslationExtension;
 class TwigTranslation extends TranslationExtension
 {
 
-    /** @var string Should be managed on request with a listener */
+    /** @var string */
     protected $locale = 'en';
 
     /** @var array List of punctuation mark that MUST have nb-space before */
@@ -28,7 +30,19 @@ class TwigTranslation extends TranslationExtension
         'fr' => array('«'),
     );
 
-    //todo get locale automatically
+
+    public function __construct(TranslatorInterface $translator, SessionInterface $session = null)
+    {
+        if(!empty($session)) {
+            $sessionLocale = $session->get('_locale');
+            if(!empty($sessionLocale)) {
+                $this->setLocale($sessionLocale);
+            }
+        }
+        parent::__construct($translator, null);
+    }
+
+
 
     /**
      * @return string
@@ -57,11 +71,20 @@ class TwigTranslation extends TranslationExtension
      */
     public function setLocale(string $locale)
     {
+        $this->locale = $this->detectMainLocale($locale);
+    }
+
+    /**
+     * @param string $locale
+     * @return string
+     */
+    protected function detectMainLocale(string $locale)
+    {
         if(strpos($locale, '_') !== false) {
             $locale = explode('_', $locale);
             $locale = reset($locale);
         }
-        $this->locale = $locale;
+        return $locale;
     }
 
     /**
@@ -106,9 +129,8 @@ class TwigTranslation extends TranslationExtension
         //get main locale to get settings
         if(empty($locale)) {
             $locale = $this->locale;
-        } else if(strpos($locale, '_') !== false) {
-            $locale = explode('_', $locale);
-            $locale = reset($locale);
+        } else {
+            $locale = $this->detectMainLocale($locale);
         }
 
         if(empty(static::$spaceBeforePunctuation[$locale])) {
