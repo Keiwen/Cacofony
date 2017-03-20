@@ -96,7 +96,7 @@ class AutoDumpListener implements EventSubscriberInterface
         if(!function_exists('dump') || empty($this->getAutodumpParameterName())) return;
         //Do not dump if empty
         if($event->isMasterRequest() && !empty($this->toDump)) {
-            //add twog globals
+            //add twig globals
             if(!empty($this->twig)) {
                 $this->toDump[static::SUBPART_TWIG_GLOBALS] = $this->twig->getGlobals();
             }
