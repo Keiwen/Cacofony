@@ -11,7 +11,7 @@ services:
 
     twig.extension.trans:
         class: Keiwen\Cacofony\Twig\TwigTranslation
-        arguments: ['@translator', '@session']
+        arguments: ['@translator', '@?twig', '@?session']
         tags:
             - { name: twig.extension }
 
