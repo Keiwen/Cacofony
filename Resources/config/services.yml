@@ -21,7 +21,7 @@ services:
             - { name: kernel.event_subscriber }
 
     keiwen_cacofony.okresponsecode:
-        class: Keiwen\Cacofony\EventListener\OkResponseCodeOverwriteListener
+        class: Keiwen\Cacofony\EventListener\OkResponseCodeListener
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: -10 }
 
