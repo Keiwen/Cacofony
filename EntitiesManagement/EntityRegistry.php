@@ -23,7 +23,7 @@ class EntityRegistry
      *
      * @param ManagerRegistry $managerRegistry
      */
-    public function __construct($managerRegistry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
         $this->managerRegistry = $managerRegistry;
     }

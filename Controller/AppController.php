@@ -103,16 +103,4 @@ class AppController extends DefaultController
         return $this->redirect($referer, $status);
     }
 
-    /**
-     * @param string $formClass
-     * @param        $entity
-     * @param array  $options
-     * @return \Symfony\Component\Form\Form
-     */
-    public function createEntityForm(string $formClass, $entity, array $options = array())
-    {
-        return $this->createForm($formClass, $entity, $options);
-    }
-
-
 }

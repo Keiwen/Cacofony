@@ -21,12 +21,12 @@ class EntitySerializer
         if(!is_object($object)) return false;
         $proxyClass = get_class($object);
         if(static::detectProxy($proxyClass)) return true;
-        if(!in_array(EnhancedEntityTrait::class, class_uses($object))) return false;
+        if(!in_array(ExportableEntityTrait::class, class_uses($object))) return false;
         return true;
     }
 
 	/**
-	 * @param EnhancedEntityTrait $object
+	 * @param ExportableEntityTrait $object
 	 * @param array $labels
 	 * @param array $blackList
 	 * @param array $whiteList
@@ -39,7 +39,7 @@ class EntitySerializer
 	}
 	
 	/**
-	 * @param EnhancedEntityTrait $object
+	 * @param ExportableEntityTrait $object
 	 * @param array $labels
 	 * @param array $blackList
 	 * @param array $whiteList
@@ -57,7 +57,7 @@ class EntitySerializer
 	 * A class is converted only once per process to avoid infinite nesting
 	 * We can ignore the initial class
 	 *
-	 * @param EnhancedEntityTrait $object
+	 * @param ExportableEntityTrait $object
 	 * @param array $processed
 	 * @param bool $skipFirst
 	 * @param array $labels
@@ -142,7 +142,7 @@ class EntitySerializer
 	 * @return array|null
 	 */
 	protected static function handleObjectConversion($object,
-                                                   array $processed = array())
+                                                     array $processed = array())
     {
         $classProxy = get_class($object);
         $proxy = static::detectProxy($classProxy);
@@ -150,9 +150,9 @@ class EntitySerializer
 			//if doctrine collection turn it to array
 			/** @var PersistentCollection $object */
 			$object = static::handleArrayConversion($object->toArray(), $processed);
-		} else if(in_array(EnhancedEntityTrait::class, class_uses(get_class($object))) || $proxy) {
+		} else if(in_array(ExportableEntityTrait::class, class_uses(get_class($object))) || $proxy) {
 			//entity or proxy, iterate
-			/** @var EnhancedEntityTrait $object */
+			/** @var ExportableEntityTrait $object */
 			$object = static::processObject2ArrayConversion($object, $processed);
         } else {
             //cannot handle it (including proxies)
@@ -168,7 +168,7 @@ class EntitySerializer
 	 * @return array|null
 	 */
 	protected static function handleArrayConversion(array $array,
-                                                  array $processed = array())
+                                                    array $processed = array())
     {
 		//for an array, loop on it and iterate for object
 		$arrayEmpty = true;

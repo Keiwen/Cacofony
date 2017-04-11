@@ -8,11 +8,10 @@ use Keiwen\Cacofony\Http\Request;
 use Keiwen\Cacofony\Http\Response;
 use Keiwen\Utils\Object\CacheHandlerTrait;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class DefaultController extends Controller
+class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
 {
     use CacheHandlerTrait;
 
