@@ -94,8 +94,8 @@ class AutoDumpListener implements EventSubscriberInterface
     public function onKernelResponse(FilterResponseEvent $event)
     {
         if(!function_exists('dump') || empty($this->getAutodumpParameterName())) return;
-        //Do not dump if empty
-        if($event->isMasterRequest() && !empty($this->toDump)) {
+        //dump only for master request
+        if($event->isMasterRequest()) {
             //add twig globals
             if(!empty($this->twig)) {
                 $this->toDump[static::SUBPART_TWIG_GLOBALS] = $this->twig->getGlobals();
