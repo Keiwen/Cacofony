@@ -6,6 +6,7 @@ namespace Keiwen\Cacofony\Security;
 use Keiwen\Cacofony\Security\Annotation\RestrictToRole;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 class RoleChecker
 {
@@ -38,7 +39,11 @@ class RoleChecker
         );
         $anotation = new RestrictToRole($values);
         $expression = $anotation->getExpression();
-        return $this->authorizationChecker->isGranted(array(new Expression($expression)));
+        try {
+            return $this->authorizationChecker->isGranted(array(new Expression($expression)));
+        } catch(AuthenticationCredentialsNotFoundException $e) {
+            return false;
+        }
     }
 
 
