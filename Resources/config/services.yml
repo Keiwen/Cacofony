@@ -27,6 +27,6 @@ services:
 
     keiwen_cacofony.exception_controller:
         class: Keiwen\Cacofony\Controller\ExceptionController
-        arguments: ['@twig', '%kernel.debug%']
+        arguments: ['@twig', '%kernel.debug%', '%keiwen_cacofony.exception.previous_on_twigerror%']
 
 

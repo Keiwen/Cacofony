@@ -10,6 +10,14 @@ use Symfony\Component\HttpFoundation\Response;
 class ExceptionController extends \Symfony\Bundle\TwigBundle\Controller\ExceptionController
 {
 
+    protected $previousOnTwigError;
+
+    public function __construct(\Twig_Environment $twig, $debug, $previousOnTwigError)
+    {
+        parent::__construct($twig, $debug);
+        $this->previousOnTwigError = $previousOnTwigError;
+    }
+
 
     /**
      * {@inheritdoc}
@@ -47,7 +55,7 @@ class ExceptionController extends \Symfony\Bundle\TwigBundle\Controller\Exceptio
     protected function handleException(FlattenException &$exception, Request &$request)
     {
         //if we get a twig runtime error, try to get previous exception that could cause this one
-        if($exception->getClass() == \Twig_Error_Runtime::class && !empty($exception->getPrevious())) {
+        if($this->previousOnTwigError && $exception->getClass() == \Twig_Error_Runtime::class && !empty($exception->getPrevious())) {
             $exception = $exception->getPrevious();
         }
     }

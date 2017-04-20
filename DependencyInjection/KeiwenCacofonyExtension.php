@@ -23,6 +23,7 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
     const PARAM_FETCHER_LISTENER_PRIORITY_CONF = 'keiwen_cacofony.param_fetcher_listener.priority';
     const PARAM_FETCHER_CONTROLLER_PARAM_CONF = 'keiwen_cacofony.param_fetcher.controller_parameter';
     const ROLE_PREFIXES_CONF = 'keiwen_cacofony.rolechecker.role_prefixes';
+    const EXCEPTION_PREVIOUS_ON_TWIGERROR = 'keiwen_cacofony.exception.previous_on_twigerror';
 
     const TWIG_FORMTHEME_DATE = 'KeiwenCacofonyBundle:formtheme:date.html.twig';
     const TWIG_FORMTHEME_RADIOCHECK = 'KeiwenCacofonyBundle:formtheme:radio_checkbox.html.twig';
@@ -42,6 +43,7 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
         $container->setParameter(self::ROLE_PREFIXES_CONF, $mergedConfig['rolechecker']['role_prefixes']);
         $container->setParameter(self::PARAM_FETCHER_LISTENER_PRIORITY_CONF, $mergedConfig['param_fetcher']['listener_priority']);
         $container->setParameter(self::PARAM_FETCHER_CONTROLLER_PARAM_CONF, $mergedConfig['param_fetcher']['controller_parameter']);
+        $container->setParameter(self::EXCEPTION_PREVIOUS_ON_TWIGERROR, $mergedConfig['exception']['previous_on_twigerror']);
 
         $loader->load('services.yml');
         $loader->load('services_entityRegistry.yml');
