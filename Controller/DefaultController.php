@@ -4,6 +4,7 @@ namespace Keiwen\Cacofony\Controller;
 
 use Keiwen\Cacofony\DependencyInjection\KeiwenCacofonyExtension;
 use Keiwen\Cacofony\EntitiesManagement\EntityRegistry;
+use Keiwen\Cacofony\EventListener\AutoDumpListener;
 use Keiwen\Cacofony\Http\Request;
 use Keiwen\Cacofony\Http\Response;
 use Keiwen\Utils\Object\CacheHandlerTrait;
@@ -187,6 +188,27 @@ class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Contr
 
 
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function render($view, array $parameters = array(), \Symfony\Component\HttpFoundation\Response $response = null)
+    {
+        /** @var AutoDumpListener $autodump */
+        $autodump = $this->get('keiwen_cacofony.autodump');
+        $autodump->addParameterToDump($view, $parameters);
+        return parent::render($view, $parameters, $response);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function renderView($view, array $parameters = array())
+    {
+        /** @var AutoDumpListener $autodump */
+        $autodump = $this->get('keiwen_cacofony.autodump');
+        $autodump->addParameterToDump($view, $parameters);
+        return parent::renderView($view, $parameters);
+    }
 
 
 }
