@@ -25,3 +25,8 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: -10 }
 
+    keiwen_cacofony.exception_controller:
+        class: Keiwen\Cacofony\Controller\ExceptionController
+        arguments: ['@twig', '%kernel.debug%']
+
+
