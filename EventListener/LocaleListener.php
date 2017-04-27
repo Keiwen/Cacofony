@@ -34,10 +34,12 @@ class LocaleListener implements EventSubscriberInterface
 
         // try to see if the locale has been set as a _locale routing parameter
         if($locale = $request->attributes->get('_locale')) {
+            $locale = static::convertLocale($locale);
             $request->getSession()->set('_locale', $locale);
         } else {
             // if no explicit locale has been set on this request, use one from the session
             $locale = $request->getSession()->get('_locale', $this->defaultLocale);
+            $locale = static::convertLocale($locale);
             $request->setLocale($locale);
         }
 
@@ -53,4 +55,17 @@ class LocaleListener implements EventSubscriberInterface
             KernelEvents::REQUEST => array(array('onKernelRequest', 15)),
         );
     }
+
+
+
+    /**
+     * Norms defined locale as language-region, symfony use language_region
+     * @param string $locale
+     * @return string
+     */
+    public static function convertLocale($locale)
+    {
+        return str_replace('-', '_', $locale);
+    }
+
 }
