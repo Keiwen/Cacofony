@@ -57,6 +57,7 @@ class TwigTranslation extends TranslationExtension
     {
         $filters = parent::getFilters();
         $filters[] = new \Twig_SimpleFilter('trans', array($this, 'trans'), array('is_safe' => array('html')));
+        $filters[] = new \Twig_SimpleFilter('hasTrans', array($this, 'hasTrans'), array('is_safe' => array('html')));
         $filters[] = new \Twig_SimpleFilter('punctuate', array($this, 'punctuate'), array('is_safe' => array('html')));
         $filters[] = new \Twig_SimpleFilter('label', array($this, 'label'), array('is_safe' => array('html')));
         return $filters;
@@ -141,4 +142,18 @@ class TwigTranslation extends TranslationExtension
         }
         return $trans;
     }
+
+
+    /**
+     * Check if translation found (return false if translation equal to id)
+     * @param string $id
+     * @param string $domain
+     * @return bool
+     */
+    public function hasTrans($id, $domain = null)
+    {
+        $trans = $this->trans($id, array(), $domain);
+        return $trans != $id;
+    }
+
 }
