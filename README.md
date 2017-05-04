@@ -1,5 +1,8 @@
 # Cacofony
 Custom Application Code Overlay for Symfony framework
+
+*** **Consolidation ongoing** ***
+
 ##Controller
 * Parent controller adds cache management methods
 * AppController can redirect with cookies already defined
@@ -46,11 +49,4 @@ public function action(ParamFetcher $paramFetcher) {
 Can save, remove, detach or copy an entity or a list of entities.
 Each methods include an optional commit parameter (default true).
 In controller: `$this->getEntityRegistry()->saveObject($entity);`
-
-##EnhancedEntity
-Trait for entity, allowing:
-* Static repository methods (getRepository, findAll, find, findBy)
-* Create form with associated class (when entity class is
-`{Namespace}\Entity\{Entity}` and form `{Namespace}\Form\{Entity}Form`)
-* Serialization to array or json when initialized
 
