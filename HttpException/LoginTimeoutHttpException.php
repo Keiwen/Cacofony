@@ -1,6 +1,6 @@
 <?php
 
-namespace Keiwen\Cacofony\Exception;
+namespace Keiwen\Cacofony\HttpException;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
