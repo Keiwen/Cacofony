@@ -190,6 +190,7 @@ class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Contr
 
     /**
      * {@inheritdoc}
+     * Extended function for autodump
      */
     protected function render($view, array $parameters = array(), \Symfony\Component\HttpFoundation\Response $response = null)
     {
@@ -201,6 +202,7 @@ class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Contr
 
     /**
      * {@inheritdoc}
+     * Extended function for autodump
      */
     protected function renderView($view, array $parameters = array())
     {
