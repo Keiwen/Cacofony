@@ -27,7 +27,7 @@
     "twbs/bootstrap":  "Include bootstrap, ~3.0",
     "braincrafted/bootstrap-bundle":  "Manage bootstrap, ~2.0",
     "components/jquery":  "Include jQuery, ~1.11",
-    "components/font-awesome":  "Include font-awesome, ~4.0",
+    "fortawesome/font-awesome":  "Include font-awesome, ~4.0",
     "oyejorge/less.php":  "Include less compiler, ~1.0",
     "egeloen/ckeditor-bundle": "Rich text editor, ~4.0",
     "liip/imagine-bundle": "Image manipulation, ~1.0",
