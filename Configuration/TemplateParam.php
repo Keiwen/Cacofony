@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
  * like if you need a common parameters for all actions in same controller
  *
  * @Annotation
+ * @Target({"CLASS", "METHOD"})
  */
 class TemplateParam extends ConfigurationAnnotation
 {

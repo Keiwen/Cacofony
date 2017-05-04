@@ -20,6 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
  *
  * @package Keiwen\Cacofony\Configuration
  * @Annotation
+ * @Target({"CLASS", "METHOD"})
  */
 class OkResponseCode extends ConfigurationAnnotation
 {
