@@ -46,7 +46,7 @@ class ApiController extends DefaultController
      */
 	protected function formatResponseData()
     {
-        $config = $this->getConfiguration();
+        $config = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
         if(!$config['api_format_response']) {
             return $this->apiResult;
         }
