@@ -112,9 +112,10 @@ class TwigTranslation extends TranslationExtension
      * @param array       $parameters
      * @param string|null $domain
      * @param string|null $locale
+     * @param boolean     $nbsp
      * @return string
      */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = '')
+    public function trans($id, array $parameters = array(), $domain = null, $locale = '', $nbsp = true)
     {
         if(!empty($this->twig)) {
             //add globals twig variable to trans parameter if scalar
@@ -131,9 +132,8 @@ class TwigTranslation extends TranslationExtension
         //get main locale to get settings
         $locale = $this->detectMainLocale($locale);
 
-        if(empty(static::$spaceBeforePunctuation[$locale])) {
-            return $trans;
-        }
+        if(!$nbsp) return $trans;
+
         foreach(static::$spaceBeforePunctuation[$locale] as $mark) {
             $trans = str_replace(' ' . $mark, '&nbsp;' . $mark, $trans);
         }
