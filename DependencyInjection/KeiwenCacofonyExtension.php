@@ -9,12 +9,13 @@ use Keiwen\Cacofony\ParamFetcher\ParamFetcher;
 use Keiwen\Cacofony\Reader\TemplateAnnotationReader;
 use Keiwen\Cacofony\Twig\TwigRequest;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 
-class KeiwenCacofonyExtension extends ConfigurableExtension
+class KeiwenCacofonyExtension extends ConfigurableExtension implements PrependExtensionInterface
 {
 
     const API_PARAMETERS_CONF = 'keiwen_cacofony.api_parameters';
@@ -25,6 +26,7 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
     const ROLE_PREFIXES_CONF = 'keiwen_cacofony.rolechecker.role_prefixes';
     const EXCEPTION_PREVIOUS_ON_TWIGERROR = 'keiwen_cacofony.exception.previous_on_twigerror';
 
+    const TWIG_FORMTHEME_TEL = 'KeiwenCacofonyBundle:formtheme:tel.html.twig';
     const TWIG_FORMTHEME_DATE = 'KeiwenCacofonyBundle:formtheme:date.html.twig';
     const TWIG_FORMTHEME_RADIOCHECK = 'KeiwenCacofonyBundle:formtheme:radio_checkbox.html.twig';
 
@@ -53,16 +55,16 @@ class KeiwenCacofonyExtension extends ConfigurableExtension
         $loader->load('services_form.yml');
         $loader->load('services_twig.yml');
 
-        $this->prependConfig($container);
         $this->compileClasses();
 
     }
 
 
-    protected function prependConfig(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container)
     {
         $container->prependExtensionConfig('twig', array(
             'form_themes' => array(
+                static::TWIG_FORMTHEME_TEL,
                 static::TWIG_FORMTHEME_DATE,
                 static::TWIG_FORMTHEME_RADIOCHECK,
             )
