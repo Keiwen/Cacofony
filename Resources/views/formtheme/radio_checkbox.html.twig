@@ -1,3 +1,5 @@
+{% use "form_div_layout.html.twig" %}
+
 {% block checkbox_toggle_widget %}
     <input type="checkbox" {{ block('widget_attributes') }}
             {% if value is defined %} value="{{ value }}"{% endif %}
