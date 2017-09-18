@@ -54,9 +54,6 @@ class KeiwenCacofonyExtension extends ConfigurableExtension implements PrependEx
         $loader->load('services_request.yml');
         $loader->load('services_form.yml');
         $loader->load('services_twig.yml');
-
-        $this->compileClasses();
-
     }
 
 
@@ -68,19 +65,6 @@ class KeiwenCacofonyExtension extends ConfigurableExtension implements PrependEx
                 static::TWIG_FORMTHEME_DATE,
                 static::TWIG_FORMTHEME_RADIOCHECK,
             )
-        ));
-    }
-
-
-    protected function compileClasses()
-    {
-        $this->addClassesToCompile(array(
-            EntityRegistry::class,
-            AutoDumpListener::class,
-            ParamFetcherListener::class,
-            ParamFetcher::class,
-            TemplateAnnotationReader::class,
-            TwigRequest::class,
         ));
     }
 
