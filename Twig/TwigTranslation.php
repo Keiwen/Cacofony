@@ -133,6 +133,7 @@ class TwigTranslation extends TranslationExtension
         $locale = $this->detectMainLocale($locale);
 
         if(!$nbsp) return $trans;
+        if(!isset(static::$spaceBeforePunctuation[$locale])) return $trans;
 
         foreach(static::$spaceBeforePunctuation[$locale] as $mark) {
             $trans = str_replace(' ' . $mark, '&nbsp;' . $mark, $trans);
