@@ -43,7 +43,7 @@ class EntitySerializer
 	 * @param array $labels
 	 * @param array $blackList
 	 * @param array $whiteList
-	 * @return array
+	 * @return string
 	 */
 	public static function object2Json($object, array $labels = array(), array $blackList = array(), array $whiteList = array())
     {
