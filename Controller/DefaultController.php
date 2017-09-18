@@ -195,7 +195,7 @@ class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Contr
     protected function render($view, array $parameters = array(), \Symfony\Component\HttpFoundation\Response $response = null)
     {
         /** @var AutoDumpListener $autodump */
-        $autodump = $this->get('keiwen_cacofony.autodump');
+        $autodump = $this->get(AutoDumpListener::class);
         $autodump->addParameterToDump($view, $parameters);
         return parent::render($view, $parameters, $response);
     }
@@ -207,7 +207,7 @@ class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Contr
     protected function renderView($view, array $parameters = array())
     {
         /** @var AutoDumpListener $autodump */
-        $autodump = $this->get('keiwen_cacofony.autodump');
+        $autodump = $this->get(AutoDumpListener::class);
         $autodump->addParameterToDump($view, $parameters);
         return parent::renderView($view, $parameters);
     }

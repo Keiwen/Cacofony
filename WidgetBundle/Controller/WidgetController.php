@@ -44,7 +44,8 @@ class WidgetController extends AppController
     public function renderWidgetContent(string $view, array $parameters = array())
     {
         $response = $this->render($view, $parameters, $this->response);
-        $autodump = $this->get('keiwen_cacofony.autodump');
+        /** @var AutoDumpListener $autodump */
+        $autodump = $this->get(AutoDumpListener::class);
         $autodump->addParameterToDump($view, $parameters, AutoDumpListener::SUBPART_WIDGET);
         return $response->getContent();
     }

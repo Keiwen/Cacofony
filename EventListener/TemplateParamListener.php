@@ -14,7 +14,7 @@ class TemplateParamListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::VIEW => 'onKernelView',
+            KernelEvents::VIEW => array(array('onKernelView', 30)),
         );
     }
 

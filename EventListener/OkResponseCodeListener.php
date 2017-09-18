@@ -7,7 +7,7 @@ use Keiwen\Cacofony\Configuration\OkResponseCode;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -25,11 +25,11 @@ class OkResponseCodeListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::RESPONSE => 'onKernelResponse',
+            KernelEvents::REQUEST => array(array('onKernelResponse', -10)),
         );
     }
 
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(GetResponseEvent $event)
     {
         $request = $event->getRequest();
         /** @var OkResponseCode $annotation */

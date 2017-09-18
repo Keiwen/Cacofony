@@ -35,8 +35,8 @@ class AutoDumpListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            KernelEvents::VIEW => 'onKernelView',
-            KernelEvents::RESPONSE => 'onKernelResponse',
+            KernelEvents::VIEW => array(array('onKernelView', 20)),
+            KernelEvents::RESPONSE => array(array('onKernelResponse', 20)),
         );
     }
 
