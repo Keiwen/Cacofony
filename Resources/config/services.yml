@@ -1,32 +1,25 @@
-
-
 services:
 
-    keiwen_cacofony.autodump:
-        class: Keiwen\Cacofony\EventListener\AutoDumpListener
-        arguments: ['%keiwen_cacofony.autodump.paramname%', '@?twig']
-        tags:
-            - { name: kernel.event_listener, event: kernel.view, method: onKernelView, priority: 20 }
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: 20 }
+    _defaults:
+        autowire: true
+        autoconfigure: true
 
-    keiwen_cacofony.templateParam:
-        class: Keiwen\Cacofony\EventListener\TemplateParamListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.view, method: onKernelView, priority: 30 }
+    Keiwen\Cacofony\EventListener\:
+        resource: '../../EventListener'
 
-    keiwen_cacofony.localeListener:
-        class: Keiwen\Cacofony\EventListener\LocaleListener
-        arguments: ['%kernel.default_locale%']
-        tags:
-            - { name: kernel.event_subscriber }
+    Keiwen\Cacofony\EventListener\AutoDumpListener:
+        arguments:
+            $parameterName: '%keiwen_cacofony.autodump.paramname%'
 
-    keiwen_cacofony.okresponsecode:
-        class: Keiwen\Cacofony\EventListener\OkResponseCodeListener
-        tags:
-            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: -10 }
+    Keiwen\Cacofony\EventListener\LocaleListener:
+        arguments:
+            $defaultLocale: '%kernel.default_locale%'
 
-    keiwen_cacofony.exception_controller:
-        class: Keiwen\Cacofony\Controller\ExceptionController
-        arguments: ['@twig', '%kernel.debug%', '%keiwen_cacofony.exception.previous_on_twigerror%']
+    Keiwen\Cacofony\Controller\ExceptionController:
+
+    Keiwen\Cacofony\Controller\ExceptionController:
+        arguments:
+            $debug: '%kernel.debug%'
+            $previousOnTwigError: '%keiwen_cacofony.exception.previous_on_twigerror%'
 
 

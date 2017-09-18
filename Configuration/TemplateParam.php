@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
 class TemplateParam extends ConfigurationAnnotation
 {
 
-    const ALIAS_NAME = 'caco_template_param';
+    const ALIAS_NAME = 'cacoTemplateParam';
 
     protected $parameter;
     protected $paramValue = true;

@@ -29,7 +29,7 @@ class OkResponseCode extends ConfigurationAnnotation
 
     public function getAliasName()
     {
-        return 'okResponseCode';
+        return 'cacoOkResponseCode';
     }
 
     public function allowArray()
