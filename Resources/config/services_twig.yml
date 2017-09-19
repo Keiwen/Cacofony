@@ -2,32 +2,14 @@
 
 services:
 
-    keiwen_cacofony.twig_request:
-        class: Keiwen\Cacofony\Twig\TwigRequest
-        public: false
-        arguments: ['@keiwen_cacofony.request']
-        tags:
-            - { name: twig.extension }
+    _defaults:
+        autowire: true
+        autoconfigure: true
 
-    twig.extension.trans:
-        class: Keiwen\Cacofony\Twig\TwigTranslation
-        arguments: ['@translator', '@request_stack', '@?twig']
-        tags:
-            - { name: twig.extension }
+    Keiwen\Cacofony\Twig\:
+        resource: '../../Twig'
 
-    keiwen_cacofony.twig.string:
-        class: Keiwen\Cacofony\Twig\TwigString
-        tags:
-            - { name: twig.extension }
-            
-    keiwen_cacofony.twig.intl:
-        class: Keiwen\Cacofony\Twig\TwigIntl
-        tags:
-            - { name: twig.extension }
-            
-    keiwen_cacofony.twig.security:
-        class: Keiwen\Cacofony\Twig\TwigSecurity
-        arguments: ['@Keiwen\Cacofony\Security\RoleChecker']
-        tags:
-            - { name: twig.extension }
+    Keiwen\Cacofony\Twig\TwigRequest:
+        arguments:
+            $request: '@keiwen_cacofony.request'
 
