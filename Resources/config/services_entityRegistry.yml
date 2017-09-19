@@ -1,12 +1,11 @@
-
-parameters:
-    keiwen_cacofony.entity_registry.class: Keiwen\Cacofony\EntitiesManagement\EntityRegistry
-
 services:
 
+    _defaults:
+        autowire: true
+        autoconfigure: true
 
-    keiwen_cacofony.entity_registry:
-        class: '%keiwen_cacofony.entity_registry.class%'
-        arguments: ['@?doctrine']
+    Keiwen\Cacofony\EntitiesManagement\EntityRegistry:
+        arguments:
+            $managerRegistry: '@?doctrine'
 
 
