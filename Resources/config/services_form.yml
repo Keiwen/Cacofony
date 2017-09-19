@@ -2,19 +2,11 @@
 
 services:
 
-    keiwen_cacofony.formtype.languagepicker:
-        class: Keiwen\Cacofony\FormType\LanguagePickerType
-        tags: [{name: form.type}]
+    _defaults:
+        autowire: true
+        autoconfigure: true
 
-    keiwen_cacofony.formtype.datepicker:
-        class: Keiwen\Cacofony\FormType\DatepickerType
-        tags: [{name: form.type}]
+    Keiwen\Cacofony\FormType\:
+        resource: '../../FormType'
 
-    keiwen_cacofony.formtype.datepickerrange:
-        class: Keiwen\Cacofony\FormType\DatepickerRangeType
-        tags: [{name: form.type}]
-
-    keiwen_cacofony.formtype.checkboxtoggle:
-        class: Keiwen\Cacofony\FormType\CheckboxToggleType
-        tags: [{name: form.type}]
 
