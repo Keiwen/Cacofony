@@ -16,8 +16,6 @@ services:
             $defaultLocale: '%kernel.default_locale%'
 
     Keiwen\Cacofony\Controller\ExceptionController:
-
-    Keiwen\Cacofony\Controller\ExceptionController:
         arguments:
             $debug: '%kernel.debug%'
             $previousOnTwigError: '%keiwen_cacofony.exception.previous_on_twigerror%'
