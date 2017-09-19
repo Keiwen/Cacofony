@@ -3,6 +3,9 @@
 
 namespace Keiwen\Cacofony\DependencyInjection;
 
+use Keiwen\Cacofony\EntitiesManagement\EntityRegistry;
+use Keiwen\Cacofony\ParamFetcher\ParamFetcher;
+use Keiwen\Cacofony\ParamFetcher\ParamReader;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -21,15 +24,16 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('param_fetcher')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->integerNode('listener_priority')->defaultValue(4)->min(0)->end()
                         ->scalarNode('controller_parameter')->defaultValue('paramFetcher')->cannotBeEmpty()->end()
+                        ->scalarNode('fetcher_class')->defaultValue(ParamFetcher::class)->cannotBeEmpty()->end()
+                        ->scalarNode('reader_class')->defaultValue(ParamReader::class)->cannotBeEmpty()->end()
                     ->end()
                 ->end()
                 ->arrayNode('controller')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('default_cache')->defaultValue('cache')->end()
-                        ->scalarNode('default_entity_registry')->defaultValue('keiwen_cacofony.entity_registry')->end()
+                        ->scalarNode('default_entity_registry')->defaultValue(EntityRegistry::class)->end()
                         ->scalarNode('default_log')->defaultValue('monolog.logger')->end()
                         ->scalarNode('default_request')->defaultValue('keiwen_cacofony.request')->cannotBeEmpty()->end()
                         ->scalarNode('log_channel')->defaultValue('KeiwenCacofony')->end()

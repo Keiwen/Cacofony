@@ -8,25 +8,42 @@ use Keiwen\Cacofony\ParamFetcher\ParamFetcher;
 use Doctrine\Common\Annotations\Reader;
 use Keiwen\Cacofony\ParamFetcher\ParamReader;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 
-class ParamFetcherListener
+class ParamFetcherListener implements EventSubscriberInterface
 {
-    protected $container;
+    protected $fetcherClass;
+    protected $readerClass;
+    protected $controllerParam;
     protected $annotationReader;
     protected $validator;
 
     const PARAM_FETCHER_MAIN_CLASS = ParamFetcher::class;
 
 
-    public function __construct(ContainerInterface $container, Reader $annotationReader, ValidatorInterface $validator)
+    public function __construct(Reader $annotationReader, ValidatorInterface $validator, string $fetcherClass, string $readerClass, string $controllerParam)
     {
-        $this->container = $container;
+        $this->fetcherClass = $fetcherClass;
+        $this->readerClass = $readerClass;
+        $this->controllerParam = $controllerParam;
         $this->annotationReader = $annotationReader;
         $this->validator = $validator;
     }
+
+
+    /**
+     * @return array
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(
+            KernelEvents::CONTROLLER => array(array('onKernelController', 4)),
+        );
+    }
+
 
 
     /**
@@ -58,9 +75,8 @@ class ParamFetcherListener
      */
     protected function getParamReader(Controller $controller)
     {
-        $paramReaderClass = $this->container->getParameter('keiwen_cacofony.param_reader.class');
         try {
-            $paramReader = new $paramReaderClass($this->annotationReader, $controller);
+            $paramReader = new $this->readerClass($this->annotationReader, $controller);
         } catch (\Exception $e) {
             $paramReader = new ParamReader($this->annotationReader, $controller);
         }
@@ -78,9 +94,8 @@ class ParamFetcherListener
     {
         $paramReader = $this->getParamReader($controller);
 
-        $paramFetcherClass = $this->container->getParameter('keiwen_cacofony.param_fetcher.class');
         try {
-            $paramFetcher = new $paramFetcherClass($request, $paramReader, $methodName, $this->validator);
+            $paramFetcher = new $this->fetcherClass($request, $paramReader, $methodName, $this->validator);
         } catch (\Exception $e) {
             $paramFetcher = new ParamFetcher($request, $paramReader, $methodName, $this->validator);
         }
@@ -103,7 +118,7 @@ class ParamFetcherListener
             }
         }
         // If there is no typehint, inject the paramFetcher using a default name.
-        return $this->container->getParameter('keiwen_cacofony.param_fetcher.controller_parameter');
+        return $this->controllerParam;
     }
 
 
