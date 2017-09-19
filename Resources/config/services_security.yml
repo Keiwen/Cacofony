@@ -1,6 +1,10 @@
 
 services:
+    Keiwen\Cacofony\EventListener\:
+        resource: '../../EventListener'
 
-    keiwen_cacofony.rolechecker:
-        class: Keiwen\Cacofony\Security\RoleChecker
-        arguments: ['@security.authorization_checker', '%keiwen_cacofony.rolechecker.role_prefixes%']
+
+    Keiwen\Cacofony\Security\RoleChecker:
+        arguments:
+            $authorizationChecker: '@security.authorization_checker'
+            $rolePrefixes: '%keiwen_cacofony.rolechecker.role_prefixes%'

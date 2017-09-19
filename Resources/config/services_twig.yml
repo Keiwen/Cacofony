@@ -27,7 +27,7 @@ services:
             
     keiwen_cacofony.twig.security:
         class: Keiwen\Cacofony\Twig\TwigSecurity
-        arguments: ['@keiwen_cacofony.rolechecker']
+        arguments: ['@Keiwen\Cacofony\Security\RoleChecker']
         tags:
             - { name: twig.extension }
 
