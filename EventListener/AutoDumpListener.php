@@ -17,7 +17,6 @@ class AutoDumpListener implements EventSubscriberInterface
     protected $parameterName = '';
 
     const SUBPART_TWIG_GLOBALS = '_twig_globals';
-    const SUBPART_WIDGET = '_widget';
 
 
     /**

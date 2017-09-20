@@ -1,5 +1,0 @@
-keiwen_cacofony_widget_test:
-    resource: '@KeiwenCacofonyWidgetBundle/Controller/WidgetDisplayController.php'
-    prefix: '_displayWidget'
-    type: annotation
-
