@@ -26,6 +26,8 @@ class KeiwenCacofonyExtension extends ConfigurableExtension implements PrependEx
     const PARAM_FETCHER_READER_CLASS = 'keiwen_cacofony.param_fetcher.reader_class';
     const ROLE_PREFIXES_CONF = 'keiwen_cacofony.rolechecker.role_prefixes';
     const EXCEPTION_PREVIOUS_ON_TWIGERROR = 'keiwen_cacofony.exception.previous_on_twigerror';
+    const TRANSLATOR_CODE_LOCALE = 'keiwen_cacofony.code_translator.locale';
+    const TRANSLATOR_CODE_PATTERN = 'keiwen_cacofony.code_translator.pattern';
 
     const TWIG_FORMTHEME_TEL = 'KeiwenCacofonyBundle:formtheme:tel.html.twig';
     const TWIG_FORMTHEME_DATE = 'KeiwenCacofonyBundle:formtheme:date.html.twig';
@@ -48,6 +50,8 @@ class KeiwenCacofonyExtension extends ConfigurableExtension implements PrependEx
         $container->setParameter(self::PARAM_FETCHER_FETCHER_CLASS, $mergedConfig['param_fetcher']['fetcher_class']);
         $container->setParameter(self::PARAM_FETCHER_READER_CLASS, $mergedConfig['param_fetcher']['reader_class']);
         $container->setParameter(self::EXCEPTION_PREVIOUS_ON_TWIGERROR, $mergedConfig['exception']['previous_on_twigerror']);
+        $container->setParameter(self::TRANSLATOR_CODE_LOCALE, $mergedConfig['code_translator']['locale']);
+        $container->setParameter(self::TRANSLATOR_CODE_PATTERN, $mergedConfig['code_translator']['display_pattern']);
 
         $loader->load('services.yml');
         $loader->load('services_entityRegistry.yml');
