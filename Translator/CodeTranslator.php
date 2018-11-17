@@ -10,7 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Translation\Translator;
  * @package Keiwen\Cacofony\Translator
  *
  * This class override default translator
- * Could be used to display transCode instead of real translations
+ * Could be used to display translation code (id/domain/param)
+ * instead of real translations (english/french/etc)
+ * to identify specific translations
  */
 class CodeTranslator extends Translator
 {
