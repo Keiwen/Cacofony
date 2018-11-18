@@ -3,7 +3,7 @@ Custom Application Code Overlay for Symfony framework
 
 *** **Consolidation ongoing** ***
 
-##Controller
+## Controller
 * Parent controller adds cache management methods
 * AppController can redirect with cookies already defined
 * AppController can automatically dump template parameters on dev
@@ -16,15 +16,13 @@ Custom Application Code Overlay for Symfony framework
     * message: specific message returned by the API
 
 Controller use a specific Request object (extending standard one),
-and should be declared in app files:
+and should be declared in public/index file:
 ```
 //use Symfony\Component\HttpFoundation\Request
 use Keiwen\Cacofony\Http\Request
- 
-$request = Request::createFromGlobals();
 ```
 
-##ParamFetcher
+## ParamFetcher
 Controller method could be annotated with ParamFetcher annotations
 to declare request (get and/or post) parameters for the route. 
 Parameters can be required, have some requirements (error if not met)
@@ -45,7 +43,7 @@ public function action(ParamFetcher $paramFetcher) {
 }
 ```
 
-##EntityRegistry
+## EntityRegistry
 Can save, remove, detach or copy an entity or a list of entities.
 Each methods include an optional commit parameter (default true).
 In controller: `$this->getEntityRegistry()->saveObject($entity);`
