@@ -108,27 +108,27 @@ class TwigTranslation extends TranslationExtension
     /**
      * @inheritdoc
      * Translate text and add nb-spaces if needed. Add twig globals as parameter value
-     * @param string      $id
-     * @param array       $parameters
+     * @param string      $message
+     * @param array       $arguments
      * @param string|null $domain
      * @param string|null $locale
      * @param boolean     $nbsp
      * @return string
      */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = '', $nbsp = true)
+    public function trans($message, array $arguments = array(), $domain = null, $locale = '', $nbsp = true)
     {
         if(!empty($this->twig)) {
             //add globals twig variable to trans parameter if scalar
             $twigGlobals = $this->twig->getGlobals();
             foreach($twigGlobals as $key => $twigGlobal) {
                 $key = '%' . $key . '%';
-                if(is_scalar($twigGlobal) && !isset($parameters[$key])) {
-                    $parameters[$key] = $twigGlobal;
+                if(is_scalar($twigGlobal) && !isset($arguments[$key])) {
+                    $arguments[$key] = $twigGlobal;
                 }
             }
         }
 
-        $trans = parent::trans($id, $parameters, $domain, $locale);
+        $trans = parent::trans($message, $arguments, $domain, $locale);
         //get main locale to get settings
         $locale = $this->detectMainLocale($locale);
 
@@ -146,15 +146,15 @@ class TwigTranslation extends TranslationExtension
 
 
     /**
-     * Check if translation found (return false if translation equal to id)
-     * @param string $id
+     * Check if translation found (return false if translation equal to message)
+     * @param string $message
      * @param string $domain
      * @return bool
      */
-    public function hasTrans($id, $domain = null)
+    public function hasTrans($message, $domain = null)
     {
-        $trans = $this->trans($id, array(), $domain);
-        return $trans != $id;
+        $trans = $this->trans($message, array(), $domain);
+        return $trans != $message;
     }
 
 }

@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Translation\Translator;
  * @package Keiwen\Cacofony\Translator
  *
  * This class override default translator
- * Could be used to display translation code (id/domain/param)
+ * Could be used to display translation code (message/domain/arguments)
  * instead of real translations (english/french/etc)
  * to identify specific translations
  */
@@ -31,25 +31,25 @@ class CodeTranslator extends Translator
     /**
      * {@inheritdoc}
      */
-    public function trans($id, array $parameters = array(), $domain = null, $locale = null)
+    public function trans($message, array $arguments = array(), $domain = null, $locale = null)
     {
         if ($this->hasAskedForTransCode($locale)) {
-            return $this->formatTransCode($id, $domain, $parameters);
+            return $this->formatTransCode($message, $domain, $arguments);
         }
 
-        return parent::trans($id, $parameters, $domain, $locale);
+        return parent::trans($message, $arguments, $domain, $locale);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null)
+    public function transChoice($message, $number, array $arguments = array(), $domain = null, $locale = null)
     {
         if ($this->hasAskedForTransCode($locale)) {
-            return $this->formatTransCode($id, $domain, $parameters);
+            return $this->formatTransCode($message, $domain, $arguments);
         }
 
-        return parent::transChoice($id, $number, $parameters, $domain, $locale);
+        return parent::transChoice($message, $number, $arguments, $domain, $locale);
     }
 
     /**
@@ -67,21 +67,21 @@ class CodeTranslator extends Translator
     }
 
     /**
-     * @param string $id
+     * @param string $message
      * @param string $domain
      * @return string
      */
-    protected function formatTransCode($id, $domain = null, array $parameters = array())
+    protected function formatTransCode($message, $domain = null, array $arguments = array())
     {
         if (null === $domain) {
             $domain = 'messages';
         }
 
-        $implodedParam = implode(', ', array_keys($parameters));
+        $implodedArg= implode(', ', array_keys($arguments));
         $display = $this->transcodePattern;
-        $display = str_replace('{id}', $id, $display);
+        $display = str_replace('{message}', $message, $display);
         $display = str_replace('{domain}', $domain, $display);
-        $display = str_replace('{parameters}', $implodedParam, $display);
+        $display = str_replace('{arguments}', $implodedArg, $display);
 
         return $display;
     }

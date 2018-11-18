@@ -74,8 +74,8 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('code_translator')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('locale')->defaultValue('')->end()
-                        ->scalarNode('display_pattern')->defaultValue('#{domain}[{id}]')->cannotBeEmpty()->end()
+                        ->scalarNode('locale')->defaultValue('transCode')->end()
+                        ->scalarNode('display_pattern')->defaultValue('#{domain}[{message}]')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
             ->end();
