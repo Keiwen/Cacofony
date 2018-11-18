@@ -43,6 +43,19 @@ public function action(ParamFetcher $paramFetcher) {
 }
 ```
 
+## Restrict to Role
+This annotation could be used to check user role.
+Could be on a single action or for a whole controller.
+```
+/**
+ * @RestrictToRole("admin")
+ */
+class TestController extends DefaultController
+```
+In this example, system will check if user has 'ROLE_ADMIN' role.
+If not, an AccessDeniedException is raised.
+Value in annotation don't need to be uppercase or have the 'role_' prefix.
+
 ## Template Param
 This annotation could be used for 'constants' given to templates.
 It could be defined on a single action, or for the full controller
