@@ -54,11 +54,6 @@ class KeiwenCacofonyExtension extends ConfigurableExtension implements PrependEx
         $container->setParameter(self::TRANSLATOR_CODE_PATTERN, $mergedConfig['code_translator']['display_pattern']);
 
         $loader->load('services.yml');
-        $loader->load('services_entityRegistry.yml');
-        $loader->load('services_request.yml');
-        $loader->load('services_security.yml');
-        $loader->load('services_form.yml');
-        $loader->load('services_twig.yml');
     }
 
 

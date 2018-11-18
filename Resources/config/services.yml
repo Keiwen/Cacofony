@@ -3,21 +3,61 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+        public: false
 
+    #EVENT LISTENER
     Keiwen\Cacofony\EventListener\:
         resource: '../../EventListener'
-
-    Keiwen\Cacofony\EventListener\AutoDumpListener:
-        arguments:
-            $parameterName: '%keiwen_cacofony.autodump.paramname%'
 
     Keiwen\Cacofony\EventListener\LocaleListener:
         arguments:
             $defaultLocale: '%kernel.default_locale%'
 
+    Keiwen\Cacofony\EventListener\AutoDumpListener:
+        arguments:
+            $parameterName: '%keiwen_cacofony.autodump.paramname%'
+        public: true
+
+    Keiwen\Cacofony\EventListener\ParamFetcherListener:
+        arguments:
+            $fetcherClass: '%keiwen_cacofony.param_fetcher.fetcher_class%'
+            $readerClass: '%keiwen_cacofony.param_fetcher.reader_class%'
+            $controllerParam: '%keiwen_cacofony.param_fetcher.controller_parameter%'
+
+
+    #REQUEST
+    keiwen_cacofony.request:
+        class: Symfony\Component\HttpFoundation\RequestStack
+        factory:
+            - '@request_stack'
+            - 'getCurrentRequest'
+        public: true
+
+    #EXCEPTION CONTROLLER
     Keiwen\Cacofony\Controller\ExceptionController:
         arguments:
             $debug: '%kernel.debug%'
             $previousOnTwigError: '%keiwen_cacofony.exception.previous_on_twigerror%'
+
+    #ASSOCIATION
+    Keiwen\Cacofony\Association\NelmioApiDoc\KeiwenCacofonyHandler:
+        tags:
+            - { name: nelmio_api_doc.extractor.handler }
+
+    #ROLE CHECKER
+    Keiwen\Cacofony\Security\RoleChecker:
+        arguments:
+            $authorizationChecker: '@security.authorization_checker'
+            $rolePrefixes: '%keiwen_cacofony.rolechecker.role_prefixes%'
+
+    #TWIG
+    Keiwen\Cacofony\Twig\:
+        resource: '../../Twig'
+
+    Keiwen\Cacofony\Twig\TwigRequest:
+        arguments:
+            $request: '@keiwen_cacofony.request'
+
+
 
 
