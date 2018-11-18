@@ -36,8 +36,7 @@ class AppController extends DefaultController
      */
     protected function renderTemplate()
     {
-        $templateParams = $this->getTemplateParams();
-        return $templateParams;
+        return $this->getTemplateParams();
     }
 
 
@@ -74,18 +73,18 @@ class AppController extends DefaultController
      * @param int $status
      * @return RedirectResponse
      */
-    public function redirect($url, $status = Response::HTTP_FOUND)
+    public function redirect(string $url, int $status = Response::HTTP_FOUND): RedirectResponse
     {
         return $this->getResponse()->generateRedirect($url, $status);
     }
 
 
     /**
-     * Redirect after a post (prg = post redirect get, to avoid refresh to re-submit form)
+     * Redirect after a post (PRG pattern => post redirect get, to avoid refresh to re-submit form)
      * @param string $url
      * @return RedirectResponse
      */
-    public function redirectPrg($url)
+    public function redirectAfterPost($url)
     {
         return $this->redirect($url, Response::HTTP_SEE_OTHER);
     }

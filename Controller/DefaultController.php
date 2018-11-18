@@ -78,45 +78,33 @@ class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Contr
     }
 
 
-
-    /**
-     * @return string
-     */
-    public function retrieveEnvironment()
-    {
-        /** @var \Symfony\Component\HttpKernel\Kernel $kernel */
-        $kernel = $this->get('kernel');
-        return $kernel->getEnvironment();
-    }
-
-
-    /**
-     * @return EntityRegistry
-     */
-    protected function getEntityRegistry()
-    {
-        $config = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
-        $serviceName = $config['default_entity_registry'];
-        if(!empty($serviceName)) {
-            try {
-                /** @var EntityRegistry $service */
-                $service = $this->get($serviceName);
-                return $service;
-            } catch (ServiceNotFoundException $e) {
-            }
-        }
-        throw new \RuntimeException("Entity registry service ('$serviceName') not found");
-    }
-
-
-    /**
-     * @param string $objectClass
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    public function getRepository(string $objectClass)
-    {
-        return $this->getEntityRegistry()->getRepository($objectClass);
-    }
+//    /**
+//     * @return EntityRegistry
+//     */
+//    protected function getEntityRegistry()
+//    {
+//        $config = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
+//        $serviceName = $config['default_entity_registry'];
+//        if(!empty($serviceName)) {
+//            try {
+//                /** @var EntityRegistry $service */
+//                $service = $this->get($serviceName);
+//                return $service;
+//            } catch (ServiceNotFoundException $e) {
+//            }
+//        }
+//        throw new \RuntimeException("Entity registry service ('$serviceName') not found");
+//    }
+//
+//
+//    /**
+//     * @param string $objectClass
+//     * @return \Doctrine\Common\Persistence\ObjectRepository
+//     */
+//    public function getRepository(string $objectClass)
+//    {
+//        return $this->getEntityRegistry()->getRepository($objectClass);
+//    }
 
 
 
@@ -124,30 +112,9 @@ class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Contr
      * @param int $status
      * @return RedirectResponse
      */
-    protected function redirecToSelf(int $status = Response::HTTP_FOUND)
+    protected function redirectToSelf(int $status = Response::HTTP_FOUND)
     {
         return $this->redirect($this->getRequest()->getUrl(true, true), $status);
-    }
-
-
-    /**
-     * @param string      $id         The message id (may also be an object that can be cast to string)
-     * @param array       $parameters An array of parameters for the message
-     * @param string|null $domain     The domain for the message or null to use the default
-     * @param string|null $locale     The locale or null to use the default
-     *
-     * @return string The translated string
-     *
-     * @throws \InvalidArgumentException If the locale contains invalid characters
-     */
-    protected function translate(string $id,
-                                 array $parameters = array(),
-                                 string $domain = null,
-                                 string $locale = null)
-    {
-        /** @var \Symfony\Component\Translation\TranslatorInterface $translator */
-        $translator = $this->get('translator');
-        return $translator->trans($id, $parameters, $domain, $locale);
     }
 
 
@@ -192,7 +159,7 @@ class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Contr
      * {@inheritdoc}
      * Extended function for autodump
      */
-    protected function render($view, array $parameters = array(), \Symfony\Component\HttpFoundation\Response $response = null)
+    protected function render(string $view, array $parameters = array(), \Symfony\Component\HttpFoundation\Response $response = null): \Symfony\Component\HttpFoundation\Response
     {
         /** @var AutoDumpListener $autodump */
         $autodump = $this->get(AutoDumpListener::class);
@@ -204,7 +171,7 @@ class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Contr
      * {@inheritdoc}
      * Extended function for autodump
      */
-    protected function renderView($view, array $parameters = array())
+    protected function renderView(string $view, array $parameters = array()): string
     {
         /** @var AutoDumpListener $autodump */
         $autodump = $this->get(AutoDumpListener::class);
