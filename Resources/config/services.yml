@@ -50,6 +50,12 @@ services:
             $authorizationChecker: '@security.authorization_checker'
             $rolePrefixes: '%keiwen_cacofony.rolechecker.role_prefixes%'
 
+    #ENTITIES
+    Keiwen\Cacofony\EntitiesManagement\EntityRegistry:
+        arguments:
+            $managerRegistry: '@?doctrine'
+        public: true
+
     #TWIG
     Keiwen\Cacofony\Twig\:
         resource: '../../Twig'
