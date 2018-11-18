@@ -78,36 +78,6 @@ class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Contr
     }
 
 
-//    /**
-//     * @return EntityRegistry
-//     */
-//    protected function getEntityRegistry()
-//    {
-//        $config = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
-//        $serviceName = $config['default_entity_registry'];
-//        if(!empty($serviceName)) {
-//            try {
-//                /** @var EntityRegistry $service */
-//                $service = $this->get($serviceName);
-//                return $service;
-//            } catch (ServiceNotFoundException $e) {
-//            }
-//        }
-//        throw new \RuntimeException("Entity registry service ('$serviceName') not found");
-//    }
-//
-//
-//    /**
-//     * @param string $objectClass
-//     * @return \Doctrine\Common\Persistence\ObjectRepository
-//     */
-//    public function getRepository(string $objectClass)
-//    {
-//        return $this->getEntityRegistry()->getRepository($objectClass);
-//    }
-
-
-
     /**
      * @param int $status
      * @return RedirectResponse
