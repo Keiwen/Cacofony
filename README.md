@@ -43,6 +43,18 @@ public function action(ParamFetcher $paramFetcher) {
 }
 ```
 
+## Template Param
+This annotation could be used for 'constants' given to templates.
+It could be defined on a single action, or for the full controller
+```
+/**
+ * @TemplateParam("section", paramValue="test")
+ */
+class TestController extends DefaultController
+```
+In this example, all actions in this controller will automatically return
+a 'section' parameter, with value 'test'
+
 ## EntityRegistry
 Can save, remove, detach or copy an entity or a list of entities.
 Each methods include an optional commit parameter (default true).
