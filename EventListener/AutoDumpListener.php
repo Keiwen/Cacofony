@@ -25,7 +25,7 @@ class AutoDumpListener implements EventSubscriberInterface
      * @param string                 $parameterName empty will disable autodump
      * @param \Twig_Environment|null $twig
      */
-    function __construct(string $parameterName = '', \Twig_Environment $twig = null)
+    public function __construct(string $parameterName = '', \Twig_Environment $twig = null)
     {
         $this->parameterName = $parameterName;
         $this->twig = $twig;
