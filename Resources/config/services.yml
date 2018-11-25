@@ -64,6 +64,9 @@ services:
         arguments:
             $request: '@keiwen_cacofony.request'
 
+    #TEMPLATING
+    sensio_framework_extra.view.guesser:
+        class: Keiwen\Cacofony\Templating\TemplateGuesser
 
 
 
