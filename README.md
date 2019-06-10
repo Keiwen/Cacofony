@@ -68,8 +68,17 @@ class TestController extends DefaultController
 In this example, all actions in this controller will automatically return
 a 'section' parameter, with value 'test'
 
+## TransCode
+For translations purpose, you can set a specific locale
+(default 'transCode') to display translations code instead of
+actual  translated strings. Useful when working on 
+translations from running application.
+
 ## EntityRegistry
 Can save, remove, detach or copy an entity or a list of entities.
 Each methods include an optional commit parameter (default true).
-In controller: `$this->getEntityRegistry()->saveObject($entity);`
+In controller:
+```
+$this->getEntityRegistry()->saveObject($entity);
+```
 
