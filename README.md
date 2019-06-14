@@ -1,7 +1,7 @@
 # Cacofony
 Custom Application Code Overlay for Symfony framework
 
-*** **Consolidation completed but may missed something** ***
+*** **Consolidation completed for Symfony 4.3 but may missed something** ***
 
 ## Controller
 * Parent controller adds cache management methods
