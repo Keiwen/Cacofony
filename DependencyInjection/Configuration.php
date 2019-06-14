@@ -116,6 +116,14 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('template_guesser')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('extension')
+                            ->defaultValue('html.twig')
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

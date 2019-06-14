@@ -28,6 +28,7 @@ class KeiwenCacofonyExtension extends ConfigurableExtension implements PrependEx
     const EXCEPTION_PREVIOUS_ON_TWIGERROR = 'keiwen_cacofony.exception.previous_on_twigerror';
     const TRANSLATOR_CODE_LOCALE = 'keiwen_cacofony.code_translator.locale';
     const TRANSLATOR_CODE_PATTERN = 'keiwen_cacofony.code_translator.pattern';
+    const TEMPLATE_GUESSER_EXTENSION = 'keiwen_cacofony.template_guesser.extension';
 
     const TWIG_FORMTHEME_TEL = 'KeiwenCacofonyBundle:formtheme:tel.html.twig';
     const TWIG_FORMTHEME_DATE = 'KeiwenCacofonyBundle:formtheme:date.html.twig';
@@ -52,6 +53,7 @@ class KeiwenCacofonyExtension extends ConfigurableExtension implements PrependEx
         $container->setParameter(self::EXCEPTION_PREVIOUS_ON_TWIGERROR, $mergedConfig['exception']['previous_on_twigerror']);
         $container->setParameter(self::TRANSLATOR_CODE_LOCALE, $mergedConfig['code_translator']['locale']);
         $container->setParameter(self::TRANSLATOR_CODE_PATTERN, $mergedConfig['code_translator']['display_pattern']);
+        $container->setParameter(self::TEMPLATE_GUESSER_EXTENSION, $mergedConfig['template_guesser']['extension']);
 
         $loader->load('services.yml');
     }
