@@ -2,7 +2,11 @@
 
 namespace Keiwen\Cacofony\Controller;
 
+use Keiwen\Cacofony\Configuration\TemplateParam;
+use Keiwen\Cacofony\DependencyInjection\KeiwenCacofonyExtension;
 use Keiwen\Cacofony\Http\Response;
+use Keiwen\Utils\Analyser\DebugBacktracer;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,13 +34,31 @@ class AppController extends DefaultController
 
     
     /**
-     * use this method with template annotations to render a view
-     * @see http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/view.html
-     * @return array template params
+     * Use this method without template name to get the default path automatically
+     * Default path is template/{controller}/{action}
+     * @return SymfonyResponse
      */
-    protected function renderTemplate()
+    protected function renderTemplate(array $parameters = array())
     {
-        return $this->getTemplateParams();
+        $request = $this->getRequest();
+        $templateParams = TemplateParam::getArrayFromRequest($request);
+
+        //merge template param from annotations, then params given by method,
+        //and finally parameters sent in render method. Last have priority.
+        $mergedParameters = array_merge($templateParams, $this->getTemplateParams(), $parameters);
+
+        // get calling controller trace
+        $controllerTrace = DebugBacktracer::getCallersTrace(1);
+        $controllerTrace = reset($controllerTrace);
+        // we got the namespaced name, get the end and remove 'controller' from name
+        $controllerName = explode('\\', $controllerTrace['class']);
+        $controllerName = end($controllerName);
+        $controllerName = str_replace('Controller', '', $controllerName);
+
+        $templateExtention = $this->getParameter(KeiwenCacofonyExtension::TEMPLATE_GUESSER_EXTENSION);
+        $view = $controllerName . '/' . $controllerTrace['function']. '.' . $templateExtention;
+
+        return $this->render($view, $mergedParameters, $this->getResponse());
     }
 
 
