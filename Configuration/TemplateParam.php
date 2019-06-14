@@ -3,6 +3,7 @@ namespace Keiwen\Cacofony\Configuration;
 
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationAnnotation;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class TemplateParam
@@ -75,5 +76,16 @@ class TemplateParam extends ConfigurationAnnotation
         return true;
     }
 
+
+    public static function getArrayFromRequest(Request $request)
+    {
+        $templateParameters = array();
+        /** @var TemplateParam[] $fromRequest */
+        $fromRequest = $request->attributes->get('_'.self::ALIAS_NAME, array());
+        foreach($fromRequest as $tpFromRequest) {
+            $templateParameters[$tpFromRequest->getValue()] = $tpFromRequest->getParamValue();
+        }
+        return $templateParameters;
+    }
 
 }
