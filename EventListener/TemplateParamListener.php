@@ -29,13 +29,8 @@ class TemplateParamListener implements EventSubscriberInterface
         $parameters = $event->getControllerResult();
         if(!is_array($parameters)) return;
         $request = $event->getRequest();
-        /** @var TemplateParam[] $templateParams */
-        $templateParams = $request->attributes->get('_'.TemplateParam::ALIAS_NAME, array());
-        foreach($templateParams as $templateParam) {
-            if(!isset($parameters[$templateParam->getValue()])) {
-                $parameters[$templateParam->getValue()] = $templateParam->getParamValue();
-            }
-        }
+        $templateParams = TemplateParam::getArrayFromRequest($request);
+        $parameters = array_merge($templateParams, $parameters);
         $event->setControllerResult($parameters);
     }
 
