@@ -5,14 +5,19 @@ namespace Keiwen\Cacofony\Controller;
 use Keiwen\Cacofony\DependencyInjection\KeiwenCacofonyExtension;
 use Keiwen\Cacofony\EntitiesManagement\EntityRegistry;
 use Keiwen\Cacofony\EventListener\AutoDumpListener;
+use Keiwen\Cacofony\EventListener\LocaleListener;
+use Keiwen\Cacofony\EventListener\OkResponseCodeListener;
+use Keiwen\Cacofony\EventListener\ParamFetcherListener;
+use Keiwen\Cacofony\EventListener\TemplateParamListener;
 use Keiwen\Cacofony\Http\Request;
 use Keiwen\Cacofony\Http\Response;
 use Keiwen\Utils\Object\CacheHandlerTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
+class DefaultController extends AbstractController
 {
     use CacheHandlerTrait;
 
@@ -174,6 +179,18 @@ class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Contr
         $autodump = $this->get(AutoDumpListener::class);
         $autodump->addParameterToDump($view, $parameters);
         return parent::renderView($view, $parameters);
+    }
+
+    public static function getSubscribedServices()
+    {
+        $subsribedServices = parent::getSubscribedServices();
+        $subsribedServices[Request::class] = '?'.Request::class;
+        $subsribedServices[AutoDumpListener::class] = '?'.AutoDumpListener::class;
+        $subsribedServices[LocaleListener::class] = '?'.LocaleListener::class;
+        $subsribedServices[OkResponseCodeListener::class] = '?'.OkResponseCodeListener::class;
+        $subsribedServices[ParamFetcherListener::class] = '?'.ParamFetcherListener::class;
+        $subsribedServices[TemplateParamListener::class] = '?'.TemplateParamListener::class;
+        return $subsribedServices;
     }
 
 
