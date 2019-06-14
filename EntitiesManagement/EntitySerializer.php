@@ -180,6 +180,7 @@ class EntitySerializer
 			}
 			if(!empty($v)) $arrayEmpty = false;
 		}
+		unset($v);
 		if($arrayEmpty && !empty($array)) $array = null;
 
 		return $array;
