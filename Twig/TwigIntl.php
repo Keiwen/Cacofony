@@ -3,7 +3,7 @@
 namespace Keiwen\Cacofony\Twig;
 
 
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl;
 
 class TwigIntl extends \Twig_Extension
 {
@@ -48,7 +48,7 @@ class TwigIntl extends \Twig_Extension
      */
     public function countryNameFilter(string $countryCode)
     {
-        return Intl::getRegionBundle()->getCountryName(strtoupper($countryCode));
+        return Intl\Countries::getName(strtoupper($countryCode));
     }
 
     /**
@@ -57,7 +57,7 @@ class TwigIntl extends \Twig_Extension
      */
     public function countryNames(string $format)
     {
-        $countries = Intl::getRegionBundle()->getCountryNames();
+        $countries = Intl\Countries::getNames();
         if($format == 'json') return json_encode($countries);
         return $countries;
     }
@@ -69,7 +69,7 @@ class TwigIntl extends \Twig_Extension
      */
     public function currencyNames(string $format)
     {
-        $currencies = Intl::getCurrencyBundle()->getCurrencyNames();
+        $currencies = Intl\Currencies::getNames();
         if($format == 'json') return json_encode($currencies);
         return $currencies;
     }
@@ -86,7 +86,7 @@ class TwigIntl extends \Twig_Extension
             list($languageCode, $languageRegion) = explode('_', $languageCode);
             if(empty($region)) $region = $languageRegion;
         }
-        return Intl::getLanguageBundle()->getLanguageName(strtolower($languageCode), strtoupper($region));
+        return Intl\Languages::getName(strtolower($languageCode), strtoupper($region));
     }
 
 
@@ -96,7 +96,7 @@ class TwigIntl extends \Twig_Extension
      */
     public function scriptNameFilter(string $scriptCode)
     {
-        return Intl::getLanguageBundle()->getScriptName(ucfirst(strtolower($languageCode)));
+        return Intl\Scripts::getName(ucfirst(strtolower($scriptCode)));
     }
 
 
@@ -106,7 +106,7 @@ class TwigIntl extends \Twig_Extension
      */
     public function localeNameFilter(string $localeCode)
     {
-        return Intl::getLocaleBundle()->getLocaleName($localeCode);
+        return Intl\Locales::getName($localeCode);
     }
 
     /**
@@ -115,7 +115,7 @@ class TwigIntl extends \Twig_Extension
      */
     public function currencyNameFilter(string $currencyCode)
     {
-        return Intl::getCurrencyBundle()->getCurrencyName(strtoupper($currencyCode));
+        return Intl\Currencies::getName(strtoupper($currencyCode));
     }
 
     /**
@@ -124,7 +124,7 @@ class TwigIntl extends \Twig_Extension
      */
     public function currencySymbolFilter(string $currencyCode)
     {
-        return Intl::getCurrencyBundle()->getCurrencySymbol(strtoupper($currencyCode));
+        return Intl\Currencies::getSymbol(strtoupper($currencyCode));
     }
 
 
