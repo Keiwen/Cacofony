@@ -5,7 +5,7 @@ namespace Keiwen\Cacofony\Reader;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TemplateAnnotationReader
 {
@@ -15,7 +15,7 @@ class TemplateAnnotationReader
     protected $defaultTemplateExtension = '.html.twig';
     protected $methodSuffix = 'Action';
 
-    public function __construct(Controller $controller, string $bundleName = 'AppBundle')
+    public function __construct(AbstractController $controller, string $bundleName = 'AppBundle')
     {
         $this->rController = new \ReflectionClass($controller);
         $this->bundleName = $bundleName;
