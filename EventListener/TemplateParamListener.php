@@ -5,7 +5,8 @@ namespace Keiwen\Cacofony\EventListener;
 
 use Keiwen\Cacofony\Configuration\TemplateParam;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class TemplateParamListener implements EventSubscriberInterface
@@ -21,9 +22,9 @@ class TemplateParamListener implements EventSubscriberInterface
 
     /**
      * Called after each controller. Store template parameters annotated in controller
-     * @param GetResponseForControllerResultEvent $event
+     * @param ViewEvent $event
      */
-    public function onKernelView(GetResponseForControllerResultEvent $event)
+    public function onKernelView(ViewEvent $event)
     {
         $parameters = $event->getControllerResult();
         if(!is_array($parameters)) return;

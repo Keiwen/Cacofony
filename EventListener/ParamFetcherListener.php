@@ -7,8 +7,8 @@ use Keiwen\Cacofony\Http\Request;
 use Keiwen\Cacofony\ParamFetcher\ParamFetcher;
 use Doctrine\Common\Annotations\Reader;
 use Keiwen\Cacofony\ParamFetcher\ParamReader;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -49,11 +49,11 @@ class ParamFetcherListener implements EventSubscriberInterface
     /**
      * Core controller handler.
      *
-     * @param FilterControllerEvent $event
+     * @param ControllerEvent $event
      *
      * @throws \InvalidArgumentException
      */
-    public function onKernelController(FilterControllerEvent $event)
+    public function onKernelController(ControllerEvent $event)
     {
         /** @var Request $request */
         $request = $event->getRequest();
@@ -61,7 +61,7 @@ class ParamFetcherListener implements EventSubscriberInterface
 
         $callable = $event->getController();
         list($controller, $methodName) = $callable;
-        if(!$controller instanceof Controller) return;
+        if(!$controller instanceof AbstractController) return;
 
         $attributeName = $this->getControllerAttributeName($controller, $methodName);
         $paramFetcher = $this->getParamFetcher($request, $controller, $methodName);
@@ -70,10 +70,10 @@ class ParamFetcherListener implements EventSubscriberInterface
 
 
     /**
-     * @param Controller $controller
+     * @param AbstractController $controller
      * @return ParamReader
      */
-    protected function getParamReader(Controller $controller)
+    protected function getParamReader(AbstractController $controller)
     {
         try {
             $paramReader = new $this->readerClass($this->annotationReader, $controller);
@@ -86,11 +86,11 @@ class ParamFetcherListener implements EventSubscriberInterface
 
     /**
      * @param Request    $request
-     * @param Controller $controller
+     * @param AbstractController $controller
      * @param string     $methodName
      * @return ParamFetcher
      */
-    protected function getParamFetcher(Request $request, Controller $controller, string $methodName)
+    protected function getParamFetcher(Request $request, AbstractController $controller, string $methodName)
     {
         $paramReader = $this->getParamReader($controller);
 
@@ -105,11 +105,11 @@ class ParamFetcherListener implements EventSubscriberInterface
 
     /**
      * Determines which attribute the paramFetcher should be injected as.
-     * @param Controller $controller
+     * @param AbstractController $controller
      * @param string     $methodName
      * @return mixed|string
      */
-    private function getControllerAttributeName(Controller $controller, string $methodName)
+    private function getControllerAttributeName(AbstractController $controller, string $methodName)
     {
         $method = new \ReflectionMethod($controller, $methodName);
         foreach($method->getParameters() as $param) {

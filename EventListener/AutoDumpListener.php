@@ -5,8 +5,8 @@ namespace Keiwen\Cacofony\EventListener;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class AutoDumpListener implements EventSubscriberInterface
@@ -50,9 +50,9 @@ class AutoDumpListener implements EventSubscriberInterface
 
     /**
      * Called after each controller. Store parameters send by controller
-     * @param GetResponseForControllerResultEvent $event
+     * @param ViewEvent $event
      */
-    public function onKernelView(GetResponseForControllerResultEvent $event)
+    public function onKernelView(ViewEvent $event)
     {
         if(!function_exists('dump') || empty($this->getAutodumpParameterName())) return;
         $parameters = $event->getControllerResult();
@@ -88,9 +88,9 @@ class AutoDumpListener implements EventSubscriberInterface
 
     /**
      * Called for each request. Use only the master request to dump all stored parameters
-     * @param FilterResponseEvent $event
+     * @param ResponseEvent $event
      */
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event)
     {
         if(!function_exists('dump') || empty($this->getAutodumpParameterName())) return;
         //dump only for master request if not empty

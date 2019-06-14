@@ -4,11 +4,8 @@ namespace Keiwen\Cacofony\EventListener;
 
 
 use Keiwen\Cacofony\Configuration\OkResponseCode;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -29,7 +26,7 @@ class OkResponseCodeListener implements EventSubscriberInterface
         );
     }
 
-    public function onKernelResponse(GetResponseEvent $event)
+    public function onKernelResponse(RequestEvent $event)
     {
         $request = $event->getRequest();
         /** @var OkResponseCode $annotation */
