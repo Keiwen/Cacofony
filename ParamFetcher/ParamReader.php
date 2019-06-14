@@ -4,7 +4,7 @@ namespace Keiwen\Cacofony\ParamFetcher;
 
 
 use Keiwen\Cacofony\ParamFetcher\Annotation\RequestParam;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\Common\Annotations\Reader;
 
 
@@ -26,10 +26,10 @@ class ParamReader
      * ParamReader constructor.
      *
      * @param Reader     $annotationReader
-     * @param Controller $controller
+     * @param AbstractController $controller
      * @param bool       $methodOverClass
      */
-    public function __construct(Reader $annotationReader, Controller $controller, bool $methodOverClass = true)
+    public function __construct(Reader $annotationReader, AbstractController $controller, bool $methodOverClass = true)
     {
         if(empty($controller)) throw new \RuntimeException('Controller not defined');
         $this->annotationReader = $annotationReader;
