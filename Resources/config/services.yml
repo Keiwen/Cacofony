@@ -26,7 +26,7 @@ services:
 
 
     #REQUEST
-    keiwen_cacofony.request:
+    Keiwen\Cacofony\Http\Request:
         class: Symfony\Component\HttpFoundation\RequestStack
         factory:
             - '@request_stack'
@@ -62,7 +62,7 @@ services:
 
     Keiwen\Cacofony\Twig\TwigRequest:
         arguments:
-            $request: '@keiwen_cacofony.request'
+            $request: '@Keiwen\Cacofony\Http\Request'
 
     #TEMPLATING
     sensio_framework_extra.view.guesser:

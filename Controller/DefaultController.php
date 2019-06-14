@@ -69,8 +69,9 @@ class DefaultController extends AbstractController
     public function getRequest()
     {
         $config = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
+        $defaultRequestClass = str_replace('@', '', $config['default_request']);
         /** @var Request $request */
-        $request = $this->get($config['default_request']);
+        $request = $this->get($defaultRequestClass);
         return $request;
     }
 
