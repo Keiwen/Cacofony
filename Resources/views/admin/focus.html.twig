@@ -1,0 +1,11 @@
+{% extends '@EasyAdmin/default/list.html.twig' %}
+
+{% block content_title %}
+    {% apply spaceless %}
+    {% set _default_title = 'list.page_title'|trans(_trans_parameters, 'EasyAdminBundle') %}
+    {{ (_entity_config.list.title is defined ? _entity_config.list.title|trans(_trans_parameters) : _default_title)|raw }}
+    <br/>
+    ({{ _request_parameters.focusFromEntity }} {{ _request_parameters.focusFromName }})
+    {% endapply %}
+{% endblock %}
+

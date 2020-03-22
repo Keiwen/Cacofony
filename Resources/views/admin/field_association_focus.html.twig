@@ -1,0 +1,3 @@
+{% set focus_from_name = attribute(item, '__toString') is defined ? item.__toString() : item.id %}
+
+<a href="{{ path('easyadmin', { action: 'focus', focusFromEntity: entity_config.name, focusFromId: item.id, entity: link_parameters.entity, focusFromName: focus_from_name }) }}" class="badge badge-secondary">{{ value|length }}</a>
