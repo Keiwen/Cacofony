@@ -30,10 +30,6 @@ class KeiwenCacofonyExtension extends ConfigurableExtension implements PrependEx
     const TRANSLATOR_CODE_PATTERN = 'keiwen_cacofony.code_translator.pattern';
     const TEMPLATE_GUESSER_EXTENSION = 'keiwen_cacofony.template_guesser.extension';
 
-    const TWIG_FORMTHEME_TEL = 'KeiwenCacofonyBundle:formtheme:tel.html.twig';
-    const TWIG_FORMTHEME_DATE = 'KeiwenCacofonyBundle:formtheme:date.html.twig';
-    const TWIG_FORMTHEME_RADIOCHECK = 'KeiwenCacofonyBundle:formtheme:radio_checkbox.html.twig';
-
     public function loadInternal(array $mergedConfig, ContainerBuilder $container)
     {
 
@@ -61,13 +57,6 @@ class KeiwenCacofonyExtension extends ConfigurableExtension implements PrependEx
 
     public function prepend(ContainerBuilder $container)
     {
-        $container->prependExtensionConfig('twig', array(
-            'form_themes' => array(
-                static::TWIG_FORMTHEME_TEL,
-                static::TWIG_FORMTHEME_DATE,
-                static::TWIG_FORMTHEME_RADIOCHECK,
-            )
-        ));
     }
 
 }

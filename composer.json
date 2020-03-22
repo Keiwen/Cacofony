@@ -18,7 +18,7 @@
   },
 
   "suggest": {
-    "nelmio/api-doc-bundle":  "Generate API doc from annotations, ~2.13",
+    "nelmio/api-doc-bundle":  "Generate API doc from annotations, ^3.6",
     "symfony/assetic-bundle":  "Combine js/css ressources, ~2.8",
     "twbs/bootstrap":  "Include bootstrap, ~3.0",
     "braincrafted/bootstrap-bundle":  "Manage bootstrap, ~2.2",
