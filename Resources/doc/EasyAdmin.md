@@ -17,11 +17,13 @@ refering to one category. In category list, each category will have a link
 to the list of all products related to this category. 
 
 ### Setup
+** **Focus functionnality required use of ID in entities** **
+
 In route configuration, switch to the Cacofony controller: `@KeiwenCacofonyBundle/Controller/EasyAdminController.php`
 
 routes/easy_admin.yaml
 ```yaml
-//    resource: '@EasyAdminBundle/Controller/EasyAdminController.php'
+#    resource: '@EasyAdminBundle/Controller/EasyAdminController.php'
     resource: '@KeiwenCacofonyBundle/Controller/EasyAdminController.php'
 ```
 
@@ -35,7 +37,10 @@ packages/easy_admin.yaml
                 fields: ['name', {property: products, template: '@KeiwenCacofony/admin/field_association_focus.html.twig'}]
 ```
 
-Focused list is using the `@KeiwenCacofony/admin/focus.html.twig` template.
+Focused list is based on list configuration, and it uses
+the `@KeiwenCacofony/admin/focus.html.twig` template.
+This template display the 'parent' name, using __toString method of the
+entity if exists, or just the id.
 
 ### Samples
 ![Parent list](https://raw.githubusercontent.com/Keiwen/Cacofony/master/Resources/doc/screenshots/easyadmin_focus_parentlist.png)
