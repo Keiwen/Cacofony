@@ -9,3 +9,9 @@
     {% endapply %}
 {% endblock %}
 
+{% block search_form %}
+    {{ parent() }}
+    <input type="hidden" name="focusFromEntity" value="{{ _request_parameters.focusFromEntity }}">
+    <input type="hidden" name="focusFromId" value="{{ _request_parameters.focusFromId }}">
+    <input type="hidden" name="focusFromName" value="{{ _request_parameters.focusFromName }}">
+{% endblock %}

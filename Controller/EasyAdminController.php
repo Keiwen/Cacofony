@@ -3,26 +3,55 @@
 namespace Keiwen\Cacofony\Controller;
 
 use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController as BaseEasyAdminController;
+use Symfony\Component\HttpFoundation\Response;
 
 class EasyAdminController extends BaseEasyAdminController
 {
 
 
+    /**
+     * new focus action: list 'child' entities with same 'parent' (one-to-many relation)
+     * @return Response
+     */
     protected function focusAction()
+    {
+        $this->setFocusDqlFilter('list');
+        $this->entity['templates']['list'] = '@KeiwenCacofony/admin/focus.html.twig';
+        return parent::listAction();
+    }
+
+
+    /**
+     * override search action to include search from focus
+     * @return Response
+     */
+    protected function searchAction()
+    {
+        $this->setFocusDqlFilter('search');
+        return parent::searchAction();
+    }
+
+
+    /**
+     * complete existing dql filter to add the focus on parent entity
+     * @param string $action
+     */
+    protected function setFocusDqlFilter(string $action)
     {
         $fromEntity = strtolower($this->request->query->get('focusFromEntity'));
         $fromId = $this->request->query->getInt('focusFromId');
         if (!empty($fromEntity) && !empty($fromId)) {
             // if focus set, add dql_filter
             $dqlFilter = "entity.$fromEntity = $fromId";
-            $this->entity['list']['dql_filter'] = empty($this->entity['list']['dql_filter']) ? $dqlFilter : $dqlFilter . ' AND (' . $this->entity['list']['dql_filter'] . ')';
-            // set custom template
-            $this->entity['templates']['list'] = '@KeiwenCacofony/admin/focus.html.twig';
+            $this->entity[$action]['dql_filter'] = empty($this->entity[$action]['dql_filter']) ? $dqlFilter : $dqlFilter . ' AND (' . $this->entity[$action]['dql_filter'] . ')';
         }
-        return parent::listAction();
     }
 
 
+    /**
+     * after creating new entity, try to automatically assign parent entity if focus set
+     * @return object
+     */
     protected function createNewEntity()
     {
         $entity = parent::createNewEntity();
@@ -40,6 +69,10 @@ class EasyAdminController extends BaseEasyAdminController
     }
 
 
+    /**
+     * get 'parent' entity if focus set
+     * @return object|null
+     */
     protected function getFocusedEntity()
     {
         $fromEntity = strtolower($this->request->query->get('focusFromEntity'));
