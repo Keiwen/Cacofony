@@ -15,3 +15,8 @@
     <input type="hidden" name="focusFromId" value="{{ _request_parameters.focusFromId }}">
     <input type="hidden" name="focusFromName" value="{{ _request_parameters.focusFromName }}">
 {% endblock %}
+
+
+{% block filters_action %}
+    {# remove filters action, cannot override for focus #}
+{% endblock filters_action %}
