@@ -38,11 +38,11 @@ class EasyAdminController extends BaseEasyAdminController
      */
     protected function setFocusDqlFilter(string $action)
     {
-        $fromEntity = strtolower($this->request->query->get('focusFromEntity'));
+        $fromMap = strtolower($this->request->query->get('focusFromMap'));
         $fromId = $this->request->query->getInt('focusFromId');
-        if (!empty($fromEntity) && !empty($fromId)) {
+        if (!empty($fromMap) && !empty($fromId)) {
             // if focus set, add dql_filter
-            $dqlFilter = "entity.$fromEntity = $fromId";
+            $dqlFilter = "entity.$fromMap = $fromId";
             $this->entity[$action]['dql_filter'] = empty($this->entity[$action]['dql_filter']) ? $dqlFilter : $dqlFilter . ' AND (' . $this->entity[$action]['dql_filter'] . ')';
         }
     }
@@ -59,8 +59,8 @@ class EasyAdminController extends BaseEasyAdminController
         $targetEntity = $this->getFocusedEntity();
         if (!empty($targetEntity)) {
             // if focus found, set association by default
-            $fromEntity = strtolower($this->request->query->get('focusFromEntity'));
-            $setTargetMethod = 'set' . $fromEntity;
+            $fromMap = strtolower($this->request->query->get('focusFromMap'));
+            $setTargetMethod = 'set' . $fromMap;
             if (method_exists($entity, $setTargetMethod)) {
                 $entity->{$setTargetMethod}($targetEntity);
             }

@@ -1,3 +1,4 @@
 {% set focus_from_name = attribute(item, '__toString') is defined ? item.__toString() : item.id %}
+{% set focus_from_map = field_options.mappedBy is defined ? field_options.mappedBy : link_parameters.entity %}
 
-<a href="{{ path('easyadmin', { action: 'focus', focusFromEntity: entity_config.name, focusFromId: item.id, entity: link_parameters.entity, focusFromName: focus_from_name }) }}" class="badge badge-secondary">{{ value|length }}</a>
+<a href="{{ path('easyadmin', { action: 'focus', focusFromEntity: entity_config.name, focusFromId: item.id, entity: link_parameters.entity, focusFromName: focus_from_name, focusFromMap: focus_from_map }) }}" class="badge badge-primary">{{ value|length }}</a>
