@@ -9,10 +9,6 @@ services:
     Keiwen\Cacofony\EventListener\:
         resource: '../../EventListener'
 
-    Keiwen\Cacofony\EventListener\LocaleListener:
-        arguments:
-            $defaultLocale: '%kernel.default_locale%'
-
     Keiwen\Cacofony\EventListener\AutoDumpListener:
         arguments:
             $parameterName: '%keiwen_cacofony.autodump.paramname%'
@@ -33,12 +29,6 @@ services:
             - 'getCurrentRequest'
         public: true
 
-    #EXCEPTION CONTROLLER
-    Keiwen\Cacofony\Controller\ExceptionController:
-        arguments:
-            $debug: '%kernel.debug%'
-            $previousOnTwigError: '%keiwen_cacofony.exception.previous_on_twigerror%'
-
     #ASSOCIATION
     Keiwen\Cacofony\Association\NelmioApiDoc\KeiwenCacofonyHandler:
         tags:
@@ -47,7 +37,6 @@ services:
     #ROLE CHECKER
     Keiwen\Cacofony\Security\RoleChecker:
         arguments:
-            $authorizationChecker: '@security.authorization_checker'
             $rolePrefixes: '%keiwen_cacofony.rolechecker.role_prefixes%'
 
     #ENTITIES
