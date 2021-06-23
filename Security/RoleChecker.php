@@ -7,16 +7,17 @@ use Keiwen\Cacofony\Security\Annotation\RestrictToRole;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Symfony\Component\Security\Core\Security;
 
 class RoleChecker
 {
 
-    protected $authorizationChecker;
+    protected $security;
     protected $rolePrefixes = array();
 
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker, array $rolePrefixes = array())
+    public function __construct(Security $security, array $rolePrefixes = array())
     {
-        $this->authorizationChecker = $authorizationChecker;
+        $this->security = $security;
         $this->rolePrefixes = $rolePrefixes;
     }
 
@@ -40,7 +41,7 @@ class RoleChecker
         $anotation = new RestrictToRole($values);
         $expression = $anotation->getExpression();
         try {
-            return $this->authorizationChecker->isGranted(array(new Expression($expression)));
+            return $this->security->isGranted(new Expression($expression));
         } catch(AuthenticationCredentialsNotFoundException $e) {
             return false;
         }

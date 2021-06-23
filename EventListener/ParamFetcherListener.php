@@ -60,9 +60,10 @@ class ParamFetcherListener implements EventSubscriberInterface
         if(!$request instanceof Request) return;
 
         $callable = $event->getController();
-        $controller = null;
-        $methodName = '';
-        if(is_array($callable)) list($controller, $methodName) = $callable;
+        if(!is_array($callable)) {
+            return;
+        }
+        list($controller, $methodName) = $callable;
         if(!$controller instanceof AbstractController) return;
 
         $attributeName = $this->getControllerAttributeName($controller, $methodName);

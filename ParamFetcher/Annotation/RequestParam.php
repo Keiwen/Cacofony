@@ -96,8 +96,8 @@ class RequestParam
     {
         $value = $this->retrieveValueInRequest($request, $default);
 
-        if(!empty($this->filter)) {
-            $value = StringSanitizer::get($value, $this->filter);
+        if(!empty($this->filter) && $value !== null) {
+            $value = (new StringSanitizer())->get($value, $this->filter);
         }
         return $value;
     }

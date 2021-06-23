@@ -5,10 +5,8 @@ namespace Keiwen\Cacofony\Controller;
 use Keiwen\Cacofony\DependencyInjection\KeiwenCacofonyExtension;
 use Keiwen\Cacofony\EntitiesManagement\EntityRegistry;
 use Keiwen\Cacofony\EventListener\AutoDumpListener;
-use Keiwen\Cacofony\EventListener\LocaleListener;
-use Keiwen\Cacofony\EventListener\OkResponseCodeListener;
 use Keiwen\Cacofony\EventListener\ParamFetcherListener;
-use Keiwen\Cacofony\EventListener\TemplateParamListener;
+use Keiwen\Cacofony\EventListener\TemplateParameterListener;
 use Keiwen\Cacofony\Http\Request;
 use Keiwen\Cacofony\Http\Response;
 use Keiwen\Utils\Object\CacheHandlerTrait;
@@ -157,19 +155,6 @@ class DefaultController extends AbstractController
     }
 
 
-
-    /**
-     * {@inheritdoc}
-     * Extended function for autodump
-     */
-    protected function render(string $view, array $parameters = array(), \Symfony\Component\HttpFoundation\Response $response = null): \Symfony\Component\HttpFoundation\Response
-    {
-        /** @var AutoDumpListener $autodump */
-        $autodump = $this->get(AutoDumpListener::class);
-        $autodump->addParameterToDump($view, $parameters);
-        return parent::render($view, $parameters, $response);
-    }
-
     /**
      * {@inheritdoc}
      * Extended function for autodump
@@ -187,10 +172,8 @@ class DefaultController extends AbstractController
         $subsribedServices = parent::getSubscribedServices();
         $subsribedServices[Request::class] = '?'.Request::class;
         $subsribedServices[AutoDumpListener::class] = '?'.AutoDumpListener::class;
-        $subsribedServices[LocaleListener::class] = '?'.LocaleListener::class;
-        $subsribedServices[OkResponseCodeListener::class] = '?'.OkResponseCodeListener::class;
         $subsribedServices[ParamFetcherListener::class] = '?'.ParamFetcherListener::class;
-        $subsribedServices[TemplateParamListener::class] = '?'.TemplateParamListener::class;
+        $subsribedServices[TemplateParameterListener::class] = '?'.TemplateParameterListener::class;
         return $subsribedServices;
     }
 

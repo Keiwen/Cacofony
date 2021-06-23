@@ -1,0 +1,25 @@
+keiwen_cacofony:
+    param_fetcher:
+        controller_parameter: paramFetcher
+        fetcher_class:        Keiwen\Cacofony\ParamFetcher\ParamFetcher
+        reader_class:         Keiwen\Cacofony\ParamFetcher\ParamReader
+    controller:
+        default_cache:        cache
+        default_entity_registry: Keiwen\Cacofony\EntitiesManagement\EntityRegistry
+        default_log:          monolog.logger
+        default_request:      '@Keiwen\Cacofony\Http\Request'
+        log_channel:          KeiwenCacofony
+        getparam_disable_cache: noCache
+        api_format_response:  true
+    autodump:
+        # Name of the dump's key containing template parameters
+        parameter_name:       _templatesParameters
+    exception:
+        previous_on_twigerror: true
+    rolechecker:
+        role_prefixes:        []
+    code_translator:
+        locale:               transCode
+        display_pattern:      '#{domain}[{message}]'
+    template_guesser:
+        extension:            html.twig

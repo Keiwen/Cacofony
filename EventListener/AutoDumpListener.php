@@ -8,6 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Twig\Environment as TwigEnvironment;
 
 class AutoDumpListener implements EventSubscriberInterface
 {
@@ -23,9 +24,9 @@ class AutoDumpListener implements EventSubscriberInterface
      * AutoDumpListener constructor.
      *
      * @param string                 $parameterName empty will disable autodump
-     * @param \Twig_Environment|null $twig
+     * @param TwigEnvironment|null   $twig
      */
-    public function __construct(string $parameterName = '', \Twig_Environment $twig = null)
+    public function __construct(string $parameterName = '', TwigEnvironment $twig = null)
     {
         $this->parameterName = $parameterName;
         $this->twig = $twig;

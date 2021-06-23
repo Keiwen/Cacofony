@@ -3,7 +3,7 @@
 namespace Keiwen\Cacofony\Route\Annotation;
 
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 class SingleMethodRoute extends Route
 {

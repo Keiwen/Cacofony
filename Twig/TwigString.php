@@ -2,17 +2,26 @@
 
 namespace Keiwen\Cacofony\Twig;
 
+use Keiwen\Utils\Sanitize\StringSanitizer;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-class TwigString extends \Twig_Extension
+class TwigString extends AbstractExtension
 {
 
+    /** @var StringSanitizer $stringSanitizer */
+    protected $stringSanitizer;
+
     /**
-     * @return string
+     * TwigString constructor.
+     * @param StringSanitizer|null $stringSanitizer
      */
-	public function getName()
+    public function __construct(StringSanitizer $stringSanitizer = null)
     {
-		return 'caco_twig_string_extension';
-	}
+        if($stringSanitizer === null) $stringSanitizer = new StringSanitizer();
+        $this->stringSanitizer = $stringSanitizer;
+    }
+
 
     /**
      * @return array
@@ -20,15 +29,16 @@ class TwigString extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('ucfirst', 'ucfirst'),
-            new \Twig_SimpleFilter('lcfirst', 'lcfirst'),
-            new \Twig_SimpleFilter('ucwords', 'ucwords'),
-            new \Twig_SimpleFilter('str_repeat', 'str_repeat'),
-            new \Twig_SimpleFilter('str_word_count', 'str_word_count'),
+            new TwigFilter('ucfirst', 'ucfirst'),
+            new TwigFilter('lcfirst', 'lcfirst'),
+            new TwigFilter('ucwords', 'ucwords'),
+            new TwigFilter('str_repeat', 'str_repeat'),
+            new TwigFilter('str_word_count', 'str_word_count'),
 
-            new \Twig_SimpleFilter('str_limit', array($this, 'strLimitFilter')),
-            new \Twig_SimpleFilter('escchar', array($this, 'escCharFilter')),
-            new \Twig_SimpleFilter('escquote', array($this, 'escQuoteFilter')),
+            new TwigFilter('str_limit', array($this, 'strLimitFilter')),
+            new TwigFilter('escchar', array($this, 'escCharFilter')),
+            new TwigFilter('escquote', array($this, 'escQuoteFilter')),
+            new TwigFilter('string_sanitize', array($this->stringSanitizer, 'get')),
         );
     }
 
@@ -42,9 +52,10 @@ class TwigString extends \Twig_Extension
      */
     public function strLimitFilter(string $string, int $limitLength, string $complement = '...')
     {
-        if(strlen($string <= $limitLength)) return $string;
+        if(strlen($string) <= $limitLength) return $string;
         $complementLength = strlen($complement);
         $limitLength -= $complementLength;
+        if($limitLength <= 0) return $string;
         $string = substr($string, 0, $limitLength);
         return $string . $complement;
     }

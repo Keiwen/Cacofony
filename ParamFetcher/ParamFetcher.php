@@ -7,6 +7,7 @@ use Keiwen\Cacofony\ParamFetcher\Annotation\RequestParam;
 use Symfony\Component\HttpFoundation\Request;
 use Keiwen\Cacofony\Http\Request as CacoRequest;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Keiwen\Cacofony\HttpException\ServerErrorHttpException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\Constraints;
@@ -41,7 +42,7 @@ class ParamFetcher
     {
         $parameters = $this->paramReader->read($this->method);
         if(empty($parameters[$name])) {
-            throw new BadRequestHttpException(sprintf("No annotation configured for parameter '%s'.", $name));
+            throw new ServerErrorHttpException(sprintf("No annotation configured for parameter '%s'.", $name));
         }
 
         $parameter = $parameters[$name];

@@ -31,25 +31,13 @@ class CodeTranslator extends Translator
     /**
      * {@inheritdoc}
      */
-    public function trans($message, array $arguments = array(), $domain = null, $locale = null)
+    public function trans(?string $id, array $arguments = array(), string $domain = null, string $locale = null)
     {
         if ($this->hasAskedForTransCode($locale)) {
-            return $this->formatTransCode($message, $domain, $arguments);
+            return $this->formatTransCode($id, $domain, $arguments);
         }
 
-        return parent::trans($message, $arguments, $domain, $locale);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function transChoice($message, $number, array $arguments = array(), $domain = null, $locale = null)
-    {
-        if ($this->hasAskedForTransCode($locale)) {
-            return $this->formatTransCode($message, $domain, $arguments);
-        }
-
-        return parent::transChoice($message, $number, $arguments, $domain, $locale);
+        return parent::trans($id, $arguments, $domain, $locale);
     }
 
     /**
