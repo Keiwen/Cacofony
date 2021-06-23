@@ -16,8 +16,8 @@ class RestrictToRole extends Security
     protected $roleList = array();
     protected $associationOperator = self::OPERATOR_OR;
 
-    const OPERATOR_OR = 'or';
-    const OPERATOR_AND = 'and';
+    public const OPERATOR_OR = 'or';
+    public const OPERATOR_AND = 'and';
 
     /**
      * Use annotation by giving list of role as parameter.
@@ -45,7 +45,7 @@ class RestrictToRole extends Security
             //ensure to have a valid role prefix
             $this->validateRolePrefix($role);
             //build has_role expression
-            $role = "has_role('$role')";
+            $role = "is_granted('$role')";
         }
         return implode(" $this->associationOperator ", $roleList);
     }
@@ -85,7 +85,7 @@ class RestrictToRole extends Security
      */
     public function setMustHaveAll(bool $all)
     {
-        if($all) $this->associationOperator = self::OPERATOR_AND;
+        $this->associationOperator = $all ? self::OPERATOR_AND : self::OPERATOR_OR;
     }
 
 
