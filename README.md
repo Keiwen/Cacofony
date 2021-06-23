@@ -61,7 +61,7 @@ This annotation could be used for 'constants' given to templates.
 It could be defined on a single action, or for the full controller
 ```
 /**
- * @TemplateParam("section", paramValue="test")
+ * @TemplateParameter("section", paramValue="test")
  */
 class TestController extends DefaultController
 ```
