@@ -56,13 +56,16 @@ class AppController extends DefaultController
         $controllerName = explode('\\', $controllerTrace['class']);
         $controllerName = end($controllerName);
         $controllerName = str_replace('Controller', '', $controllerName);
-
-        $templateExtention = $this->getParameter(KeiwenCacofonyExtension::TEMPLATE_GUESSER_EXTENSION);
+        // Regarding function, remove 'Action' at the end if needed
+        $actionName = $controllerTrace['function'];
+        $actionName = str_replace('Action', '', $actionName);
 
         //snake case names when looking for template
         $stringFormatter = new StringFormat();
         $templatePath = $stringFormatter->formatSnakeCase($controllerName);
-        $templateName = $stringFormatter->formatSnakeCase($controllerTrace['function']);
+        $templateName = $stringFormatter->formatSnakeCase($actionName);
+
+        $templateExtention = $this->getParameter(KeiwenCacofonyExtension::TEMPLATE_GUESSER_EXTENSION);
 
         $view = $templatePath . '/' . $templateName. '.' . $templateExtention;
 

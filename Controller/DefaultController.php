@@ -174,6 +174,7 @@ class DefaultController extends AbstractController
         $subsribedServices[AutoDumpListener::class] = '?'.AutoDumpListener::class;
         $subsribedServices[ParamFetcherListener::class] = '?'.ParamFetcherListener::class;
         $subsribedServices[TemplateParameterListener::class] = '?'.TemplateParameterListener::class;
+        $subsribedServices[EntityRegistry::class] = '?'.EntityRegistry::class;
         return $subsribedServices;
     }
 
