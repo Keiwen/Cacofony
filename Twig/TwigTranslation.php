@@ -3,23 +3,26 @@
 namespace Keiwen\Cacofony\Twig;
 
 
-use Symfony\Bridge\Twig\Extension\TranslationExtension;
+use Symfony\Contracts\Translation\TranslatableInterface;
+use Symfony\Contracts\Translation\TranslatorTrait;
+use Twig\Extension\AbstractExtension;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\TwigFilter;
+use Twig\Environment as TwigEnvironment;
 
 /**
  * Class TwigTranslation
  * Override default TranslationExtension to manage non breakable spaces that could occurs with punctuation
- * To override trans filter, this extension should be registered with default service id "twig.extension.trans"
  *
  * @package Keiwen\Cacofony\Twig
  */
-class TwigTranslation extends TranslationExtension
+class TwigTranslation extends AbstractExtension
 {
 
     protected $twig;
     protected $requestStack;
+    protected $translator;
 
     /** @var array List of punctuation mark that MUST have nb-space before */
     protected static $spaceBeforePunctuation = array(
@@ -32,42 +35,31 @@ class TwigTranslation extends TranslationExtension
     );
 
 
-    public function __construct(TranslatorInterface $translator, RequestStack $requestStack, \Twig_Environment $twig = null)
+    public function __construct(TranslatorInterface $translator = null, RequestStack $requestStack = null, TwigEnvironment $twig = null)
     {
-        $this->twig = $twig;
+        $this->translator = $translator;
         $this->requestStack = $requestStack;
-        parent::__construct($translator, null);
+        $this->twig = $twig;
     }
-
-
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'caco_portal_twig_translation';
-    }
-
 
     /**
      * @return array
      */
-    public function getFilters()
+    public function getFilters(): array
     {
-        $filters = parent::getFilters();
-        $filters[] = new \Twig_SimpleFilter('trans', array($this, 'trans'), array('is_safe' => array('html')));
-        $filters[] = new \Twig_SimpleFilter('hasTrans', array($this, 'hasTrans'), array('is_safe' => array('html')));
-        $filters[] = new \Twig_SimpleFilter('punctuate', array($this, 'punctuate'), array('is_safe' => array('html')));
-        $filters[] = new \Twig_SimpleFilter('label', array($this, 'label'), array('is_safe' => array('html')));
-        return $filters;
+        return array(
+            new TwigFilter('trans', array($this, 'trans'), array('is_safe' => array('html'))),
+            new TwigFilter('hasTrans', array($this, 'hasTrans'), array('is_safe' => array('html'))),
+            new TwigFilter('punctuate', array($this, 'punctuate'), array('is_safe' => array('html'))),
+            new TwigFilter('label', array($this, 'label'), array('is_safe' => array('html'))),
+        );
     }
 
     /**
-     * @param string $locale
+     * @param string|null $locale
      * @return string
      */
-    protected function detectMainLocale(string $locale = '')
+    protected function detectMainLocale(string $locale = null)
     {
         if(empty($locale)) $locale = $this->requestStack->getMasterRequest()->getLocale();
         if(strpos($locale, '_') !== false) {
@@ -83,11 +75,12 @@ class TwigTranslation extends TranslationExtension
      * Could add nb-space before mark according to settings
      * @param string $text
      * @param string $mark
+     * @param string $locale
      * @return string
      */
-    public function punctuate(string $text, string $mark)
+    public function punctuate(string $text, string $mark, string $locale = '')
     {
-        $locale = $this->detectMainLocale();
+        if(empty($locale)) $locale = $this->detectMainLocale();
         if(!empty(static::$spaceBeforePunctuation[$locale])) {
             if(in_array($mark, static::$spaceBeforePunctuation[$locale])) $text .= '&nbsp;';
         }
@@ -97,49 +90,80 @@ class TwigTranslation extends TranslationExtension
     /**
      * Add 2 dots at the end of text (':')
      * @param string $text
+     * @param string $locale
      * @return string
      */
-    public function label(string $text)
+    public function label(string $text, string $locale = '')
     {
-        return $this->punctuate($text, ':');
+        if(empty($locale)) $locale = $this->detectMainLocale();
+        return $this->punctuate($text, ':', $locale);
     }
 
 
     /**
-     * @inheritdoc
      * Translate text and add nb-spaces if needed. Add twig globals as parameter value
-     * @param string      $message
-     * @param array       $arguments
+     * @param $message
+     * @param array $arguments Can be the locale as a string when $message is a TranslatableInterface
      * @param string|null $domain
      * @param string|null $locale
-     * @param boolean     $nbsp
+     * @param int|null $count
+     * @param bool $nbsp
      * @return string
      */
-    public function trans($message, array $arguments = array(), $domain = null, $locale = '', $nbsp = true)
+    public function trans($message, $arguments = array(), string $domain = null, string $locale = null, int $count = null, $nbsp = true): string
     {
         if(!empty($this->twig)) {
             //add globals twig variable to trans parameter if scalar
             $twigGlobals = $this->twig->getGlobals();
             foreach($twigGlobals as $key => $twigGlobal) {
-                $key = '%' . $key . '%';
                 if(is_scalar($twigGlobal) && !isset($arguments[$key])) {
                     $arguments[$key] = $twigGlobal;
                 }
             }
         }
 
-        $trans = parent::trans($message, $arguments, $domain, $locale);
+        if(empty($domain)) $domain = null;
+
+        // START OF INITIAL SF METHOD
+        if ($message instanceof TranslatableInterface) {
+            if ([] !== $arguments && !\is_string($arguments)) {
+                throw new \TypeError(sprintf('Argument 2 passed to "%s()" must be a locale passed as a string when the message is a "%s", "%s" given.', __METHOD__, TranslatableInterface::class, get_debug_type($arguments)));
+            }
+
+            $trans = $message->trans($this->getTranslator(), $locale ?? (\is_string($arguments) ? $arguments : null));
+        } else {
+            if (!\is_array($arguments)) {
+                throw new \TypeError(sprintf('Unless the message is a "%s", argument 2 passed to "%s()" must be an array of parameters, "%s" given.', TranslatableInterface::class, __METHOD__, get_debug_type($arguments)));
+            }
+
+            if ('' === $message = (string) $message) {
+                return '';
+            }
+
+            if (null !== $count) {
+                $arguments['%count%'] = $count;
+            }
+
+            $trans = $this->getTranslator()->trans($message, $arguments, $domain, $locale);
+        }
+        // END OF INITIAL SF METHOD
+
+
+        if(!$nbsp) return $trans;
+
         //get main locale to get settings
         $locale = $this->detectMainLocale($locale);
 
-        if(!$nbsp) return $trans;
-        if(!isset(static::$spaceBeforePunctuation[$locale])) return $trans;
-
-        foreach(static::$spaceBeforePunctuation[$locale] as $mark) {
-            $trans = str_replace(' ' . $mark, '&nbsp;' . $mark, $trans);
+        if(!empty(static::$spaceBeforePunctuation[$locale])) {
+            foreach(static::$spaceBeforePunctuation[$locale] as $mark) {
+                $trans = str_replace(' ' . $mark, '&nbsp;' . $mark, $trans);
+            }
         }
-        foreach(static::$spaceAfterPunctuation[$locale] as $mark) {
-            $trans = str_replace($mark . ' ', $mark . '&nbsp;', $trans);
+
+        if(!empty(static::$spaceAfterPunctuation[$locale])) {
+            foreach(static::$spaceAfterPunctuation[$locale] as $mark) {
+                $trans = str_replace($mark . ' ', $mark . '&nbsp;', $trans);
+            }
         }
         return $trans;
     }
@@ -147,14 +171,45 @@ class TwigTranslation extends TranslationExtension
 
     /**
      * Check if translation found (return false if translation equal to message)
-     * @param string $message
-     * @param string $domain
+     * @param $message
+     * @param string|null $domain
+     * @param string|null $locale
      * @return bool
      */
-    public function hasTrans($message, $domain = null)
+    public function hasTrans($message, string $domain = null, string $locale = null)
     {
-        $trans = $this->trans($message, array(), $domain);
+        $trans = $this->trans($message, array(), $domain, $locale);
         return $trans != $message;
+    }
+
+
+    /**
+     * @return TranslatorInterface
+     */
+    public function getTranslator(): TranslatorInterface
+    {
+        if (null === $this->translator) {
+            if (!interface_exists(TranslatorInterface::class)) {
+                throw new \LogicException(sprintf('You cannot use the "%s" if the Translation Contracts are not available. Try running "composer require symfony/translation".', __CLASS__));
+            }
+
+            $this->translator = new class() implements TranslatorInterface {
+                use TranslatorTrait;
+            };
+        }
+
+        return $this->translator;
+    }
+
+    /**
+     * Add unit at the end of text.
+     * @param string $text
+     * @param string $unit
+     * @return string
+     */
+    public function unit($text, string $unit)
+    {
+        return $text . '&nbsp;' . $unit;
     }
 
 }

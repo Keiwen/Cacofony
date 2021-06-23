@@ -4,8 +4,10 @@ namespace Keiwen\Cacofony\Twig;
 
 
 use Keiwen\Cacofony\Security\RoleChecker;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class TwigSecurity extends \Twig_Extension
+class TwigSecurity extends AbstractExtension
 {
 
     protected $roleChecker;
@@ -17,18 +19,10 @@ class TwigSecurity extends \Twig_Extension
     }
 
 
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'caco_twig_security_extension';
-    }
-
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('hasRole', array($this->roleChecker, 'hasRole')),
+            new TwigFunction('hasRole', array($this->roleChecker, 'hasRole')),
         );
     }
 
