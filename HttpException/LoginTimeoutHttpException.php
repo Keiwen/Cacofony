@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class LoginTimeoutHttpException extends HttpException
 {
 
-    const HTTP_CODE = 440;
+    public const HTTP_CODE = 440;
 
     /**
      * Constructor.
