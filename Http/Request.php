@@ -12,7 +12,30 @@ class Request extends \Symfony\Component\HttpFoundation\Request
 
     protected $retrievedParameters = array();
 
-    const COOKIE_DISCLAIMER = 'cookie_disclaimer';
+    /** @var StringSanitizer $stringSanitizer */
+    protected $stringSanitizer;
+
+    public const COOKIE_DISCLAIMER = 'cookie_disclaimer';
+
+
+
+    /**
+     * @param array                $query      The GET parameters
+     * @param array                $request    The POST parameters
+     * @param array                $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
+     * @param array                $cookies    The COOKIE parameters
+     * @param array                $files      The FILES parameters
+     * @param array                $server     The SERVER parameters
+     * @param string|resource|null $content    The raw body data
+     * @param StringSanitizer      $stringSanitizer
+     */
+    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null, StringSanitizer $stringSanitizer = null)
+    {
+        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+        if ($stringSanitizer == null) $stringSanitizer = new StringSanitizer();
+        $this->stringSanitizer = $stringSanitizer;
+    }
+
 
     /**
      * @param RequestStack $requestStack
@@ -42,7 +65,7 @@ class Request extends \Symfony\Component\HttpFoundation\Request
                                     string $type = StringSanitizer::FILTER_DEFAULT,
                                     $default = null)
     {
-        $value = StringSanitizer::get($this->get($name, $default), $type);
+        $value = $this->stringSanitizer->get($this->get($name, $default), $type);
         $this->addRetrievedParameter($name, $value);
         return $value;
     }
@@ -80,7 +103,7 @@ class Request extends \Symfony\Component\HttpFoundation\Request
     {
         if(!$this->cookies->has($name)) return $default;
         $cookie = $this->cookies->get($name, $default);
-        return StringSanitizer::get($cookie, $type);
+        return $this->stringSanitizer->get($cookie, $type);
     }
 
     /**
@@ -116,7 +139,6 @@ class Request extends \Symfony\Component\HttpFoundation\Request
     {
         return $this->get('_route_params');
     }
-
 
     /**
      * @param bool $includeParam
