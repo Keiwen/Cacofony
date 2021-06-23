@@ -2,7 +2,6 @@
 
 namespace Keiwen\Cacofony\EntitiesManagement;
 
-use Doctrine\ORM\PersistentCollection;
 
 class EntitySerializer
 {
@@ -10,6 +9,7 @@ class EntitySerializer
 	protected static $proxiesNames = array('Proxies\\__CG__\\');
 	protected static $getterNames = array('get', 'has', 'is');
     protected static $classDoctrineCollection = 'Doctrine\\ORM\\PersistentCollection';
+    protected static $classDoctrineArrayCollection = 'Doctrine\\Common\\Collections\\ArrayCollection';
 
 
     /**
@@ -35,7 +35,7 @@ class EntitySerializer
 	public static function object2Array($object, array $labels = array(), array $blackList = array(), array $whiteList = array())
     {
         if(!static::isObjectValid($object)) return array();
-		return static::processObject2ArrayConversion($object, array(), true, $labels, $blackList, $whiteList);
+		return static::processObject2ArrayConversion($object, array(), false, $labels, $blackList, $whiteList);
 	}
 	
 	/**
@@ -146,10 +146,9 @@ class EntitySerializer
     {
         $classProxy = get_class($object);
         $proxy = static::detectProxy($classProxy);
-		if(get_class($object) == static::$classDoctrineCollection) {
-			//if doctrine collection turn it to array
-			/** @var PersistentCollection $object */
-			$object = static::handleArrayConversion($object->toArray(), $processed);
+		if(get_class($object) == static::$classDoctrineCollection || get_class($object) == static::$classDoctrineArrayCollection) {
+            //if doctrine collection turn it to array
+            $object = static::handleArrayConversion($object->toArray(), $processed);
 		} else if(in_array(ExportableEntityTrait::class, class_uses(get_class($object))) || $proxy) {
 			//entity or proxy, iterate
 			/** @var ExportableEntityTrait $object */

@@ -3,7 +3,6 @@
 namespace Keiwen\Cacofony\EntitiesManagement;
 
 use Keiwen\Cacofony\Controller\DefaultController;
-use Keiwen\Cacofony\Exception\FormNotFoundException;
 
 trait ExportableEntityTrait
 {
