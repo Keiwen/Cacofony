@@ -3,13 +3,13 @@
 namespace Keiwen\Cacofony\EventListener;
 
 
-use Keiwen\Cacofony\Configuration\TemplateParam;
+use Keiwen\Cacofony\Configuration\TemplateParameter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class TemplateParamListener implements EventSubscriberInterface
+class TemplateParameterListener implements EventSubscriberInterface
 {
 
     public static function getSubscribedEvents()
@@ -29,8 +29,8 @@ class TemplateParamListener implements EventSubscriberInterface
         $parameters = $event->getControllerResult();
         if(!is_array($parameters)) return;
         $request = $event->getRequest();
-        $templateParams = TemplateParam::getArrayFromRequest($request);
-        $parameters = array_merge($templateParams, $parameters);
+        $templateParameters = TemplateParameter::getArrayFromRequest($request);
+        $parameters = array_merge($templateParameters, $parameters);
         $event->setControllerResult($parameters);
     }
 
