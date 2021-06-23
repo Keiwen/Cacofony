@@ -2,18 +2,20 @@
 
 namespace Keiwen\Cacofony\Controller;
 
-use Keiwen\Cacofony\Configuration\TemplateParam;
+use Keiwen\Cacofony\Configuration\TemplateParameter;
 use Keiwen\Cacofony\DependencyInjection\KeiwenCacofonyExtension;
 use Keiwen\Cacofony\Http\Response;
 use Keiwen\Utils\Analyser\DebugBacktracer;
+use Keiwen\Utils\Format\StringFormat;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class AppController extends DefaultController
 {
 
-    protected $templateParams = array();
+    protected $templateParameters = array();
 
     /** @var  Response $response */
     protected $response;
@@ -41,11 +43,11 @@ class AppController extends DefaultController
     protected function renderTemplate(array $parameters = array())
     {
         $request = $this->getRequest();
-        $templateParams = TemplateParam::getArrayFromRequest($request);
+        $templateParameters = TemplateParameter::getArrayFromRequest($request);
 
         //merge template param from annotations, then params given by method,
         //and finally parameters sent in render method. Last have priority.
-        $mergedParameters = array_merge($templateParams, $this->getTemplateParams(), $parameters);
+        $mergedParameters = array_merge($templateParameters, $this->getTemplateParameters(), $parameters);
 
         // get calling controller trace
         $controllerTrace = DebugBacktracer::getCallersTrace(1);
@@ -56,7 +58,13 @@ class AppController extends DefaultController
         $controllerName = str_replace('Controller', '', $controllerName);
 
         $templateExtention = $this->getParameter(KeiwenCacofonyExtension::TEMPLATE_GUESSER_EXTENSION);
-        $view = $controllerName . '/' . $controllerTrace['function']. '.' . $templateExtention;
+
+        //snake case names when looking for template
+        $stringFormatter = new StringFormat();
+        $templatePath = $stringFormatter->formatSnakeCase($controllerName);
+        $templateName = $stringFormatter->formatSnakeCase($controllerTrace['function']);
+
+        $view = $templatePath . '/' . $templateName. '.' . $templateExtention;
 
         return $this->render($view, $mergedParameters, $this->getResponse());
     }
@@ -66,9 +74,9 @@ class AppController extends DefaultController
     /**
      * @return array
      */
-    protected function getTemplateParams()
+    protected function getTemplateParameters()
     {
-        return $this->templateParams;
+        return $this->templateParameters;
     }
 
 
@@ -78,12 +86,12 @@ class AppController extends DefaultController
      * @param bool $overwrite
      * @return bool
      */
-    protected function addTemplateParam(string $name, $value, bool $overwrite = false)
+    protected function addTemplateParameter(string $name, $value, bool $overwrite = false)
     {
-        if(!$overwrite && isset($this->templateParams[$name])) {
+        if(!$overwrite && isset($this->templateParameters[$name])) {
             return false;
         }
-        $this->templateParams[$name] = $value;
+        $this->templateParameters[$name] = $value;
         return true;
     }
 
@@ -116,11 +124,13 @@ class AppController extends DefaultController
      * @param Request|null $request
      * @param int          $status
      * @return RedirectResponse
+     * @throws RouteNotFoundException
      */
     public function redirectToReferer(Request $request = null, $status = Response::HTTP_SEE_OTHER)
     {
         if(empty($request)) $request = $this->getRequest();
         $referer = $request->headers->get('referer');
+        if(empty($referer)) throw new RouteNotFoundException('Unable to redirect to referer: cannot found referer in request headers');
         return $this->redirect($referer, $status);
     }
 
