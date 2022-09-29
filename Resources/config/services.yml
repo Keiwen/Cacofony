@@ -44,6 +44,9 @@ services:
         arguments:
             $managerRegistry: '@?doctrine'
         public: true
+    Keiwen\Cacofony\EntitiesManagement\Assimilator:
+        arguments:
+            $entityRegistry: '%keiwen_cacofony.default_entity_registry%'
 
     #TWIG
     Keiwen\Cacofony\Twig\:
