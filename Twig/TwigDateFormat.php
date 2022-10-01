@@ -196,7 +196,11 @@ class TwigDateFormat extends AbstractExtension
      */
     public function formatIsoDate($date = null, bool $inclTime = false)
     {
-        return $this->getDateFormatter()->formatIsoDate($date, $inclTime);
+        $isoDate = $this->getDateFormatter()->formatDateIso($date);
+        if ($inclTime) {
+            $isoDate .= ' ' . $this->getDateFormatter()->formatTimeIso($date);
+        }
+        return $isoDate;
     }
 
     

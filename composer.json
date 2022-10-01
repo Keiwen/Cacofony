@@ -14,6 +14,7 @@
     "php": ">=7.1",
     "ext-curl": "*",
     "ext-json": "*",
+    "ext-intl": "*",
     "symfony/framework-bundle": "^5.2",
 
     "keiwen/utils": ">=2.0"
