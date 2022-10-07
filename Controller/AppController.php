@@ -7,6 +7,7 @@ use Keiwen\Cacofony\DependencyInjection\KeiwenCacofonyExtension;
 use Keiwen\Cacofony\Http\Response;
 use Keiwen\Utils\Analyser\DebugBacktracer;
 use Keiwen\Utils\Format\StringFormat;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,7 @@ class AppController extends DefaultController
     /**
      * @return Response
      */
-    public function getResponse()
+    protected function getResponse()
     {
         return $this->response;
     }
@@ -106,7 +107,7 @@ class AppController extends DefaultController
      * @param int $status
      * @return RedirectResponse
      */
-    public function redirect(string $url, int $status = Response::HTTP_FOUND): RedirectResponse
+    protected function redirect(string $url, int $status = Response::HTTP_FOUND): RedirectResponse
     {
         return $this->getResponse()->generateRedirect($url, $status);
     }
@@ -117,7 +118,7 @@ class AppController extends DefaultController
      * @param string $url
      * @return RedirectResponse
      */
-    public function redirectAfterPost($url)
+    protected function redirectAfterPost($url): RedirectResponse
     {
         return $this->redirect($url, Response::HTTP_SEE_OTHER);
     }
@@ -129,7 +130,7 @@ class AppController extends DefaultController
      * @return RedirectResponse
      * @throws RouteNotFoundException
      */
-    public function redirectToReferer(Request $request = null, $status = Response::HTTP_SEE_OTHER)
+    protected function redirectToReferer(Request $request = null, $status = Response::HTTP_SEE_OTHER): RedirectResponse
     {
         if(empty($request)) $request = $this->getRequest();
         $referer = $request->headers->get('referer');

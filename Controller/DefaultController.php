@@ -64,7 +64,7 @@ class DefaultController extends AbstractController
     /**
      * @return Request
      */
-    public function getRequest()
+    protected function getRequest()
     {
         $config = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
         $defaultRequestClass = str_replace('@', '', $config['default_request']);
@@ -102,7 +102,7 @@ class DefaultController extends AbstractController
      * @param string $objectClass
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    public function getRepository(string $objectClass)
+    protected function getRepository(string $objectClass)
     {
         return $this->getEntityRegistry()->getRepository($objectClass);
     }
