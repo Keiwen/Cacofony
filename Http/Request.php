@@ -65,7 +65,15 @@ class Request extends \Symfony\Component\HttpFoundation\Request
                                     string $type = StringSanitizer::FILTER_DEFAULT,
                                     $default = null)
     {
-        $value = $this->stringSanitizer->get($this->get($name, $default), $type);
+        $value = $default;
+        if ($this->query->has($name)) {
+            $value = $this->query->all()[$name];
+        }
+        if ($this->request->has($name)) {
+            $value = $this->request->all()[$name];
+        }
+
+        $value = $this->stringSanitizer->get($value, $type);
         $this->addRetrievedParameter($name, $value);
         return $value;
     }
@@ -129,7 +137,7 @@ class Request extends \Symfony\Component\HttpFoundation\Request
      */
     public function getRouteName()
     {
-        return $this->get('_route');
+        return $this->attributes->get('_route');
     }
 
     /**
@@ -137,7 +145,7 @@ class Request extends \Symfony\Component\HttpFoundation\Request
      */
     public function getRouteParams()
     {
-        return $this->get('_route_params');
+        return $this->attributes->get('_route_params');
     }
 
     /**

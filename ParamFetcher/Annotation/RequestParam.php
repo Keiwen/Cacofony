@@ -110,7 +110,16 @@ class RequestParam
      */
     protected function retrieveValueInRequest(Request $request, $default = null)
     {
-        return $request->get($this->getName(), $default);
+        $value = $default;
+        $key = $this->getName();
+        if ($request->query->has($key)) {
+            $value = $request->query->all()[$key];
+        }
+        if ($request->has($key)) {
+            $value = $request->request->all()[$key];
+        }
+
+        return $value;
     }
 
 
