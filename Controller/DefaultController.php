@@ -29,7 +29,7 @@ class DefaultController extends AbstractController
             //load default cache if nothing set
             $config = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
             try {
-                $service = $this->get($config['default_cache']);
+                $service = $this->container->get($config['default_cache']);
                 $this->loadCache($service);
             } catch (ServiceNotFoundException $e) {
                 return false;
@@ -69,16 +69,16 @@ class DefaultController extends AbstractController
         $config = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
         $defaultRequestClass = str_replace('@', '', $config['default_request']);
         /** @var Request $request */
-        $request = $this->get($defaultRequestClass);
+        $request = $this->container->get($defaultRequestClass);
         return $request;
     }
 
     /**
      * @return Request
      */
-    protected function getMasterRequest()
+    protected function getMainRequest()
     {
-        return $this->get('request_stack')->getMasterRequest();
+        return $this->container->get('request_stack')->getMainRequest();
     }
 
 
@@ -92,7 +92,7 @@ class DefaultController extends AbstractController
         $serviceName = $config['default_entity_registry'];
         if(!empty($serviceName)) {
             /** @var EntityRegistry $service */
-            return $this->get($serviceName);
+            return $this->container->get($serviceName);
         }
         throw new \RuntimeException("Entity registry service ('$serviceName') not found");
     }
@@ -134,7 +134,7 @@ class DefaultController extends AbstractController
         if(!empty($channel)) {
             //try getting service log with channel
             try {
-                $logger = $this->get($logService . '.' . $channel);
+                $logger = $this->container->get($logService . '.' . $channel);
                 return $logger;
             } catch (ServiceNotFoundException $e) {
                 $toLog = 'Log fallback: cannot find log channel ' . $channel;
@@ -142,10 +142,10 @@ class DefaultController extends AbstractController
         }
         //try getting service log without channel
         try {
-            $logger = $this->get($logService);
+            $logger = $this->container->get($logService);
         } catch (ServiceNotFoundException $e) {
             $toLog = 'Log fallback: cannot find log service ' . $logService;
-            $logger = $this->get('logger');
+            $logger = $this->container->get('logger');
         }
         if(!empty($toLog)) {
             $logger->warning($toLog);
@@ -162,7 +162,7 @@ class DefaultController extends AbstractController
     protected function renderView(string $view, array $parameters = array()): string
     {
         /** @var AutoDumpListener $autodump */
-        $autodump = $this->get(AutoDumpListener::class);
+        $autodump = $this->container->get(AutoDumpListener::class);
         $autodump->addParameterToDump($view, $parameters);
         return parent::renderView($view, $parameters);
     }

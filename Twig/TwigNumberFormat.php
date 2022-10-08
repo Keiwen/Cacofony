@@ -46,7 +46,7 @@ class TwigNumberFormat extends AbstractExtension
      */
     protected function detectMainLocale(string $locale = null)
     {
-        if(empty($locale)) $locale = $this->requestStack->getMasterRequest()->getLocale();
+        if(empty($locale)) $locale = $this->requestStack->getMainRequest()->getLocale();
         if(strpos($locale, '_') !== false) {
             $locale = explode('_', $locale);
             $locale = reset($locale);
