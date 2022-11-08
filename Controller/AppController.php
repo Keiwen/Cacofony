@@ -138,4 +138,17 @@ class AppController extends DefaultController
         return $this->redirect($referer, $status);
     }
 
+    /**
+     * @param string $type
+     * @param $data
+     * @param array $options
+     * @return FormInterface
+     */
+    protected function createHandledForm(string $type, $data = null, array $options = []): FormInterface
+    {
+        $form = $this->createForm($type, $data, $options);
+        $form->handleRequest($this->getRequest());
+        return $form;
+    }
+
 }
