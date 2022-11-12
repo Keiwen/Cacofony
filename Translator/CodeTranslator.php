@@ -31,13 +31,13 @@ class CodeTranslator extends Translator
     /**
      * {@inheritdoc}
      */
-    public function trans(?string $id, array $arguments = array(), string $domain = null, string $locale = null)
+    public function trans(?string $id, array $parameters = array(), string $domain = null, string $locale = null): string
     {
         if ($this->hasAskedForTransCode($locale)) {
-            return $this->formatTransCode($id, $domain, $arguments);
+            return $this->formatTransCode($id, $domain, $parameters);
         }
 
-        return parent::trans($id, $arguments, $domain, $locale);
+        return parent::trans($id, $parameters, $domain, $locale);
     }
 
     /**
