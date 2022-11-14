@@ -20,8 +20,11 @@ use Keiwen\Cacofony\Http\Request
 ```
 Declare its use in kernel if needed
 ```
-    $request = Request::createFromGlobals();
-    $kernel->handle($request);
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$request = Request::createFromGlobals();
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);
 ```
 
 ## Restrict to Role
