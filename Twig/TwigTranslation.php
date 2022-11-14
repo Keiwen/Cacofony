@@ -112,7 +112,7 @@ class TwigTranslation extends AbstractExtension
      */
     public function trans($message, $arguments = array(), string $domain = null, string $locale = null, int $count = null, $nbsp = true): string
     {
-        if(!empty($this->twig)) {
+        if(!($message instanceof TranslatableInterface) && !empty($this->twig)) {
             //add globals twig variable to trans parameter if scalar
             $twigGlobals = $this->twig->getGlobals();
             foreach($twigGlobals as $key => $twigGlobal) {
