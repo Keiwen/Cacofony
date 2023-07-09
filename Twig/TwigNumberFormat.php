@@ -70,7 +70,7 @@ class TwigNumberFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatCurrency($value = null, string $currency, string $locale = null)
+    public function formatCurrency($value = null, string $currency = 'EUR', string $locale = null)
     {
         return $this->getNumberFormatter($locale)->formatCurrency((float) $value, $currency);
     }
