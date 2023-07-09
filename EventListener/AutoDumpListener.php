@@ -16,6 +16,7 @@ class AutoDumpListener implements EventSubscriberInterface
     protected $toDump = array();
     protected $twig;
     protected $parameterName = '';
+    protected $env = '';
 
     const SUBPART_TWIG_GLOBALS = '_twig_globals';
 
@@ -23,11 +24,13 @@ class AutoDumpListener implements EventSubscriberInterface
     /**
      * AutoDumpListener constructor.
      *
+     * @param string                 $appEnv        application environment (dev, prod)
      * @param string                 $parameterName empty will disable autodump
      * @param TwigEnvironment|null   $twig
      */
-    public function __construct(string $parameterName = '', TwigEnvironment $twig = null)
+    public function __construct(string $appEnv = '', string $parameterName = '', TwigEnvironment $twig = null)
     {
+        $this->env = $appEnv;
         $this->parameterName = $parameterName;
         $this->twig = $twig;
     }
@@ -48,6 +51,11 @@ class AutoDumpListener implements EventSubscriberInterface
         return $this->parameterName;
     }
 
+    protected function isDevEnvironment(): bool
+    {
+        return $this->env == 'dev';
+    }
+
 
     /**
      * Called after each controller. Store parameters send by controller
@@ -55,7 +63,7 @@ class AutoDumpListener implements EventSubscriberInterface
      */
     public function onKernelView(ViewEvent $event)
     {
-        if(!function_exists('dump') || empty($this->getAutodumpParameterName())) return;
+        if(!function_exists('dump') || empty($this->getAutodumpParameterName()) || !$this->isDevEnvironment()) return;
         $parameters = $event->getControllerResult();
         $request = $event->getRequest();
         /** @var Template $template */
@@ -93,7 +101,7 @@ class AutoDumpListener implements EventSubscriberInterface
      */
     public function onKernelResponse(ResponseEvent $event)
     {
-        if(!function_exists('dump') || empty($this->getAutodumpParameterName())) return;
+        if(!function_exists('dump') || empty($this->getAutodumpParameterName()) || !$this->isDevEnvironment()) return;
         //dump only for master request if not empty
         if($event->isMainRequest() && !empty($this->toDump)) {
             //add twig globals

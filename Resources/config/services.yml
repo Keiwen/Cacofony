@@ -11,6 +11,7 @@ services:
 
     Keiwen\Cacofony\EventListener\AutoDumpListener:
         arguments:
+            $appEnv: '%kernel.environment%'
             $parameterName: '%keiwen_cacofony.autodump.paramname%'
         public: true
 
