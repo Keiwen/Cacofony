@@ -6,9 +6,7 @@ keiwen_cacofony:
     controller:
         default_cache:        cache
         default_entity_registry: Keiwen\Cacofony\EntitiesManagement\EntityRegistry
-        default_log:          monolog.logger
         default_request:      '@Keiwen\Cacofony\Http\Request'
-        log_channel:          KeiwenCacofony
         getparam_disable_cache: noCache
         api_format_response:  true
     autodump:

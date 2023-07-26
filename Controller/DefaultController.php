@@ -10,7 +10,6 @@ use Keiwen\Cacofony\EventListener\TemplateParameterListener;
 use Keiwen\Cacofony\Http\Request;
 use Keiwen\Cacofony\Http\Response;
 use Keiwen\Utils\Object\CacheHandlerTrait;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,7 +50,6 @@ class DefaultController extends AbstractController
             if(!empty($request)) {
                 $forcedUncache = $request->query->get($config['getparam_disable_cache']);
                 if(!empty($forcedUncache)) {
-                    $this->getLogger($config['log_channel'])->warning('Force cache bypass');
                     $this->bypassCacheRead();
                     return true;
                 }
@@ -116,42 +114,6 @@ class DefaultController extends AbstractController
     protected function redirectToSelf(int $status = Response::HTTP_FOUND)
     {
         return $this->redirect($this->getRequest()->getUrl(true, true), $status);
-    }
-
-
-    /**
-     * @param string $channel
-     * @param string $service
-     * @return LoggerInterface
-     */
-    protected function getLogger(string $channel = '', string $service = '')
-    {
-        $config = $this->getParameter(KeiwenCacofonyExtension::CONTROLLER_CONF);
-        $logService = empty($service) ? $config['default_log'] : $service;
-        $toLog = '';
-        /** @var LoggerInterface $logger */
-        $logger = null;
-        if(!empty($channel)) {
-            //try getting service log with channel
-            try {
-                $logger = $this->container->get($logService . '.' . $channel);
-                return $logger;
-            } catch (ServiceNotFoundException $e) {
-                $toLog = 'Log fallback: cannot find log channel ' . $channel;
-            }
-        }
-        //try getting service log without channel
-        try {
-            $logger = $this->container->get($logService);
-        } catch (ServiceNotFoundException $e) {
-            $toLog = 'Log fallback: cannot find log service ' . $logService;
-            $logger = $this->container->get('logger');
-        }
-        if(!empty($toLog)) {
-            $logger->warning($toLog);
-        }
-        //return logger
-        return $logger;
     }
 
 
