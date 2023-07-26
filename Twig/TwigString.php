@@ -34,6 +34,8 @@ class TwigString extends AbstractExtension
             new TwigFilter('ucwords', 'ucwords'),
             new TwigFilter('str_repeat', 'str_repeat'),
             new TwigFilter('str_word_count', 'str_word_count'),
+            new TwigFilter('base64_encode', 'base64_encode'),
+            new TwigFilter('base64_decode', 'base64_decode'),
 
             new TwigFilter('str_limit', array($this, 'strLimitFilter')),
             new TwigFilter('escchar', array($this, 'escCharFilter')),
