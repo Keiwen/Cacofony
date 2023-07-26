@@ -73,7 +73,7 @@ class Request extends \Symfony\Component\HttpFoundation\Request
             $value = $this->request->all()[$name];
         }
 
-        $value = $this->stringSanitizer->get($value, $type);
+        if ($value !== null) $value = $this->stringSanitizer->get($value, $type);
         $this->addRetrievedParameter($name, $value);
         return $value;
     }
