@@ -16,6 +16,12 @@ keiwen_cacofony:
         previous_on_twigerror: true
     rolechecker:
         role_prefixes:        []
+    token_generator:
+        secret:               Keiwen_Cacofony_Secret_To_Be_Changed
+        # see openSSL allowed algo
+        cipher_algo:          aes-128-cbc
+        # have to be exactly 16-chars long
+        openssl_iv:           CACO_init_osslIV
     code_translator:
         locale:               transCode
         display_pattern:      '#{domain}[{message}]'

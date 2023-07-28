@@ -40,6 +40,13 @@ services:
         arguments:
             $rolePrefixes: '%keiwen_cacofony.rolechecker.role_prefixes%'
 
+    #TOKEN GENERATOR
+    Keiwen\Cacofony\Security\TokenGenerator:
+        arguments:
+            $secret: '%keiwen_cacofony.token_generator.secret%'
+            $cipherAlgo: '%keiwen_cacofony.token_generator.cipher_algo%'
+            $opensslIV: '%keiwen_cacofony.token_generator.openssl_iv%'
+
     #ENTITIES
     Keiwen\Cacofony\EntitiesManagement\EntityRegistry:
         arguments:
