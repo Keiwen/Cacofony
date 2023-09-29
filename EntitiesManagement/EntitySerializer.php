@@ -105,8 +105,13 @@ class EntitySerializer
 
 		$export = array();
 		foreach($fieldList as $fieldName) {
-			//skip field != id for proxy when not initialized
-			if($proxy && $fieldName != 'id') continue;
+			//warning for field != id for proxy
+            if($proxy && $fieldName != 'id') {
+                if (!method_exists($object, '__isInitialized') || !$object->__isInitialized()) {
+                    // if proxy not initialized, ignore other fields
+                    continue;
+                }
+            }
 			foreach(static::$getterNames as $getter) {
 				$getter .= ucfirst($fieldName);
 				if(method_exists($object, $getter)) {
