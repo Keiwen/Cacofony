@@ -2,7 +2,7 @@
   "name": "keiwen/cacofony",
   "type": "symfony-bundle",
   "description": "Custom Application Code Overlay for symfony",
-  "version": "5.4.7",
+  "version": "5.4.8",
 
   "autoload": {
     "psr-4": {
