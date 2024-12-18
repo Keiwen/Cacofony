@@ -128,7 +128,7 @@ class DefaultController extends AbstractController
         return parent::renderView($view, $parameters);
     }
 
-    public static function getSubscribedServices()
+    public static function getSubscribedServices(): array
     {
         $subsribedServices = parent::getSubscribedServices();
         $subsribedServices[Request::class] = '?'.Request::class;
