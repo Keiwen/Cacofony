@@ -9,7 +9,7 @@ class TemplateGuesser extends \Sensio\Bundle\FrameworkExtraBundle\Templating\Tem
     /**
      * {@inheritdoc}
      */
-    public function guessTemplateName($controller, Request $request)
+    public function guessTemplateName($controller, Request $request): string
     {
         $templateName = parent::guessTemplateName($controller, $request);
         // remove our bundle if added
