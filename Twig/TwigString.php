@@ -16,7 +16,7 @@ class TwigString extends AbstractExtension
      * TwigString constructor.
      * @param StringSanitizer|null $stringSanitizer
      */
-    public function __construct(StringSanitizer $stringSanitizer = null)
+    public function __construct(?StringSanitizer $stringSanitizer = null)
     {
         if($stringSanitizer === null) $stringSanitizer = new StringSanitizer();
         $this->stringSanitizer = $stringSanitizer;

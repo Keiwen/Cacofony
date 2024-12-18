@@ -35,7 +35,7 @@ class TwigTranslation extends AbstractExtension
     );
 
 
-    public function __construct(TranslatorInterface $translator = null, RequestStack $requestStack = null, TwigEnvironment $twig = null)
+    public function __construct(?TranslatorInterface $translator = null, ?RequestStack $requestStack = null, ?TwigEnvironment $twig = null)
     {
         $this->translator = $translator;
         $this->requestStack = $requestStack;
@@ -59,9 +59,12 @@ class TwigTranslation extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    protected function detectMainLocale(string $locale = null)
+    protected function detectMainLocale(?string $locale = null)
     {
-        if(empty($locale)) $locale = $this->requestStack->getMainRequest()->getLocale();
+        if(empty($locale)) {
+            if (!$this->requestStack) return '';
+            $locale = $this->requestStack->getMainRequest()->getLocale();
+        }
         if(strpos($locale, '_') !== false) {
             $locale = explode('_', $locale);
             $locale = reset($locale);
@@ -110,7 +113,7 @@ class TwigTranslation extends AbstractExtension
      * @param bool $nbsp
      * @return string
      */
-    public function trans($message, $arguments = array(), string $domain = null, string $locale = null, int $count = null, $nbsp = true): string
+    public function trans($message, $arguments = array(), ?string $domain = null, ?string $locale = null, int $count = null, $nbsp = true): string
     {
         if(!($message instanceof TranslatableInterface) && !empty($this->twig)) {
             //add globals twig variable to trans parameter if scalar
@@ -176,7 +179,7 @@ class TwigTranslation extends AbstractExtension
      * @param string|null $locale
      * @return bool
      */
-    public function hasTrans($message, string $domain = null, string $locale = null)
+    public function hasTrans($message, ?string $domain = null, ?string $locale = null)
     {
         $trans = $this->trans($message, array(), $domain, $locale);
         return $trans != $message;

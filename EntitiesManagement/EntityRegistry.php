@@ -64,7 +64,7 @@ class EntityRegistry
     private function operateObject(string $operation,
                                    $object,
                                    bool $commit = true,
-                                   ObjectManager &$manager = null)
+                                   ?ObjectManager &$manager = null)
     {
         if(empty($manager)) {
             $manager = $this->getManagerForClass(get_class($object));

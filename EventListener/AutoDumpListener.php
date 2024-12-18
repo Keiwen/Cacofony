@@ -28,7 +28,7 @@ class AutoDumpListener
      * @param string                 $parameterName empty will disable autodump
      * @param TwigEnvironment|null   $twig
      */
-    public function __construct(string $appEnv = '', string $parameterName = '', TwigEnvironment $twig = null)
+    public function __construct(string $appEnv = '', string $parameterName = '', ?TwigEnvironment $twig = null)
     {
         $this->env = $appEnv;
         $this->parameterName = $parameterName;

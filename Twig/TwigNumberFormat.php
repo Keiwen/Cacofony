@@ -18,7 +18,7 @@ class TwigNumberFormat extends AbstractExtension
 
     protected $requestStack;
 
-    public function __construct(RequestStack $requestStack = null)
+    public function __construct(?RequestStack $requestStack = null)
     {
         $this->requestStack = $requestStack;
     }
@@ -44,9 +44,12 @@ class TwigNumberFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    protected function detectMainLocale(string $locale = null)
+    protected function detectMainLocale(?string $locale = null)
     {
-        if(empty($locale)) $locale = $this->requestStack->getMainRequest()->getLocale();
+        if(empty($locale)) {
+            if (!$this->requestStack) return '';
+            $locale = $this->requestStack->getMainRequest()->getLocale();
+        }
         if(strpos($locale, '_') !== false) {
             $locale = explode('_', $locale);
             $locale = reset($locale);
@@ -58,7 +61,7 @@ class TwigNumberFormat extends AbstractExtension
      * @param string|null $locale
      * @return NumberFormat
      */
-    protected function getNumberFormatter(string $locale = null)
+    protected function getNumberFormatter(?string $locale = null)
     {
         return new NumberFormat($this->detectMainLocale($locale));
     }
@@ -70,7 +73,7 @@ class TwigNumberFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatCurrency($value = null, string $currency = 'EUR', string $locale = null)
+    public function formatCurrency($value = null, string $currency = 'EUR', ?string $locale = null)
     {
         return $this->getNumberFormatter($locale)->formatCurrency((float) $value, $currency);
     }
@@ -83,7 +86,7 @@ class TwigNumberFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatDecimal($value = null, int $maxFractionDigits = null, int $fractionDigits = null, string $locale = null)
+    public function formatDecimal($value = null, ?int $maxFractionDigits = null, ?int $fractionDigits = null, ?string $locale = null)
     {
         return $this->getNumberFormatter($locale)->formatDecimal((float) $value, $maxFractionDigits, $fractionDigits);
     }
@@ -96,7 +99,7 @@ class TwigNumberFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatPercent($value = null, int $maxFractionDigits = null, int $fractionDigits = null, string $locale = null)
+    public function formatPercent($value = null, ?int $maxFractionDigits = null, ?int $fractionDigits = null, ?string $locale = null)
     {
         return $this->getNumberFormatter($locale)->formatPercent((float) $value, $maxFractionDigits, $fractionDigits);
     }
@@ -109,7 +112,7 @@ class TwigNumberFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatScientific($value = null, int $maxFractionDigits = null, int $fractionDigits = null, string $locale = null)
+    public function formatScientific($value = null, ?int $maxFractionDigits = null, ?int $fractionDigits = null, ?string $locale = null)
     {
         return $this->getNumberFormatter($locale)->formatScientific((float) $value, $maxFractionDigits, $fractionDigits);
     }
@@ -121,7 +124,7 @@ class TwigNumberFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatSpellout($value = null, int $maxFractionDigits = null, string $locale = null)
+    public function formatSpellout($value = null, ?int $maxFractionDigits = null, ?string $locale = null)
     {
         return $this->getNumberFormatter($locale)->formatSpellout((float) $value, $maxFractionDigits);
     }
@@ -131,7 +134,7 @@ class TwigNumberFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatOrdinal($value = null, string $locale = null)
+    public function formatOrdinal($value = null, ?string $locale = null)
     {
         return $this->getNumberFormatter($locale)->formatOrdinal((float) $value);
     }
@@ -141,7 +144,7 @@ class TwigNumberFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatDuration($value = null, string $locale = null)
+    public function formatDuration($value = null, ?string $locale = null)
     {
         return $this->getNumberFormatter($locale)->formatDuration((float) $value);
     }

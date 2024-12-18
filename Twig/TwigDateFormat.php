@@ -18,7 +18,7 @@ class TwigDateFormat extends AbstractExtension
 
     protected $requestStack;
 
-    public function __construct(RequestStack $requestStack = null)
+    public function __construct(?RequestStack $requestStack = null)
     {
         $this->requestStack = $requestStack;
     }
@@ -49,9 +49,12 @@ class TwigDateFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    protected function detectMainLocale(string $locale = null)
+    protected function detectMainLocale(?string $locale = null)
     {
-        if(empty($locale)) $locale = $this->requestStack->getMainRequest()->getLocale();
+        if(empty($locale)) {
+            if (!$this->requestStack) return '';
+            $locale = $this->requestStack->getMainRequest()->getLocale();
+        }
         if(strpos($locale, '_') !== false) {
             $locale = explode('_', $locale);
             $locale = reset($locale);
@@ -63,18 +66,18 @@ class TwigDateFormat extends AbstractExtension
      * @param string|null $locale
      * @return DateFormat
      */
-    protected function getDateFormatter(string $locale = null)
+    protected function getDateFormatter(?string $locale = null)
     {
         return new DateFormat($this->detectMainLocale($locale));
     }
-    
+
 
     /**
      * @param int|string|\DateTimeInterface $date timestamp, string or DateTimeInterface
      * @param string|null $locale
      * @return string
      */
-    public function formatDateFull($date = null, string $locale = null)
+    public function formatDateFull($date = null, ?string $locale = null)
     {
         return $this->getDateFormatter($locale)->formatDateFull($date);
     }
@@ -84,7 +87,7 @@ class TwigDateFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatDateLong($date = null, string $locale = null)
+    public function formatDateLong($date = null, ?string $locale = null)
     {
         return $this->getDateFormatter($locale)->formatDateLong($date);
     }
@@ -94,7 +97,7 @@ class TwigDateFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatDateMedium($date = null, string $locale = null)
+    public function formatDateMedium($date = null, ?string $locale = null)
     {
         return $this->getDateFormatter($locale)->formatDateMedium($date);
     }
@@ -104,7 +107,7 @@ class TwigDateFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatDateShort($date = null, string $locale = null)
+    public function formatDateShort($date = null, ?string $locale = null)
     {
         return $this->getDateFormatter($locale)->formatDateShort($date);
     }
@@ -114,7 +117,7 @@ class TwigDateFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatTimeFull($date = null, string $locale = null)
+    public function formatTimeFull($date = null, ?string $locale = null)
     {
         return $this->getDateFormatter($locale)->formatTimeFull($date);
     }
@@ -124,7 +127,7 @@ class TwigDateFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatTimeLong($date = null, string $locale = null)
+    public function formatTimeLong($date = null, ?string $locale = null)
     {
         return $this->getDateFormatter($locale)->formatTimeLong($date);
     }
@@ -134,7 +137,7 @@ class TwigDateFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatTimeMedium($date = null, string $locale = null)
+    public function formatTimeMedium($date = null, ?string $locale = null)
     {
         return $this->getDateFormatter($locale)->formatTimeMedium($date);
     }
@@ -144,7 +147,7 @@ class TwigDateFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatTimeShort($date = null, string $locale = null)
+    public function formatTimeShort($date = null, ?string $locale = null)
     {
         return $this->getDateFormatter($locale)->formatTimeShort($date);
     }
@@ -154,7 +157,7 @@ class TwigDateFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatDateAndTimeFull($date = null, string $locale = null)
+    public function formatDateAndTimeFull($date = null, ?string $locale = null)
     {
         return $this->getDateFormatter($locale)->formatDateAndTimeFull($date);
     }
@@ -164,7 +167,7 @@ class TwigDateFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatDateAndTimeLong($date = null, string $locale = null)
+    public function formatDateAndTimeLong($date = null, ?string $locale = null)
     {
         return $this->getDateFormatter($locale)->formatDateAndTimeLong($date);
     }
@@ -174,7 +177,7 @@ class TwigDateFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatDateAndTimeMedium($date = null, string $locale = null)
+    public function formatDateAndTimeMedium($date = null, ?string $locale = null)
     {
         return $this->getDateFormatter($locale)->formatDateAndTimeMedium($date);
     }
@@ -184,11 +187,11 @@ class TwigDateFormat extends AbstractExtension
      * @param string|null $locale
      * @return string
      */
-    public function formatDateAndTimeShort($date = null, string $locale = null)
+    public function formatDateAndTimeShort($date = null, ?string $locale = null)
     {
         return $this->getDateFormatter($locale)->formatDateAndTimeShort($date);
     }
-    
+
     /**
      * @param int|string|\DateTimeInterface $date timestamp, string or DateTimeInterface
      * @param bool $inclTime
@@ -203,5 +206,5 @@ class TwigDateFormat extends AbstractExtension
         return $isoDate;
     }
 
-    
+
 }

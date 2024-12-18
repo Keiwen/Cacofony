@@ -27,9 +27,9 @@ class Request extends \Symfony\Component\HttpFoundation\Request
      * @param array                $files      The FILES parameters
      * @param array                $server     The SERVER parameters
      * @param string|resource|null $content    The raw body data
-     * @param StringSanitizer      $stringSanitizer
+     * @param StringSanitizer|null $stringSanitizer
      */
-    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null, StringSanitizer $stringSanitizer = null)
+    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null, ?StringSanitizer $stringSanitizer = null)
     {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
         if ($stringSanitizer == null) $stringSanitizer = new StringSanitizer();
@@ -73,7 +73,7 @@ class Request extends \Symfony\Component\HttpFoundation\Request
             $value = $this->request->all()[$name];
         }
 
-        if ($value !== null) $value = $this->stringSanitizer->get($value, $type);
+        if ($value !== null && $this->stringSanitizer) $value = $this->stringSanitizer->get($value, $type);
         $this->addRetrievedParameter($name, $value);
         return $value;
     }
@@ -111,6 +111,7 @@ class Request extends \Symfony\Component\HttpFoundation\Request
     {
         if(!$this->cookies->has($name)) return $default;
         $cookie = $this->cookies->get($name, $default);
+        if (!$this->stringSanitizer) return $cookie;
         return $this->stringSanitizer->get($cookie, $type);
     }
 

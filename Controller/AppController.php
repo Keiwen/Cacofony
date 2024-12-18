@@ -35,7 +35,7 @@ class AppController extends DefaultController
         return $this->response;
     }
 
-    
+
     /**
      * Use this method without template name to get the default path automatically
      * Default path is template/{controller}/{action}
@@ -130,7 +130,7 @@ class AppController extends DefaultController
      * @return RedirectResponse
      * @throws RouteNotFoundException
      */
-    protected function redirectToReferer(Request $request = null, $status = Response::HTTP_SEE_OTHER): RedirectResponse
+    protected function redirectToReferer(?Request $request = null, $status = Response::HTTP_SEE_OTHER): RedirectResponse
     {
         if(empty($request)) $request = $this->getRequest();
         $referer = $request->headers->get('referer');

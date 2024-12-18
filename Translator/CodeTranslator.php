@@ -31,7 +31,7 @@ class CodeTranslator extends Translator
     /**
      * {@inheritdoc}
      */
-    public function trans(?string $id, array $parameters = array(), string $domain = null, string $locale = null): string
+    public function trans(?string $id, array $parameters = array(), ?string $domain = null, ?string $locale = null): string
     {
         if ($this->hasAskedForTransCode($locale)) {
             return $this->formatTransCode($id, $domain, $parameters);

@@ -16,7 +16,7 @@ class TwigRequest extends AbstractExtension
     protected $urlGenerator;
 
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, Request $request = null)
+    public function __construct(UrlGeneratorInterface $urlGenerator, ?Request $request = null)
     {
         $this->urlGenerator = $urlGenerator;
         if(!$request) $request = new Request();
