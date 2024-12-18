@@ -1,8 +1,4 @@
 keiwen_cacofony:
-    param_fetcher:
-        controller_parameter: paramFetcher
-        fetcher_class:        Keiwen\Cacofony\ParamFetcher\ParamFetcher
-        reader_class:         Keiwen\Cacofony\ParamFetcher\ParamReader
     controller:
         default_cache:        cache
         default_entity_registry: Keiwen\Cacofony\EntitiesManagement\EntityRegistry

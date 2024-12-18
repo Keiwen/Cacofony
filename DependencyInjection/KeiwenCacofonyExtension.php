@@ -14,9 +14,6 @@ class KeiwenCacofonyExtension extends ConfigurableExtension implements PrependEx
 
     const CONTROLLER_CONF = 'keiwen_cacofony.controller';
     const AUTODUMP_PARAM = 'keiwen_cacofony.autodump.paramname';
-    const PARAM_FETCHER_CONTROLLER_PARAM_CONF = 'keiwen_cacofony.param_fetcher.controller_parameter';
-    const PARAM_FETCHER_FETCHER_CLASS = 'keiwen_cacofony.param_fetcher.fetcher_class';
-    const PARAM_FETCHER_READER_CLASS = 'keiwen_cacofony.param_fetcher.reader_class';
     const ROLE_PREFIXES_CONF = 'keiwen_cacofony.rolechecker.role_prefixes';
     const TOKEN_SECRET_CONF = 'keiwen_cacofony.token_generator.secret';
     const TOKEN_CIPHER_ALGO_CONF = 'keiwen_cacofony.token_generator.cipher_algo';
@@ -41,9 +38,6 @@ class KeiwenCacofonyExtension extends ConfigurableExtension implements PrependEx
         $container->setParameter(self::TOKEN_SECRET_CONF, $mergedConfig['token_generator']['secret']);
         $container->setParameter(self::TOKEN_CIPHER_ALGO_CONF, $mergedConfig['token_generator']['cipher_algo']);
         $container->setParameter(self::TOKEN_OPENSSL_IV_CONF, $mergedConfig['token_generator']['openssl_iv']);
-        $container->setParameter(self::PARAM_FETCHER_CONTROLLER_PARAM_CONF, $mergedConfig['param_fetcher']['controller_parameter']);
-        $container->setParameter(self::PARAM_FETCHER_FETCHER_CLASS, $mergedConfig['param_fetcher']['fetcher_class']);
-        $container->setParameter(self::PARAM_FETCHER_READER_CLASS, $mergedConfig['param_fetcher']['reader_class']);
         $container->setParameter(self::EXCEPTION_PREVIOUS_ON_TWIGERROR, $mergedConfig['exception']['previous_on_twigerror']);
         $container->setParameter(self::TRANSLATOR_CODE_LOCALE, $mergedConfig['code_translator']['locale']);
         $container->setParameter(self::TRANSLATOR_CODE_PATTERN, $mergedConfig['code_translator']['display_pattern']);

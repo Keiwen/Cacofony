@@ -15,12 +15,6 @@ services:
             $parameterName: '%keiwen_cacofony.autodump.paramname%'
         public: true
 
-    Keiwen\Cacofony\EventListener\ParamFetcherListener:
-        arguments:
-            $fetcherClass: '%keiwen_cacofony.param_fetcher.fetcher_class%'
-            $readerClass: '%keiwen_cacofony.param_fetcher.reader_class%'
-            $controllerParam: '%keiwen_cacofony.param_fetcher.controller_parameter%'
-
 
     #REQUEST
     Keiwen\Cacofony\Http\Request:

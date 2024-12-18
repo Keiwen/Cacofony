@@ -69,27 +69,6 @@ Depending on locale, it can add non-breakable space (as in french)
 * ``hasRole('user')`` check if current user has specified role.
 Value don't need to be uppercase or have the 'role_' prefix.
 
-## ParamFetcher
-Controller method could be annotated with ParamFetcher annotations
-to declare request (get and/or post) parameters for the route.
-Parameters can be required, have some requirements (error if not met)
-or filter (invalid chars removed without error triggered).   
-ParamFetcher is filled if declared as controller parameters, and sends
-a 400 HTTP response when error occurs.  
-Cacofony includes integration for NelmioApiDocBundle with these annotations
-```
-/**
- * Action executed if GET request with apiKey parameter.
- * variable '$apiKey' in action will be an alphanumerical string.
- *
- * @Get("/route", name="routeName")
- * @GetParam(name="apiKey", description="required key for API access", required=true, filter="scalar")
- */
-public function action(ParamFetcher $paramFetcher) {
-    $apiKey = $paramFetcher->get('apiKey');
-}
-```
-
 ## EntityRegistry
 Can save, remove, detach or copy an entity or a list of entities.
 Each methods include an optional commit parameter (default true).

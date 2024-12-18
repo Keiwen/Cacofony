@@ -5,7 +5,6 @@ namespace Keiwen\Cacofony\Controller;
 use Keiwen\Cacofony\DependencyInjection\KeiwenCacofonyExtension;
 use Keiwen\Cacofony\EntitiesManagement\EntityRegistry;
 use Keiwen\Cacofony\EventListener\AutoDumpListener;
-use Keiwen\Cacofony\EventListener\ParamFetcherListener;
 use Keiwen\Cacofony\EventListener\TemplateParameterListener;
 use Keiwen\Cacofony\Http\Request;
 use Keiwen\Cacofony\Http\Response;
@@ -134,7 +133,6 @@ class DefaultController extends AbstractController
         $subsribedServices = parent::getSubscribedServices();
         $subsribedServices[Request::class] = '?'.Request::class;
         $subsribedServices[AutoDumpListener::class] = '?'.AutoDumpListener::class;
-        $subsribedServices[ParamFetcherListener::class] = '?'.ParamFetcherListener::class;
         $subsribedServices[TemplateParameterListener::class] = '?'.TemplateParameterListener::class;
         $subsribedServices[EntityRegistry::class] = '?'.EntityRegistry::class;
         return $subsribedServices;

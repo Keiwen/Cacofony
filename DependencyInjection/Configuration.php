@@ -4,8 +4,6 @@
 namespace Keiwen\Cacofony\DependencyInjection;
 
 use Keiwen\Cacofony\EntitiesManagement\EntityRegistry;
-use Keiwen\Cacofony\ParamFetcher\ParamFetcher;
-use Keiwen\Cacofony\ParamFetcher\ParamReader;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -20,20 +18,6 @@ class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
-                ->arrayNode('param_fetcher')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('controller_parameter')
-                            ->defaultValue('paramFetcher')->cannotBeEmpty()
-                        ->end()
-                        ->scalarNode('fetcher_class')
-                            ->defaultValue(ParamFetcher::class)->cannotBeEmpty()
-                        ->end()
-                        ->scalarNode('reader_class')
-                            ->defaultValue(ParamReader::class)->cannotBeEmpty()
-                        ->end()
-                    ->end()
-                ->end()
                 ->arrayNode('controller')
                     ->addDefaultsIfNotSet()
                     ->children()
