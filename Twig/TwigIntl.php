@@ -14,7 +14,7 @@ class TwigIntl extends AbstractExtension
     /**
      * @return array
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return array(
             new TwigFilter('countryName', array($this, 'countryNameFilter')),
@@ -26,7 +26,7 @@ class TwigIntl extends AbstractExtension
         );
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new TwigFunction('countryNames', array($this, 'countryNames')),

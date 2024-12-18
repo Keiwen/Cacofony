@@ -19,7 +19,7 @@ class TwigSecurity extends AbstractExtension
     }
 
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new TwigFunction('hasRole', array($this->roleChecker, 'hasRole')),

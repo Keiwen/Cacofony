@@ -12,7 +12,7 @@ class TwigArray extends AbstractExtension
     /**
      * @return array
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return array(
             new TwigFilter('shuffle', array($this, 'shuffleFilter')),
