@@ -4,13 +4,13 @@ namespace Keiwen\Cacofony\EventListener;
 
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Twig\Environment as TwigEnvironment;
 
-class AutoDumpListener implements EventSubscriberInterface
+class AutoDumpListener
 {
 
     protected $toDump = array();
@@ -35,14 +35,6 @@ class AutoDumpListener implements EventSubscriberInterface
         $this->twig = $twig;
     }
 
-    public static function getSubscribedEvents()
-    {
-        return array(
-            KernelEvents::VIEW => array(array('onKernelView', 20)),
-            KernelEvents::RESPONSE => array(array('onKernelResponse', 20)),
-        );
-    }
-
     /**
      * @return string
      */
@@ -61,6 +53,7 @@ class AutoDumpListener implements EventSubscriberInterface
      * Called after each controller. Store parameters send by controller
      * @param ViewEvent $event
      */
+    #[AsEventListener(event: KernelEvents::VIEW, priority: 20)]
     public function onKernelView(ViewEvent $event)
     {
         if(!function_exists('dump') || empty($this->getAutodumpParameterName()) || !$this->isDevEnvironment()) return;
@@ -99,6 +92,7 @@ class AutoDumpListener implements EventSubscriberInterface
      * Called for each request. Use only the master request to dump all stored parameters
      * @param ResponseEvent $event
      */
+    #[AsEventListener(event: KernelEvents::RESPONSE, priority: 20)]
     public function onKernelResponse(ResponseEvent $event)
     {
         if(!function_exists('dump') || empty($this->getAutodumpParameterName()) || !$this->isDevEnvironment()) return;
