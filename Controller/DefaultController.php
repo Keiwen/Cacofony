@@ -12,6 +12,7 @@ use Keiwen\Utils\Object\CacheHandlerTrait;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class DefaultController extends AbstractController
 {
@@ -120,6 +121,19 @@ class DefaultController extends AbstractController
      * {@inheritdoc}
      * Extended function for autodump
      */
+    protected function render(string $view, array $parameters = [], ?SymfonyResponse $response = null): SymfonyResponse
+    {
+        /** @var AutoDumpListener $autodump */
+        $autodump = $this->container->get(AutoDumpListener::class);
+        $autodump->addParameterToDump($view, $parameters);
+        return parent::render($view, $parameters, $response);
+    }
+
+
+    /**
+     * {@inheritdoc}
+     * Extended function for autodump
+     */
     protected function renderView(string $view, array $parameters = array()): string
     {
         /** @var AutoDumpListener $autodump */
@@ -127,6 +141,7 @@ class DefaultController extends AbstractController
         $autodump->addParameterToDump($view, $parameters);
         return parent::renderView($view, $parameters);
     }
+
 
     public static function getSubscribedServices(): array
     {
