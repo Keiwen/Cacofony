@@ -24,11 +24,6 @@ services:
             - 'getCurrentRequest'
         public: true
 
-    #ASSOCIATION
-    Keiwen\Cacofony\Association\NelmioApiDoc\KeiwenCacofonyHandler:
-        tags:
-            - { name: nelmio_api_doc.extractor.handler }
-
     #ROLE CHECKER
     Keiwen\Cacofony\Security\RoleChecker:
         arguments:
