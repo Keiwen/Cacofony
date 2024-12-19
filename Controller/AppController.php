@@ -4,6 +4,7 @@ namespace Keiwen\Cacofony\Controller;
 
 use Keiwen\Cacofony\Configuration\TemplateParameter;
 use Keiwen\Cacofony\DependencyInjection\KeiwenCacofonyExtension;
+use Keiwen\Cacofony\EventListener\AutoDumpListener;
 use Keiwen\Cacofony\Http\Response;
 use Keiwen\Utils\Analyser\DebugBacktracer;
 use Keiwen\Utils\Format\StringFormat;
@@ -66,9 +67,9 @@ class AppController extends DefaultController
         $templatePath = $stringFormatter->formatSnakeCase($controllerName);
         $templateName = $stringFormatter->formatSnakeCase($actionName);
 
-        $templateExtention = $this->getParameter(KeiwenCacofonyExtension::TEMPLATE_GUESSER_EXTENSION);
+        $templateExtension = $this->getParameter(KeiwenCacofonyExtension::TEMPLATE_GUESSER_EXTENSION);
 
-        $view = $templatePath . '/' . $templateName. '.' . $templateExtention;
+        $view = $templatePath . '/' . $templateName. '.' . $templateExtension;
 
         return $this->render($view, $mergedParameters, $this->getResponse());
     }
