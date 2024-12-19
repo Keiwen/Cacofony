@@ -8,82 +8,64 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class TemplateParameter
  *
- * Use this annotation to add some template parameters controller-wide,
+ * Use this attribute to add some template parameters controller-wide,
  * like if you need a common parameters for all actions in same controller
- *
- * @Annotation
- * @Target({"CLASS", "METHOD"})
  */
-class TemplateParameter extends ConfigurationAnnotation
+#[\Attribute(\Attribute::IS_REPEATABLE | \Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+class TemplateParameter
 {
 
-    const ALIAS_NAME = 'cacoTemplateParameter';
+    const REQUEST_ATTRIBUTE_NAME = '_cacoTemplateParameter';
 
-    protected $parameter;
-    protected $paramValue = true;
+    protected $name;
+    protected $value;
 
+
+    public function __construct(string $name, $value = true)
+    {
+        $this->name = $name;
+        $this->value = $value;
+    }
 
     /**
      * @param string $parameter The template parameter name
      */
-    public function setValue($parameter)
+    public function setName($parameter)
     {
-        $this->parameter = $parameter;
+        $this->name = $parameter;
     }
 
     /**
      * @return string The template parameter name
      */
-    public function getValue()
+    public function getName()
     {
-        return $this->parameter;
+        return $this->name;
     }
 
     /**
      * @param mixed $paramValue The template parameter value
      */
-    public function setParamValue($paramValue)
+    public function setValue($paramValue)
     {
-        $this->paramValue = $paramValue;
+        $this->value = $paramValue;
     }
 
     /**
      * @return mixed
      */
-    public function getParamValue()
+    public function getValue()
     {
-        return $this->paramValue;
+        return $this->value;
     }
-
-    /**
-     * Returns the annotation alias name.
-     * @return string
-     * @see ConfigurationInterface
-     */
-    public function getAliasName()
-    {
-        return self::ALIAS_NAME;
-    }
-
-
-    /**
-     * Allow multiple directive.
-     * @return bool
-     * @see ConfigurationInterface
-     */
-    public function allowArray()
-    {
-        return true;
-    }
-
 
     public static function getArrayFromRequest(Request $request)
     {
         $templateParameters = array();
         /** @var TemplateParameter[] $fromRequest */
-        $fromRequest = $request->attributes->get('_'.self::ALIAS_NAME, array());
+        $fromRequest = $request->attributes->get(self::REQUEST_ATTRIBUTE_NAME, array());
         foreach($fromRequest as $tpFromRequest) {
-            $templateParameters[$tpFromRequest->getValue()] = $tpFromRequest->getParamValue();
+            $templateParameters[$tpFromRequest->getName()] = $tpFromRequest->getValue();
         }
         return $templateParameters;
     }

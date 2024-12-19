@@ -41,12 +41,10 @@ If not, an AccessDeniedException is raised.
 Value in annotation don't need to be uppercase or have the 'role_' prefix.
 
 ## Template Param
-This annotation could be used for 'constants' given to templates.
+This attribute could be used for 'constants' given to templates.
 It could be defined on a single action, or for the full controller
 ```
-/**
- * @TemplateParameter("section", paramValue="test")
- */
+ #[TemplateParameter(name: "section", value: "test")
 class TestController extends DefaultController
 ```
 In this example, all actions in this controller will automatically return

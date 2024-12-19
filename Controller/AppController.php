@@ -47,7 +47,7 @@ class AppController extends DefaultController
         $request = $this->getRequest();
         $templateParameters = TemplateParameter::getArrayFromRequest($request);
 
-        //merge template param from annotations, then params given by method,
+        //merge template param from attributes, then params given by method,
         //and finally parameters sent in render method. Last have priority.
         $mergedParameters = array_merge($templateParameters, $this->getTemplateParameters(), $parameters);
 
