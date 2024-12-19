@@ -1,7 +1,7 @@
 # Cacofony
 Custom Application Code Overlay for Symfony framework
 
-*** **Consolidation completed for Symfony 5.4 but may missed something** ***
+**Consolidation completed for Symfony 6.4**
 
 ## Controller
 * Parent controller 'AppController' is provided

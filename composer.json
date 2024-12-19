@@ -2,7 +2,7 @@
   "name": "keiwen/cacofony",
   "type": "symfony-bundle",
   "description": "Custom Application Code Overlay for symfony",
-  "version": "5.4.8",
+  "version": "6.0.0",
 
   "autoload": {
     "psr-4": {
@@ -15,7 +15,7 @@
     "ext-curl": "*",
     "ext-json": "*",
     "ext-intl": "*",
-    "symfony/framework-bundle": "^5.4",
+    "symfony/framework-bundle": "^6.4",
 
     "keiwen/utils": ">=2.0"
   },
