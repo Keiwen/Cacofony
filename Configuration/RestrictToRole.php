@@ -1,15 +1,13 @@
 <?php
 
-namespace Keiwen\Cacofony\Security\Annotation;
+namespace Keiwen\Cacofony\Configuration;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
- * The RestrictToRole class handles the Security annotation checking roles.
- *
- * @Annotation
+ * The RestrictToRole class handles the Security attribute checking roles.
  */
-class RestrictToRole extends Security
+#[\Attribute(\Attribute::IS_REPEATABLE | \Attribute::TARGET_CLASS | \Attribute::TARGET_METHOD)]
+class RestrictToRole
 {
 
     protected $rolePrefix = array('ROLE_');
@@ -20,24 +18,29 @@ class RestrictToRole extends Security
     public const OPERATOR_AND = 'and';
 
     /**
-     * Use annotation by giving list of role as parameter.
+     * Use attribute by giving list of role as parameter.
      * List roles names (with or without 'ROLE_' prefix) that can access
      * to method, in a string, separated by comma or semicolon
      * (with or without space)
      * Role name are not case sensitive
      * example: "USER, ROLE_ADMIN;anonymous"
-     * @param string $roleList contains list of role
+     *
+     * @param string $roles contains list of role
+     * @param bool $mustHaveAll default false, user allowed if have one of listed roles. Set true to allow only if all listed roles
+     * @param array $additionalRolePrefixes list of role prefixes other than 'ROLE_', with or without trailing underscore
      */
-    public function setValue($roleList)
+    public function __construct(string $roles, bool $mustHaveAll = false, array $additionalRolePrefixes = array())
     {
-        $this->roleList = $this->explodeInput($roleList);
-
+        $this->roleList = $this->explodeInput($roles);
+        $this->associationOperator = $mustHaveAll ? self::OPERATOR_AND : self::OPERATOR_OR;
+        foreach($additionalRolePrefixes as $prefix) {
+            if(empty($prefix)) continue;
+            //be sure to end with _
+            $this->rolePrefix[] = rtrim($prefix, '_') . '_';
+        }
     }
 
 
-    /**
-     * @inheritdoc
-     */
     public function getExpression()
     {
         $roleList = $this->roleList;
@@ -48,44 +51,6 @@ class RestrictToRole extends Security
             $role = "is_granted('$role')";
         }
         return implode(" $this->associationOperator ", $roleList);
-    }
-
-
-    /**
-     * @deprecated
-     * @param string $expression
-     */
-    public function setExpression($expression)
-    {
-    }
-
-
-    /**
-     * List role prefixes if other than ROLE_
-     * (with or without trailing underscore)
-     * Similar rules than value with list roles
-     * example: additionalRolePrefix="PREFIX"
-     * @param string $prefixes
-     */
-    public function setAdditionalRolePrefix(string $prefixes)
-    {
-        $prefixes = $this->explodeInput($prefixes);
-        foreach($prefixes as $prefix) {
-            if(empty($prefix)) continue;
-            //be sure to end with _
-            $this->rolePrefix[] = rtrim($prefix, '_') . '_';
-        }
-    }
-
-
-    /**
-     * By default, allow access if user have one of listed roles
-     * Fill this value to allow only if user have all listed roles
-     * @param boolean|mixed $all
-     */
-    public function setMustHaveAll(bool $all)
-    {
-        $this->associationOperator = $all ? self::OPERATOR_AND : self::OPERATOR_OR;
     }
 
 

@@ -3,7 +3,7 @@
 namespace Keiwen\Cacofony\Security;
 
 
-use Keiwen\Cacofony\Security\Annotation\RestrictToRole;
+use Keiwen\Cacofony\Configuration\RestrictToRole;
 use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -32,13 +32,13 @@ class RoleChecker
         if(is_array($roleList)) {
             $roleList = implode(',', $roleList);
         }
-        $values = array(
-            'value' => $roleList,
-            'additionalRolePrefix' => implode(',', $this->rolePrefixes),
-            'mustHaveAll' => $mustHaveAll,
-        );
-        $anotation = new RestrictToRole($values);
-        $expression = $anotation->getExpression();
+        $rtrAttribute = new RestrictToRole($roleList, $mustHaveAll, $this->rolePrefixes);
+        return $this->hasRoleFromRestrictionAttribute($rtrAttribute);
+    }
+
+    public function hasRoleFromRestrictionAttribute(RestrictToRole $restrictionAttribute)
+    {
+        $expression = $restrictionAttribute->getExpression();
         try {
             return $this->security->isGranted(new Expression($expression));
         } catch(AuthenticationCredentialsNotFoundException $e) {

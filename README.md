@@ -28,17 +28,15 @@ $kernel->terminate($request, $response);
 ```
 
 ## Restrict to Role
-This annotation could be used to check user role.
+This attribute could be used to check user role.
 Could be on a single action or for a whole controller.
 ```
-/**
- * @RestrictToRole("admin")
- */
+ #[RestrictToRole(roles: "admin")]
 class TestController extends DefaultController
 ```
 In this example, system will check if user has 'ROLE_ADMIN' role.
 If not, an AccessDeniedException is raised.
-Value in annotation don't need to be uppercase or have the 'role_' prefix.
+Value in attribute don't need to be uppercase or have the 'role_' prefix.
 
 ## Template Param
 This attribute could be used for 'constants' given to templates.
