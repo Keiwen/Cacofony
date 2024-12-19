@@ -64,6 +64,7 @@ class TemplateParameter
         $templateParameters = array();
         /** @var TemplateParameter[] $fromRequest */
         $fromRequest = $request->attributes->get(self::REQUEST_ATTRIBUTE_NAME, array());
+        if (!$fromRequest) return array();
         foreach($fromRequest as $tpFromRequest) {
             $templateParameters[$tpFromRequest->getName()] = $tpFromRequest->getValue();
         }
