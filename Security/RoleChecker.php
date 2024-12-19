@@ -5,9 +5,8 @@ namespace Keiwen\Cacofony\Security;
 
 use Keiwen\Cacofony\Security\Annotation\RestrictToRole;
 use Symfony\Component\ExpressionLanguage\Expression;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class RoleChecker
 {
