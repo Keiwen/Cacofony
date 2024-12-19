@@ -50,7 +50,8 @@ class AutoDumpListener
 
 
     /**
-     * Called after each controller. Store parameters send by controller
+     * Called after each controller that does not return a Response.
+     * Store parameters send by controller
      * @param ViewEvent $event
      */
     #[AsEventListener(event: KernelEvents::VIEW, priority: 20)]
@@ -58,6 +59,7 @@ class AutoDumpListener
     {
         if(!function_exists('dump') || empty($this->getAutodumpParameterName()) || !$this->isDevEnvironment()) return;
         $parameters = $event->getControllerResult();
+        if(!is_array($parameters)) return;
         $request = $event->getRequest();
         /** @var Template $template */
         $template = $request->attributes->get('_template');

@@ -13,7 +13,8 @@ class TemplateParameterListener
 {
 
     /**
-     * Called after each controller. Store template parameters annotated in controller
+     * Called after each controller that does not return a Response.
+     * Store template parameters annotated in controller
      * @param ViewEvent $event
      */
     #[AsEventListener(event: KernelEvents::VIEW, priority: 30)]
