@@ -23,7 +23,7 @@ class KeiwenCacofonyExtension extends ConfigurableExtension implements PrependEx
     const TRANSLATOR_CODE_PATTERN = 'keiwen_cacofony.code_translator.pattern';
     const TEMPLATE_GUESSER_EXTENSION = 'keiwen_cacofony.template_guesser.extension';
 
-    public function loadInternal(array $mergedConfig, ContainerBuilder $container)
+    public function loadInternal(array $mergedConfig, ContainerBuilder $container): void
     {
 
         $loader = new YamlFileLoader(
@@ -47,7 +47,7 @@ class KeiwenCacofonyExtension extends ConfigurableExtension implements PrependEx
     }
 
 
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
     }
 

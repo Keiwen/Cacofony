@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Parameter;
 
 class TranslatorPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('translator.default')) {
             return;
